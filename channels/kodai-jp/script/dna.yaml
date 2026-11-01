@@ -1,0 +1,13 @@
+# DNA đo được của kênh. Giải thích giọng ở style.md, căn cứ ở research/dna-2026-10.md. Chỉ đổi khi Sếp duyệt.
+length_minutes: {target: 20, min: 18, max: 22}
+pace_note: "Đo lại trên giọng thật"
+min_facts: 40   # tạm, chưa có số đo tiếng Nhật: đo kịch bản gốc kèm audio đầu tiên rồi đặt lại
+promise_before_s: 60
+subscribe: {max_s: 10}
+curiosity_gap_s: [60, 120]
+numbers_per_min: [3, 7]
+steps: [8, 10]
+banned_self_reference: ['ヤバ', 'チート', 'ラスボス', 'オーバーキル', 'マジで', '広島型原爆', '僕', '俺', 'エピソード', '面白かったら']
+watch_phrases: ["と言えるでしょう", "することができ", "において", "に関して", "さまざまな", "様々な", "非常に", "重要な", "驚くべき", "まさに", "まず、", "次に、", "最後に、", "また、", "さらに、", "の旅"]
+signature: "地球の記憶は、足元に残っています。"
+sentence_warn_chars: 40

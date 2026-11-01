@@ -1,0 +1,10 @@
+pyyaml==6.0.2
+requests==2.32.3
+python-dotenv==1.0.1
+jsonschema==4.23.0
+pillow==10.4.0
+numpy>=1.26
+scipy>=1.11
+sudachipy==0.7.0
+sudachidict-core==20261015
+pillow-avif-plugin==1.6.0

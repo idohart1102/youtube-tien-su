@@ -1,0 +1,101 @@
+{
+ "fps": 30,
+ "scenes": [
+  {
+   "id": "s1",
+   "duration_s": 4,
+   "component": "TitleCard",
+   "asset": "backgrounds/space.jpg",
+   "props": {
+    "kicker": "地球史最大の地獄",
+    "title": "ペルム紀大絶滅",
+    "sub": "2億5200万年前、何が起きたのか"
+   },
+   "narration": "今から2億5200万年前、地球の生命の96%が消えた。"
+  },
+  {
+   "id": "s2",
+   "duration_s": 4,
+   "component": "GeoClock",
+   "asset": "backgrounds/strata.jpg",
+   "props": {
+    "from_ma": 4600,
+    "to_ma": 252,
+    "label": "ペルム紀末"
+   },
+   "narration": "地球の歴史を24時間に縮めると、それは夜の10時過ぎの出来事だ。"
+  },
+  {
+   "id": "s3",
+   "duration_s": 4,
+   "component": "SizeCompare",
+   "asset": "backgrounds/forest.jpg",
+   "props": {
+    "title": "大きさ比べ",
+    "items": [
+     {
+      "name": "human",
+      "size_m": 1.7,
+      "label": "人間"
+     },
+     {
+      "name": "trex",
+      "size_m": 12,
+      "label": "ティラノサウルス"
+     }
+    ]
+   },
+   "narration": "全長12メートル。人間と並べると、その大きさは圧倒的だ。"
+  },
+  {
+   "id": "s4",
+   "duration_s": 4,
+   "component": "Creature",
+   "asset": "backgrounds/forest.jpg",
+   "props": {
+    "name": "trex",
+    "x": 980,
+    "y": 940,
+    "scale": 0.9,
+    "walk": 120,
+    "label": "ティラノサウルス",
+    "sub": "白亜紀後期"
+   },
+   "narration": "森の奥から、王者が姿を現す。"
+  },
+  {
+   "id": "s5",
+   "duration_s": 4,
+   "component": "MapDrift",
+   "asset": "backgrounds/ocean.jpg",
+   "props": {
+    "label": "テチス海",
+    "markers": [
+     {
+      "x": 0.3,
+      "y": 0.4,
+      "label": "パンゲア"
+     },
+     {
+      "x": 0.7,
+      "y": 0.6,
+      "label": "日本の祖先"
+     }
+    ],
+    "arrows": [
+     {
+      "from": [
+       0.3,
+       0.4
+      ],
+      "to": [
+       0.7,
+       0.6
+      ]
+     }
+    ]
+   },
+   "narration": "そのころ日本列島は、まだ大陸の縁にあった。"
+  }
+ ]
+}

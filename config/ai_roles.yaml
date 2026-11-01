@@ -1,0 +1,23 @@
+# Bảng phân công AI để người và AI tra cứu, script không đọc file này. Hướng dẫn vai trò đọc được bằng mọi AI ở core/roles/<vai-trò>.md.
+# Đổi thật: model Claude chọn trong Claude Code; bên chấm là review_provider trong config/machine.yaml; model 9router là NINEROUTER_IMAGE_MODEL, NINEROUTER_SEARCH_MODEL trong .env.
+# Máy này: chấm dùng 9router, không tìm được 9router thì tự chuyển Codex CLI. Tạo ảnh và tìm tài liệu dùng 9router. Máy khác không có 9router: việc tạo ảnh tự chuyển Codex CLI (xem docs/handover.md).
+models:
+  claude: claude-opus-5-5
+  9router_text: cx/gpt-6.1-sol
+  9router_image: cx/gpt-image-2.5-sunburst
+roles:
+  orchestrator: {ai: claude, backup: codex, does: "Điều phối, cập nhật status.yaml, báo Sếp"}
+  researcher:   {ai: claude, backup: codex, does: "Nghiên cứu kênh và đề tài, dùng vidIQ"}
+  writer:       {ai: claude, backup: codex, does: "Brief, kịch bản, meta nháp. Viết theo channels/<slug>/script/"}
+  reviewer:     {ai: 9router_text, backup: codex, does: "Kiểm tra nguồn trong brief qua qc_facts.py, chấm kịch bản độc lập qua qc_script.py"}
+  builder:      {ai: claude, backup: codex, does: "asset_plan.json, scenes.json, chọn rig"}
+  image:        {ai: 9router_image, backup: codex, does: "Tạo ảnh qua gen_assets.py, 9router không sẵn sàng thì tự chuyển Codex CLI"}
+  finder:       {ai: 9router_text, backup: codex, does: "Tìm tài liệu minh họa trên toàn internet qua gen_assets.py, ghi nguồn"}
+  qc-asset:     {ai: 9router_text, backup: codex, does: "Chấm ảnh, tối đa 5 lần qua gen_assets.py"}
+  qc-video:     {ai: 9router_text, backup: codex, does: "QC video độc lập qua qc_video.py"}
+  approver:     {ai: claude, backup: none, does: "Duyệt brief, quyết định render lại, chốt bản cuối, dựa trên kết quả QC"}
+  packager:     {ai: claude, backup: codex, does: "Meta có mốc thời gian, thumbnail, danh sách đăng"}
+  analyst:      {ai: claude, backup: codex, does: "Số liệu, learnings.md, knowledge/"}
+scripts_no_ai: [align_srt, validate_scenes, render, render_check, publish_clean, status]
+people:
+  sep: "Gửi audio và srt, đăng YouTube, đổi quyết định và tiêu chuẩn"

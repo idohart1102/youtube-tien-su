@@ -1,0 +1,11 @@
+# Cấu hình riêng của MÁY NÀY (copy thành machine.yaml, không đưa vào git)
+browser_executable: ""      # để trống = Remotion tự tải; hoặc đường dẫn chrome-headless-shell
+ffmpeg: ffmpeg              # hoặc đường dẫn đầy đủ
+python: python3
+render_concurrency: 4       # Mac mini M-series: 4-6
+router_url: http://localhost:20128/v1   # 9router trên máy này, xem docs/handover.md
+image_provider: 9router     # tạo ảnh: 9router (cx/gpt-image-2.5)
+review_provider: 9router    # chấm độc lập: 9router (cx/gpt-6.1-sol), không tìm được thì tự chuyển Codex CLI
+drive_mode: desktop         # desktop: thư mục Google Drive Desktop; rclone: tải bằng rclone
+drive_path: ""              # desktop: đường dẫn thư mục "00 Thành phẩm AI nộp" trên máy này
+drive_remote: ""            # rclone: vd vox-drive:  (remote trỏ vào thư mục thành phẩm)

@@ -1,0 +1,28 @@
+.env
+.env.*
+!.env.example
+/config/machine.yaml
+node_modules/
+__pycache__/
+.venv/
+.DS_Store
+
+# Dữ liệu tập không lên GitHub: chỉ ở trên máy và Drive. GitHub chỉ chứa hệ thống.
+channels/*/episodes/
+channels/*/archive/
+
+# Không có media nào trong git. Kết cấu dùng chung sinh bằng core/scripts/make_shared_assets.py.
+assets/shared/
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.gif
+*.mp4
+*.mov
+*.mkv
+*.mp3
+*.wav
+*.m4a
+*.aac
+*.flac

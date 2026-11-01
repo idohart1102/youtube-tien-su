@@ -1,0 +1,13 @@
+{
+ "species": {
+  "sauropod-vn": "long-necked sauropod similar to Mamenchisaurus, olive-brown skin with faint darker stripes, about 20 m long"
+ },
+ "assets": [
+  {"id": "bg-rung-bo-song", "kind": "ai", "role": "bg", "file": "backgrounds/rung-bo-song-binh-minh.jpg", "prompt": "Late Cretaceous tropical riverside forest in what is now northern Vietnam, limestone hills in mist, dawn light, no animals", "tags": ["rừng", "sông", "kỷ phấn trắng", "bình minh"]},
+  {"id": "sauropod-di", "kind": "ai", "role": "cutout", "file": "creatures/sauropod-vn-di.png", "species": "sauropod-vn", "prompt": "the sauropod walking, full side view", "tags": ["sauropod", "khủng long cổ dài"]},
+  {"id": "chim-dap-an", "kind": "ai", "role": "cutout", "file": "creatures/chim-chich-bong.png", "answer_of": "q1", "prompt": "a common tailorbird perched on a twig, full side view", "tags": ["chim", "khủng long còn sống"]},
+  {"id": "rua-banhxeo", "kind": "real", "file": "photos/banhxeochelys-mai.jpg", "query": "fossil shell (carapace) of the turtle Banhxeochelys from Na Duong, Vietnam", "tags": ["rùa", "hóa thạch", "na dương"]},
+  {"id": "ban-do-co", "kind": "real", "file": "maps/paleomap-66ma.jpg", "query": "PALEOMAP paleogeographic world map at 66 million years ago by Christopher Scotese", "tags": ["bản đồ cổ", "66 triệu năm"]},
+  {"id": "nen-troi", "kind": "reuse", "file": "backgrounds/sky.jpg"}
+ ]
+}

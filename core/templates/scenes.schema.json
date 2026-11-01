@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [
+    "fps",
+    "scenes"
+  ],
+  "properties": {
+    "fps": {
+      "type": "integer"
+    },
+    "scenes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "duration_s",
+          "component"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "duration_s": {
+            "type": "number",
+            "minimum": 0.5
+          },
+          "component": {
+            "enum": [
+              "KenBurns",
+              "TitleCard",
+              "Creature",
+              "SizeCompare",
+              "GeoClock",
+              "MapDrift",
+              "PhotoCard",
+              "Parallax",
+              "Collage",
+              "GeoMap",
+              "Stage",
+              "FossilReveal"
+            ]
+          },
+          "asset": {
+            "type": "string"
+          },
+          "props": {
+            "type": "object"
+          },
+          "narration": {
+            "type": "string"
+          },
+          "transition": {
+            "enum": [
+              "fade",
+              "dip",
+              "cut"
+            ]
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "fixed_s": {
+            "type": "number",
+            "minimum": 0.5
+          }
+        }
+      }
+    }
+  }
+}

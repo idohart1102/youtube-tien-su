@@ -1,0 +1,377 @@
+{
+ "audio_end": 51.251,
+ "match": 1.0,
+ "chapters": [
+  {
+   "title": "Mở đầu",
+   "start": 0.0
+  }
+ ],
+ "lines": [
+  {
+   "i": 0,
+   "chapter": "Mở đầu",
+   "start": 0.0,
+   "end": 4.305,
+   "text": "66 triệu năm trước, trên phần đất Việt Nam ngày nay, không ai nghe thấy tiếng nổ.",
+   "notes": [
+    "hình: rừng nhiệt đới cổ lúc bình minh, đàn khủng long nhỏ uống nước bên sông",
+    "THẺ: 66 triệu năm trước, nơi sau này là Việt Nam"
+   ]
+  },
+  {
+   "i": 1,
+   "chapter": "Mở đầu",
+   "start": 4.705,
+   "end": 8.968,
+   "text": "Vì nó xảy ra ở phía bên kia hành tinh, cách đây khoảng 15.000 km.",
+   "notes": [
+    "hình: quả cầu Trái Đất xoay, chấm đỏ ở Mexico, chấm vàng ở Việt Nam",
+    "THẺ: 15.000 ki-lô-mét"
+   ]
+  },
+  {
+   "i": 2,
+   "chapter": "Mở đầu",
+   "start": 9.368,
+   "end": 11.858,
+   "text": "Nhưng chưa đầy một giờ sau, mặt đất bắt đầu rung.",
+   "notes": [
+    "hình: mặt nước sông khẽ gợn, khủng long ngẩng đầu"
+   ]
+  },
+  {
+   "i": 3,
+   "chapter": "Mở đầu",
+   "start": 11.858,
+   "end": 13.443,
+   "text": "Rồi bầu trời bắt đầu đổ mưa.",
+   "notes": [
+    "hình: bầu trời chuyển màu cam, vệt sáng nhỏ rơi xuống như mưa"
+   ]
+  },
+  {
+   "i": 4,
+   "chapter": "Mở đầu",
+   "start": 13.843,
+   "end": 14.734,
+   "text": "Không phải mưa nước.",
+   "notes": []
+  },
+  {
+   "i": 5,
+   "chapter": "Mở đầu",
+   "start": 14.734,
+   "end": 15.624,
+   "text": "Đây không phải phim.",
+   "notes": [
+    "hình: GeoClock chạy ngược về 66 triệu năm",
+    "Đã xác nhận"
+   ]
+  },
+  {
+   "i": 6,
+   "chapter": "Mở đầu",
+   "start": 15.624,
+   "end": 16.738,
+   "text": "Nó đã xảy ra thật.",
+   "notes": []
+  },
+  {
+   "i": 7,
+   "chapter": "Mở đầu",
+   "start": 17.138,
+   "end": 20.084,
+   "text": "Và khoảng ba phần tư số loài trên Trái Đất sắp biến mất.",
+   "notes": []
+  },
+  {
+   "i": 8,
+   "chapter": "Mở đầu",
+   "start": 20.484,
+   "end": 23.715,
+   "text": "Vậy ngày hôm đó, chuyện gì diễn ra trên mảnh đất bạn đang đứng?",
+   "notes": [
+    "hình: bản đồ Đông Nam Á cổ, phần Việt Nam nhấp nháy dấu hỏi"
+   ],
+   "ask": true
+  },
+  {
+   "i": 9,
+   "chapter": "Mở đầu",
+   "start": 24.115,
+   "end": 25.452,
+   "text": "Ở đây có khủng long không?",
+   "notes": [
+    "hình: bóng khủng long mờ giữa rừng, dấu hỏi"
+   ],
+   "ask": true
+  },
+  {
+   "i": 10,
+   "chapter": "Mở đầu",
+   "start": 25.452,
+   "end": 26.344,
+   "text": "Ai đã sống sót?",
+   "notes": [],
+   "ask": true
+  },
+  {
+   "i": 11,
+   "chapter": "Mở đầu",
+   "start": 26.344,
+   "end": 28.349,
+   "text": "Và đất đá còn giữ lại dấu vết gì?",
+   "notes": [],
+   "ask": true
+  },
+  {
+   "i": 12,
+   "chapter": "Mở đầu",
+   "start": 28.749,
+   "end": 31.953,
+   "text": "Đến cuối tập, bạn sẽ biết một điều lạ về chính mảnh đất này.",
+   "notes": [
+    "hình: lớp đá xếp tầng, mũi tên chỉ hướng đông nam"
+   ]
+  },
+  {
+   "i": 13,
+   "chapter": "Mở đầu",
+   "start": 32.353,
+   "end": 35.408,
+   "text": "66 triệu năm trước, nó không nằm ở chỗ bây giờ.",
+   "notes": []
+  },
+  {
+   "i": 14,
+   "chapter": "Mở đầu",
+   "start": 35.808,
+   "end": 39.478,
+   "text": "Và mình sẽ chỉ cho bạn một loài khủng long vẫn đang sống ở Việt Nam.",
+   "notes": [
+    "hình: chim chích bông đậu trên cành, cắt nhanh sang bóng khủng long"
+   ]
+  },
+  {
+   "i": 15,
+   "chapter": "Mở đầu",
+   "start": 39.878,
+   "end": 41.224,
+   "text": "Ngay ngoài cửa sổ nhà bạn.",
+   "notes": []
+  },
+  {
+   "i": 16,
+   "chapter": "Mở đầu",
+   "start": 41.224,
+   "end": 42.571,
+   "text": "Mình sẽ đi qua ba chặng.",
+   "notes": [
+    "hình: 3 thẻ chặng hiện lần lượt"
+   ]
+  },
+  {
+   "i": 17,
+   "chapter": "Mở đầu",
+   "start": 42.571,
+   "end": 43.244,
+   "text": "Giờ đầu tiên.",
+   "notes": []
+  },
+  {
+   "i": 18,
+   "chapter": "Mở đầu",
+   "start": 43.644,
+   "end": 44.539,
+   "text": "Những tháng tối tăm.",
+   "notes": []
+  },
+  {
+   "i": 19,
+   "chapter": "Mở đầu",
+   "start": 44.539,
+   "end": 46.999,
+   "text": "Và câu hỏi lớn nhất: còn ở Việt Nam thì sao?",
+   "notes": [],
+   "ask": true
+  },
+  {
+   "i": 20,
+   "chapter": "Mở đầu",
+   "start": 47.399,
+   "end": 51.251,
+   "text": "Nếu bạn thích kiểu chuyện này, đăng ký kênh để đi cùng mình những chuyến tiếp theo.",
+   "notes": [
+    "hình: logo kênh nhỏ góc dưới, nút đăng ký"
+   ]
+  }
+ ],
+ "subs": [
+  {
+   "start": 0.0,
+   "end": 1.035,
+   "text": "66 triệu năm trước,"
+  },
+  {
+   "start": 1.035,
+   "end": 2.779,
+   "text": "trên phần đất Việt Nam ngày nay,"
+  },
+  {
+   "start": 2.779,
+   "end": 4.305,
+   "text": "không ai nghe thấy tiếng nổ."
+  },
+  {
+   "start": 4.705,
+   "end": 7.236,
+   "text": "Vì nó xảy ra ở phía bên kia hành tinh,"
+  },
+  {
+   "start": 7.236,
+   "end": 8.968,
+   "text": "cách đây khoảng 15.000 km."
+  },
+  {
+   "start": 9.368,
+   "end": 10.769,
+   "text": "Nhưng chưa đầy một giờ sau,"
+  },
+  {
+   "start": 10.769,
+   "end": 11.858,
+   "text": "mặt đất bắt đầu rung."
+  },
+  {
+   "start": 11.858,
+   "end": 13.443,
+   "text": "Rồi bầu trời bắt đầu đổ mưa."
+  },
+  {
+   "start": 13.843,
+   "end": 14.734,
+   "text": "Không phải mưa nước."
+  },
+  {
+   "start": 14.734,
+   "end": 15.624,
+   "text": "Đây không phải phim."
+  },
+  {
+   "start": 15.624,
+   "end": 16.738,
+   "text": "Nó đã xảy ra thật."
+  },
+  {
+   "start": 17.138,
+   "end": 19.388,
+   "text": "Và khoảng ba phần tư số loài trên Trái Đất"
+  },
+  {
+   "start": 19.388,
+   "end": 20.084,
+   "text": "sắp biến mất."
+  },
+  {
+   "start": 20.484,
+   "end": 22.516,
+   "text": "Vậy ngày hôm đó, chuyện gì diễn ra trên"
+  },
+  {
+   "start": 22.516,
+   "end": 23.715,
+   "text": "mảnh đất bạn đang đứng?"
+  },
+  {
+   "start": 24.115,
+   "end": 25.452,
+   "text": "Ở đây có khủng long không?"
+  },
+  {
+   "start": 25.452,
+   "end": 26.344,
+   "text": "Ai đã sống sót?"
+  },
+  {
+   "start": 26.344,
+   "end": 28.349,
+   "text": "Và đất đá còn giữ lại dấu vết gì?"
+  },
+  {
+   "start": 28.749,
+   "end": 30.921,
+   "text": "Đến cuối tập, bạn sẽ biết một điều lạ về"
+  },
+  {
+   "start": 30.921,
+   "end": 31.953,
+   "text": "chính mảnh đất này."
+  },
+  {
+   "start": 32.353,
+   "end": 33.615,
+   "text": "66 triệu năm trước,"
+  },
+  {
+   "start": 33.615,
+   "end": 35.408,
+   "text": "nó không nằm ở chỗ bây giờ."
+  },
+  {
+   "start": 35.808,
+   "end": 38.109,
+   "text": "Và mình sẽ chỉ cho bạn một loài khủng long"
+  },
+  {
+   "start": 38.109,
+   "end": 39.478,
+   "text": "vẫn đang sống ở Việt Nam."
+  },
+  {
+   "start": 39.878,
+   "end": 41.224,
+   "text": "Ngay ngoài cửa sổ nhà bạn."
+  },
+  {
+   "start": 41.224,
+   "end": 42.571,
+   "text": "Mình sẽ đi qua ba chặng."
+  },
+  {
+   "start": 42.571,
+   "end": 43.244,
+   "text": "Giờ đầu tiên."
+  },
+  {
+   "start": 43.644,
+   "end": 44.539,
+   "text": "Những tháng tối tăm."
+  },
+  {
+   "start": 44.539,
+   "end": 46.77,
+   "text": "Và câu hỏi lớn nhất: còn ở Việt Nam thì"
+  },
+  {
+   "start": 46.77,
+   "end": 46.999,
+   "text": "sao?"
+  },
+  {
+   "start": 47.399,
+   "end": 48.826,
+   "text": "Nếu bạn thích kiểu chuyện này,"
+  },
+  {
+   "start": 48.826,
+   "end": 50.775,
+   "text": "đăng ký kênh để đi cùng mình những chuyến"
+  },
+  {
+   "start": 50.775,
+   "end": 51.251,
+   "text": "tiếp theo."
+  }
+ ]
+}

@@ -1,0 +1,12 @@
+# DNA đo được của kênh. Giải thích giọng ở style.md, căn cứ ở research/dna-2026-10.md. Chỉ đổi khi Sếp duyệt.
+length_minutes: {target: 20, min: 18, max: 22}
+pace_note: "Đo lại trên giọng thật"
+min_facts: 55
+promise_before_s: 35
+subscribe: {max_s: 8}
+curiosity_gap_s: [60, 120]
+numbers_per_min: [3, 6]
+steps: [8, 10]
+banned_self_reference: ['\bmình\b', '(?<!chúng )\bta\b', '\btôi\b', '\btập\b', '\bchặng\b']
+watch_phrases: ["hãy cùng", "không chỉ", "đóng vai trò", "có thể nói rằng", "điều đáng nói", "thực tế là", "vô cùng", "cực kỳ", "đáng kinh ngạc", "thước phim", "hành trình kỳ diệu", "chưa có lời giải", "trong bối cảnh", "nhìn chung", "tóm lại", "một cách", "điều này có nghĩa", "tuy nhiên", "hơn nữa", "ngoài ra", "bật chuông", "nhớ like"]
+signature: "Bằng chứng vẫn còn đó."

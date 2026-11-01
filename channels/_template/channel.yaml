@@ -1,0 +1,37 @@
+slug: CHANGE_ME
+name: ""
+language: CHANGE_ME      # mã ngôn ngữ, vd en
+locale: ""               # mã vùng định dạng số, vd en-US
+country: ""              # mã quốc gia, vd US
+timezone: ""
+units: metric            # metric hoặc imperial
+no_repeat_species: 5
+niche: ""
+audience: ""
+pillars: []
+cadence: "1/day"
+length_min: [18, 22]
+publish_time_local: "18:00"
+made_for_kids: false
+competitors: []
+lang:                    # mọi thứ phụ thuộc ngôn ngữ nằm ở đây
+  speech: plain          # công cụ trong core/lang_tools
+  tokenize: word         # word: có khoảng trắng; char: không có khoảng trắng
+  sentence_split: '(?<=[.?!…])\s+'
+  pace: {unit: word, per_min: 150}
+  subtitle: {max: 42, break_after: ","}
+  card: {max: 6, unit: word}
+  ago:
+    - {min: 1000, mult: 0.001, digits: 1, tpl: ""}
+    - {min: 1, mult: 1, digits: 0, tpl: ""}
+    - {min: 0, mult: 1000000, digits: 0, round: 100, tpl: ""}
+  labels:
+    xac-nhan: ""
+    co-the: ""
+    tranh-cai: ""
+    clock: ""
+    hoangsa: ""
+    truongsa: ""
+    biendong: ""
+    ai_notice: ""
+    today: ""

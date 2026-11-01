@@ -1,0 +1,40 @@
+slug: kodai-jp
+name: "太古の足あと"      # Dấu chân thời cổ đại. Đọc: たいこのあしあと. Sếp yêu cầu tên không có số, 2026-11-01
+handle: "@taiko-ashiato"  # đối chiếu khi tạo kênh
+language: ja
+niche: 古生物・地球史ドキュメンタリー
+audience: "Nam nữ 40-60 ở Nhật (lõi), mở rộng 25-54; thích khoa học, lịch sử, phim tài liệu; xem tối và trước khi ngủ"
+pillars: [地獄の時代と大量絶滅, 太古の海, 化石が語る, 失われた世界(日本含む), 巨大生物, 日本の古生物]
+pillar_mix: {global: 0.8, nihon-no-koseibutsu: 0.2}   # 80% chủ đề toàn cầu có đoạn Nhật, 20% series 日本の古生物
+cadence: "1/day"        # Sếp chốt 2026-10-31
+length_min: [18, 22]
+publish_time_local: "18:00"
+made_for_kids: false
+competitors: [UCVJNS3rAEt3p3kmIQIl6CwA, UCSFw6aAjkEDVxWy1lDn8JJA, UCHqv-Wj2w6-e96JmTIVAykA]
+locale: ja-JP
+country: JP
+timezone: Asia/Tokyo
+units: metric
+no_repeat_species: 5
+lang:
+  speech: ja_speech
+  tokenize: char
+  script_srt: true  # thêm script_srt.md: chữ thông thường, căn cứ phụ đề
+  sentence_split: '(?<=[.?!…])\s+|(?<=[。！？])'
+  pace: {unit: char, per_min: 330}  # 320-350, đo lại trên giọng thật
+  subtitle: {max: 24, break_after: "、"}
+  card: {max: 12, unit: char}
+  ago:
+    - {min: 100, mult: 0.01, digits: 1, tpl: "{n}億年前"}
+    - {min: 0.01, mult: 100, digits: 0, tpl: "{n}万年前"}
+    - {min: 0, mult: 1000000, digits: 0, tpl: "{n}年前"}
+  labels:
+    xac-nhan: 確定
+    co-the: 有力
+    tranh-cai: 議論中
+    clock: 地球カレンダー（46億年＝24時間）
+    hoangsa: ホアンサ諸島
+    truongsa: チュオンサ諸島
+    biendong: 南シナ海
+    ai_notice: この動画はAIの支援を受けて制作しています
+    today: 現在

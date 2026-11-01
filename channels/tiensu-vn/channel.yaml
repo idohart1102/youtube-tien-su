@@ -1,0 +1,46 @@
+slug: tiensu-vn
+name: "Tiền Sử Đất Việt"
+handle: "@tiensudatviet"   # Sếp chốt 2026-11-01
+language: vi
+niche: Lịch sử Trái Đất, sinh vật cổ đại và người tiền sử, kể từ phần lãnh thổ Việt Nam ngày nay
+audience: "Nam nữ 18-45 ở Việt Nam, thích khoa học, lịch sử, phim tài liệu; xem trên TV/điện thoại buổi tối và trước khi ngủ"
+pillars: [Kỷ địa chất và đại tuyệt chủng, Người tiền sử và tổ tiên loài người, Việt Nam thời tiền sử, Biển và đất đã mất (Sundaland, Biển Đông), Làm sao ta biết (phương pháp khoa học)]
+pillar_mix: {ky-dia-chat: 0.35, nguoi-tien-su: 0.30, viet-nam: 0.20, bien-dat-da-mat: 0.10, phuong-phap: 0.05}
+cadence: "1/day"           # Sếp chốt 2026-11-01
+length_min: [18, 22]
+publish_time_local: "17:30"
+made_for_kids: false
+compilation: "1/month, sau khi có từ 8 video, tiêu đề 'Tóm tắt [chủ đề] trong N phút'"
+shorts_per_episode: 3
+competitors:
+  vi: [UCWJrcvVIO14yehvmFnv3HAA, UCXiDLZIgyJ5HNlAtuX_Tq3g, UCXLS35fZ3y8tf-cWdXMZOOg, UC9C33MzaZMF1tadF4zTXliQ, UC-JGZhq1hn-RJVC6DnhSvcw]
+  en_reference: [UCW6H7SKOlO8ShEILHoHUnHA, UCc-J4ihfNvvzKkLEP80Fdeg, UC0OOKthuZKlNfC9qvcqucrg, UC6uGYezl7-dtRlaXohwo5ew]
+seo:
+  keywords_core: [tiền sử Việt Nam, khủng long, người tiền sử, lịch sử Trái Đất, hóa thạch]
+  hashtags_pool: ["#khunglong", "#tiensu", "#lichsuvietnam", "#khampha", "#kienthuc"]   # chọn 3, hashtag mạnh nhất đặt trước
+locale: vi-VN
+country: VN
+timezone: Asia/Ho_Chi_Minh
+units: metric
+no_repeat_species: 5     # nhân vật chính không lặp trong N video gần nhất
+lang:                    # mọi thứ phụ thuộc ngôn ngữ nằm ở đây, core/ chỉ đọc
+  speech: vi_speech
+  tokenize: word
+  sentence_split: '(?<=[.?!…])\s+'
+  pace: {unit: syllable, per_min: 200}  # 190-220, đo lại trên giọng thật
+  subtitle: {max: 42, break_after: ","}
+  card: {max: 6, unit: word}
+  ago:
+    - {min: 1000, mult: 0.001, digits: 1, tpl: "{n} tỷ năm trước"}
+    - {min: 1, mult: 1, digits: 0, tpl: "{n} triệu năm trước"}
+    - {min: 0, mult: 1000000, digits: 0, round: 100, tpl: "{n} năm trước"}
+  labels:
+    xac-nhan: Đã xác nhận
+    co-the: Có thể
+    tranh-cai: Còn tranh cãi
+    clock: "LỊCH TRÁI ĐẤT · 4,6 TỶ NĂM = 24 GIỜ"
+    hoangsa: Quần đảo Hoàng Sa
+    truongsa: Quần đảo Trường Sa
+    biendong: Biển Đông
+    ai_notice: Nội dung được xây dựng với sự hỗ trợ của AI
+    today: Hôm nay
