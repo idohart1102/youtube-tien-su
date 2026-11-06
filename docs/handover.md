@@ -14,8 +14,8 @@ Không ghi mật khẩu hay khóa vào repo. Khóa nằm trong `.env`, mật kh�
 | Dịch vụ | Để làm gì | Thiết lập | Nếu không có |
 |---|---|---|---|
 | Claude Code | Vai trò chính, đọc `CLAUDE.md` | Đăng nhập tài khoản được giao | Codex đọc `AGENTS.md` |
-| 9router | Tạo ảnh, chấm, tìm ảnh | Chạy trên máy, khai `router_url`; khóa ở `NINEROUTER_API_KEY` hoặc tự đọc từ `~/.9router` | Chấm và tìm ảnh: `review_provider: codex`, `gen_assets.py --codex`. Tạo ảnh: tự chuyển Codex CLI |
-| Codex CLI | Dự phòng chấm, tìm ảnh, tạo ảnh | `codex login` | Mất dự phòng |
+| 9router | Tạo ảnh, chấm, tìm ảnh | Chạy trên máy, khai `router_url`; khóa ở `NINEROUTER_API_KEY` hoặc tự đọc từ `~/.9router` | Chấm và tìm ảnh: `review_provider: codex`, `gen_assets.py --codex`. Tạo ảnh: báo lỗi và dừng, không tự đổi backend |
+| Codex CLI | Dự phòng chấm, tìm ảnh | `codex login` | Mất dự phòng |
 | API TTS dùng chung (KingCong) | Tạo audio + srt cho kênh có mục `tts` (`gen_voice.py`) | Dịch vụ chạy trên máy, khai `TTS_URL` trong `.env` (bỏ trống là `http://127.0.0.1:8791`). Kiểm tra: `tts service status` và credit | Sếp tạo audio ngoài hệ thống và gửi vào cùng srt |
 | Kho nhạc nền | Nhạc cho kênh có mục `music` (`pick_music.py`) | Đồng bộ thư mục Drive của kênh bằng Drive Desktop, khai đường dẫn ở `music_libraries` trong `config/machine.yaml` | `produce.py` dừng ở bước chọn nhạc |
 | vidIQ | Nghiên cứu, số liệu | Kết nối trong tài khoản Claude | Sếp xuất số liệu từ YouTube Studio |
@@ -31,7 +31,7 @@ Dịch vụ cổng AI chạy trên máy, tương thích OpenAI, do chủ hệ th
 - Kiểm tra: `doctor.py` không báo dòng 9router. Thử thật: `python core/scripts/review.py "Mô tả ảnh này" <ảnh>`.
 
 **Hai phương án cho việc chấm và tìm ảnh:** 9router (`review_provider: 9router`, máy hiện tại) hoặc Codex CLI (`review_provider: codex`, `gen_assets.py --codex`). Bên chính lỗi thì tự chuyển sang bên còn lại.
-**Tạo ảnh:** 9router `cx/gpt-image-2.5-sunburst` là chính, không sẵn sàng thì tự chuyển Codex CLI (chậm hơn, cần `codex login`).
+**Tạo ảnh:** 9router `cx/gpt-image-2.6-sunburst` là tuyến tạo ảnh; không sẵn sàng thì báo lỗi, không tự chuyển model/provider.
 
 ## Nhận việc
 1. `git pull`.

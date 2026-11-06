@@ -17,7 +17,7 @@ part = "--part" in sys.argv
 MAX_ROUNDS, PASS_PCT = 5, 80  # Sếp nâng lên 5 vòng 2026-11-02
 qa = ep / "qa"
 qa.mkdir(exist_ok=True)
-rows = [x for x in (json.loads(p.read_text(encoding="utf-8")) for p in qa.glob("script_v*.json")) if x["file"] == fname]
+rows = [x for x in (json.loads(p.read_text(encoding="utf-8")) for p in qa.glob("script_v*.json") if not p.name.endswith(".raw.json")) if x["file"] == fname]
 
 
 def report_best():

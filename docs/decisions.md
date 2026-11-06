@@ -2,6 +2,7 @@
 Dòng gạch ngang là quyết định đã bị thay, giữ lại để biết lịch sử, không làm theo.
 
 ## 2026-11-06
+- Asset: mỗi tập khai `cast` trong `asset_plan.json`. Tách cutout nhân vật nhiều nhất có thể, tùy tình huống; nhân vật chính rig, nhân vật phụ rig khi cần, asset còn lại chỉ chuyển động, không rig. Mọi nhân vật trên cảnh đều cử động (thay luật "chỉ cutout chính có motion"); trên 3 lớp lặp là cảnh báo. Là hướng dẫn dựng, máy không chặn.
 - Sếp: chỉ chặn lỗi thật sự nghiêm trọng, không siết luật cứng làm khó sáng tạo. Máy chỉ chặn điều sai khách quan: sai fact, bản đồ thiếu Hoàng Sa/Trường Sa, lộ đáp án, câu hỏi thiếu thẻ, lệch audio, thiếu dấu, thiếu asset, nhịp và số thẻ chữ đã chốt, lỗi precheck mức cao. Luật thẩm mỹ còn lại (sương, dải phụ đề, số hiệu ứng, cutout đứng yên, hình lệch lời theo tên gọi, ảnh nhỏ, giữ bố cục, region) là cảnh báo, người dựng tự xét. Thay các dòng cổng render và sương ngày 2026-11-05.
 - Panel khán giả là tham khảo, không phải cổng. Lời hứa quá 35 giây là cảnh báo. Lỗi kịch bản báo nhầm ghi `qa/script_accepted.json`.
 
@@ -107,3 +108,7 @@ Dòng gạch ngang là quyết định đã bị thay, giữ lại để biết 
 
 ## 2026-10-30
 - Trao đổi với Sếp bằng tiếng Việt; sản phẩm video bằng ngôn ngữ kênh, viết như người bản xứ; từ nước ngoài có nghĩa tiếng Việt bên cạnh.
+
+
+## 2026-11-06 — model tạo ảnh dùng chung
+- Theo chỉ đạo Sếp: tạo/sửa ảnh qua 9router `cx/gpt-image-2.6-sunburst`. Không tự chuyển Codex CLI/built-in hoặc model khác khi lỗi hay ảnh áo chưa đạt; sửa prompt/tham chiếu trên cùng tuyến. Cấu hình `NINEROUTER_IMAGE_MODEL` vẫn là override tường minh của operator; không thấy override hiện hữu trong các file env đã kiểm.

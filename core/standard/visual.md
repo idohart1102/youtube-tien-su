@@ -16,9 +16,10 @@ Bảng màu và font do kênh khai trong `theme.json`. Chữ hiển thị do kê
 2. **Một chỗ đứng, nhiều trạng thái** (`props.grade`): một bối cảnh quay lại nhiều lần với trạng thái khác để thấy thời gian trôi.
 3. **Từ hóa thạch thành sinh vật** (`FossilReveal`): ảnh thật, viền vàng thoáng qua, con vật hiện dần, 1-2 lần mỗi video. Nhãn ghi rõ loài và nơi tìm thấy.
 4. **Một nhân vật xuyên suốt:** theo một con vật cụ thể qua câu chuyện, cử động bằng rig từ một ảnh gốc.
+   Mỗi tập khai dàn nhân vật (`cast`, Sếp 2026-11-06): tách cutout nhiều nhất có thể; nhân vật chính rig từ ảnh gốc, nhân vật phụ rig khi cần, asset còn lại chỉ cho chuyển động, không rig; không vẽ nhân vật chính, phụ chung vào ảnh nền.
 
 ## Chuyển động
-- Mỗi cảnh 1 chuyển động máy, tối đa 1 hiệu ứng chính, chỉ nhân vật chính có chuyển động lặp. Hai cảnh liền nhau khác hướng máy. Zoom không quá 1,08.
+- Mỗi cảnh 1 chuyển động máy, tối đa 1 hiệu ứng chính. Mọi nhân vật trên cảnh đều cử động (Sếp 2026-11-06): nhân vật chính rõ nhất, nhân vật phụ nhẹ hơn và khác kiểu để không cùng nhịp. Hai cảnh liền nhau khác hướng máy. Zoom không quá 1,08.
 - Rung tối đa 3 lần mỗi video. Một hiệu ứng không dùng quá 15% số cảnh.
 - Chừa dải phụ đề: chủ thể (người, vật, mặt sọ) không nằm trong 1/5 dưới khung (y > 864), kể cả lúc máy phóng to (bài học 90). Ảnh dọc phóng to phải kiểm phụ đề không đè mặt.
 - Câu hỏi chỉ minh họa bằng sự bí ẩn. Hình đáp án ẩn (`hide`) đến đúng câu trả lời. Mọi câu hỏi gắn `[HỎI]/[ĐÁP]` hoặc `[TU-TỪ]`.

@@ -87,7 +87,7 @@ if tl.exists():  # dựng từ audio + srt: tổng thời lượng phải khớp
                 problems.append(f"Cảnh {s['id']}: lộ đáp án {q} ({a}) trước câu trả lời, thêm hide (silhouette/fog/blur/keyhole)")
         t += s["duration_s"]
 
-# Giới hạn chuyển động: mỗi cảnh 1 chuyển động máy + tối đa 1 hiệu ứng chính + tối đa 1 lớp chuyển động lặp
+# Giới hạn chuyển động: mỗi cảnh 1 chuyển động máy + tối đa 1 hiệu ứng chính + nhiều lớp lặp được (Sếp 2026-11-06), trên 3 lớp thì cảnh báo rối
 shakes, hero_use, prev_cam, prev_hero = 0, {}, None, set()
 
 
@@ -111,8 +111,8 @@ for s in data["scenes"]:
         hero.add("unmask")
     if len(hero) > 1:
         warn.append(f"Cảnh {s['id']}: {len(hero)} hiệu ứng chính ({', '.join(sorted(hero))}), chỉ giữ 1")
-    if sum(1 for x in parts if x.get("motion")) > 1:
-        warn.append(f"Cảnh {s['id']}: nhiều lớp có motion, chỉ cutout chính được chuyển động lặp")
+    if sum(1 for x in parts if x.get("motion")) > 3:
+        warn.append(f"Cảnh {s['id']}: hơn 3 lớp motion, dễ rối mắt; giữ nhân vật lời đang nói và vài nhân vật phụ gần nhất")
     if len(pr.get("annotate", [])) > 2:
         warn.append(f"Cảnh {s['id']}: quá 2 nét annotate")
     shakes += "shake" in hero

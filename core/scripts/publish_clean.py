@@ -111,7 +111,8 @@ def plan(ep):
     files.append((v, f"{base}/{slug}_{ep.name}.mp4"))
     subs = ep / 'audio/subs.clean.srt'
     if subs.exists():
-        files.append((subs, f'{base}/{slug}_{ep.name}.srt'))
+        # Không đặt cùng tên với mp4: trình phát (VLC, IINA, QuickTime) tự nạp srt trùng tên, chồng lên phụ đề đã in trong hình
+        files.append((subs, f'{base}/phu-de/phu-de-khong-tai-len-youtube.srt'))
     for name in ('render_check.json', 'encoding.json'):
         p = ep / 'qa' / name
         if p.exists():

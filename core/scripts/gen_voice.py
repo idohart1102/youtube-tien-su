@@ -98,7 +98,7 @@ def main():
         sys.exit(f"Tập đang chờ Sếp ({status.read(ep)['can_sep']}): không tạo giọng cho tới khi Sếp quyết và xóa cờ can_sep.")
     if not args.force and sb.exists():
         import review
-        rows = [json.loads(q.read_text(encoding="utf-8")) for q in (ep / "qa").glob("script_v*.json")]
+        rows = [json.loads(q.read_text(encoding="utf-8")) for q in (ep / "qa").glob("script_v*.json") if not q.name.endswith(".raw.json")]
         rows = [x for x in rows if x.get("file") == "storyboard.md"]
         ok = [x for x in rows if not x["gates_failed"] and not x["fact_errors"] and x["pct"] >= 80]
         if len(rows) >= 5:
