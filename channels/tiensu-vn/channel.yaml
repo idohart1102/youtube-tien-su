@@ -22,12 +22,24 @@ locale: vi-VN
 country: VN
 timezone: Asia/Ho_Chi_Minh
 units: metric
+tts:                     # hệ thống tự tạo audio + srt qua KingCong, Sếp duyệt mẫu Denisova 2026-11-04
+  provider: elevenlabs
+  model_id: eleven_multilingual_v2
+  voice_id: 7WNWm0yUcEolHsfg5Bhk
+  speed: 1.05
+  stability: 0.3           # độ ổn định 30%
+  similarity: 0.3          # độ tương đồng 30%
+  style: 0.1               # phóng đại phong cách 10%
+  project: niche-tien-su
+music:                   # mỗi tập chọn ngẫu nhiên 1 bản trong kho, lặp hết video. File trong kho Sếp đã hạ âm lượng sẵn, nên db = 0
+  library: tiensu-vn
+  db: 0
 no_repeat_species: 5     # nhân vật chính không lặp trong N video gần nhất
 lang:                    # mọi thứ phụ thuộc ngôn ngữ nằm ở đây, core/ chỉ đọc
   speech: vi_speech
   tokenize: word
   sentence_split: '(?<=[.?!…])\s+'
-  pace: {unit: syllable, per_min: 200}  # 190-220, đo lại trên giọng thật
+  pace: {unit: syllable, per_min: 214}  # đo trên giọng Thanh, ổn định 0%, 2026-11-03: 3.685 âm tiết ra 1.031,5 giây
   subtitle: {max: 42, break_after: ","}
   card: {max: 6, unit: word}
   ago:
@@ -42,5 +54,4 @@ lang:                    # mọi thứ phụ thuộc ngôn ngữ nằm ở đây
     hoangsa: Quần đảo Hoàng Sa
     truongsa: Quần đảo Trường Sa
     biendong: Biển Đông
-    ai_notice: Nội dung được xây dựng với sự hỗ trợ của AI
     today: Hôm nay

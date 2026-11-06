@@ -12,5 +12,5 @@ Font, độ dài hook, viết hoa hay không, công thức tiêu đề do kênh 
 ## Danh sách đăng (ghi trong meta.md để Sếp đăng tay)
 1. Tiêu đề, mô tả có **mốc thời gian từng phần** (mốc đầu 0:00), nguồn ảnh, hashtag, tag.
 2. Thumbnail chính và dự phòng.
-3. Kiểm tra quy định khai báo nội dung AI trong YouTube Studio, làm theo quy định hiện hành. Dòng ghi chú AI trên video không thay cho khai báo này.
+3. Kiểm tra quy định khai báo nội dung AI trong YouTube Studio, làm theo quy định hiện hành. Video, tiêu đề, mô tả, tag và thumbnail không nhắc tới AI; khai báo trong YouTube Studio là thiết lập lúc đăng, Sếp quyết.
 4. Made for kids theo `channel.yaml`.

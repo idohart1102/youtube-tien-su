@@ -1,11 +1,13 @@
 import React from 'react';
-import { spring, useCurrentFrame } from 'remotion';
+import { spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { Defs, ramp } from '../lib/lib';
 import { Theme, DEFAULT_THEME } from '../types';
 
 export const ThemeCtx = React.createContext<Theme>(DEFAULT_THEME);
 export const useTheme = () => React.useContext(ThemeCtx);
 export const fontOf = (t: Theme) => `"${t.font}", "Be Vietnam Pro", "Noto Serif JP", sans-serif`;
+// Font số liệu và thẻ: kênh khai theme.font_numbers để chữ trên hình không giống slide; không khai thì dùng font chính
+export const numFontOf = (t: Theme) => ((t as any).font_numbers ? `"${(t as any).font_numbers}", ${fontOf(t)}` : fontOf(t));
 
 // Chữ cố định và định dạng số lấy từ channel.yaml của kênh, code không chứa chữ của ngôn ngữ nào
 export const tr = (t: Theme, k: string) => t.labels?.[k] || k;
@@ -22,12 +24,21 @@ const SHADOW = '3px 3px 0 #1c140e, 0 0 18px rgba(0,0,0,0.6)';
 // Mọi component nhận cùng một bộ props cơ bản
 export type SceneProps = { dur: number; asset?: string; props: Record<string, any>; lead?: number };
 
-export const Svg: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => (
-  <svg viewBox="0 0 1920 1080" width={1920} height={1080} style={{ position: 'absolute', inset: 0, ...style }}>
-    <Defs />
-    {children}
-  </svg>
-);
+// Khung logic của cảnh: 1920x1080, hoặc 1080x1920 khi tập có format 9:16
+export const useFrameSize = () => {
+  const { width, height } = useVideoConfig();
+  return height > width ? { W: 1080, H: 1920, tall: true } : { W: 1920, H: 1080, tall: false };
+};
+
+export const Svg: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => {
+  const { W, H } = useFrameSize();
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} style={{ position: 'absolute', inset: 0, ...style }}>
+      <Defs />
+      {children}
+    </svg>
+  );
+};
 
 export const fade = (f: number, from: number, to: number, len = 18) => ramp(f, from, from + len) * (1 - ramp(f, to - len, to));
 
@@ -87,6 +98,15 @@ export const shakeXY = (f: number, at: number, len: number, amp = 14): [number, 
   if (t < 0 || t > len) return [0, 0];
   const e = (amp * (1 - t / len)) / 1.5;
   return [e * (Math.sin(t * 1.9) + 0.5 * Math.sin(t * 4.3 + 1)), e * (Math.sin(t * 2.3 + 2) + 0.5 * Math.sin(t * 3.7))];
+};
+
+// Động đất: rung lắc tần số thấp, mạnh dần rồi tắt, nghiêng nhẹ khung. Trả về [dx, dy, độ xoay]
+export const quakeXY = (f: number, at: number, len: number, amp = 10): [number, number, number] => {
+  const t = f - at;
+  if (t < 0 || t > len) return [0, 0, 0];
+  const env = Math.min(1, t / 12) * Math.min(1, (len - t) / 20);
+  const e = amp * env;
+  return [e * (Math.sin(t * 0.9) + 0.6 * Math.sin(t * 2.7 + 1) + 0.3 * Math.sin(t * 6.1)), e * 0.7 * (Math.sin(t * 1.3 + 2) + 0.5 * Math.sin(t * 3.9)), env * 0.35 * Math.sin(t * 0.7)];
 };
 
 // Asset ẩn cho câu hỏi: không lộ đáp án trước khi lời đọc trả lời.

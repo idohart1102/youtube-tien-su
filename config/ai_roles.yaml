@@ -18,6 +18,6 @@ roles:
   approver:     {ai: claude, backup: none, does: "Duyệt brief, quyết định render lại, chốt bản cuối, dựa trên kết quả QC"}
   packager:     {ai: claude, backup: codex, does: "Meta có mốc thời gian, thumbnail, danh sách đăng"}
   analyst:      {ai: claude, backup: codex, does: "Số liệu, learnings.md, knowledge/"}
-scripts_no_ai: [align_srt, validate_scenes, render, render_check, publish_clean, status]
+scripts_no_ai: [gen_voice, align_srt, validate_scenes, render, render_check, publish_clean, status]
 people:
-  sep: "Gửi audio và srt, đăng YouTube, đổi quyết định và tiêu chuẩn"
+  sep: "Gửi audio và srt với kênh không có mục tts, đăng YouTube, đổi quyết định và tiêu chuẩn"

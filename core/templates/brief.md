@@ -25,5 +25,5 @@
 - Kết luận: đạt / mở rộng góc / gộp / bỏ
 
 ## Fact và nguồn
-| Mệnh đề | Mức chắc chắn | Nguồn | Nhóm sinh vật, địa điểm, thời gian |
+| Mệnh đề | Mức chắc chắn | Nguồn | Phạm vi: ai hoặc loài, ở đâu, mẫu nào, thời gian (người viết chỉ nói trong đúng phạm vi này) |
 |---|---|---|---|

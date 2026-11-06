@@ -5,6 +5,7 @@
 - Thế Giới Cổ Đại (2,67M, 19', VN): cảnh thảm hoạ dày số liệu ngay giây 40; tranh luận kể như vụ án ("kẻ huỷ diệt", "đồng phạm"); cú lật "chim là khủng long". Nhiều fact sai → cơ hội cho kênh chính xác.
 - "Thái Lan có, VN chưa": 900K view ở thị trường VN.
 - Compilation "for sleep" từ 41 phút đến 3 giờ vẫn đạt gần 1M view.
+- Tiêu đề (chọn 6 đề đầu, 2026-11-04): Sếp duyệt bản có điều lạ có thật trong chữ; bác bản vidIQ 90-93 chỉ nêu chủ đề hoặc hỏi "như thế nào". Outlier ngách thắng bằng khẳng định sốc, "Vì sao + nghịch lý" (502x, 403x).
 ## Đang thua (đối thủ)
 - Chào hỏi ở giây 0, outro dài "hết video", lặp câu (WUFO lặp nguyên đoạn): bỏ hết.
 ## Thử tiếp

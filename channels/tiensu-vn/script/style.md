@@ -1,55 +1,51 @@
-# DNA kênh — Tiền Sử Đất Việt (v2, QA 2026-10-27)
-Chuẩn đối chiếu: Curious Fing 1,7M (15'), WUFO Earth 1M, Thế Giới Cổ Đại 2,67M (19', VN), Curious Kid 1M, NibbleX 684K.
-Lớp 1: `core/standard/script-standard.md`. Số đo được: `script/dna.yaml`. Mẫu giọng: `script/voice-samples.md`.
-Một video trả lời MỘT câu hỏi lớn, dài khoảng 20 phút, khoảng 3.800-4.400 âm tiết. Chính xác hơn mọi đối thủ, nhưng kể cuốn như phim.
+# DNA kênh: Tiền Sử Đất Việt (v4.2, 2026-11-03)
+Đọc sau `script/guide.md` (nguyên tắc kể, giọng). File này là luật cứng và khung; số đo ở `dna.yaml`. Căn cứ: `research/2026-11-03_*.md`.
+Dòng ghi (thử nghiệm) là luật đang thử từ 2026-11-03, đo lại sau 6 video.
+Một video trả lời MỘT câu hỏi lớn, bám vào MỘT trung tâm cụ thể nhìn thấy được: một người, sinh vật, hiện vật, vùng đất, biến cố hoặc nghịch lý (guide mục 2). Dài 10-20 phút (2.140-4.280 âm tiết, giọng Thanh đọc 214 âm tiết/phút), linh động theo lượng chất liệu: đủ chuyện thì dài, hết chuyện thì dừng, không lan man, không độn chữ. Chính xác hơn mọi đối thủ, nhưng kể cuốn như phim.
 
-## Tính cách kênh
-- Người dẫn là "thám tử thời gian": tò mò, điềm tĩnh, hơi hóm, mê bằng chứng, tự hào về đất Việt nhưng không sô-vanh.
-- Nói với người xem như một người bạn thông minh, ngang hàng: không giảng, không hét, không doạ.
-- Niềm tin cốt lõi: quá khứ để lại bằng chứng, và câu "Bằng chứng vẫn còn đó." là chữ ký của kênh, đọc bình thản, đúng 1 lần mỗi video.
+## Tính cách người kể
+Vô hình, tò mò, điềm tĩnh, hơi hóm, có ý kiến riêng; nói với người xem như với bạn thông minh, ngang hàng: không giảng, không hét, không dọa. Tự hào kiểu "của nhà mình", không sô-vanh.
 
-## Giọng văn
-- Người dẫn đồng hành cùng người nghe: xưng "chúng ta", gọi "bạn" khi nói thẳng với người xem. Không xưng "mình", "ta", "tôi" (Sếp, 2026-10-28).
-- Gọi nội dung là "video" hoặc "câu chuyện" ("đến cuối video này", "câu chuyện hôm nay"), không gọi "tập". Không đánh số phần trong lời đọc, không gọi "chặng".
-- Câu thường ngắn, xen câu cực ngắn 3-5 chữ để nhấn ("Không ai sống sót.").
-- Lược chủ ngữ khi đã rõ, từ đệm tự nhiên có chừng mực (thì, mà, đấy, chứ, đâu). Nói "cỡ", "chừng" khi nguồn cho phép.
-- Cấu trúc cần xét khi nghe như dịch: "được tìm thấy bởi" → "các nhà khoa học tìm thấy"; "một cách nhanh chóng" → "nhanh", hoặc nêu thời gian từ nguồn; "việc X đã dẫn đến Y" → "X khiến Y", khi đúng nhân quả; "sự xuất hiện của" → "khi... xuất hiện"; "Điều này có nghĩa là" → "Tức là". Chuỗi "của... của..." thì tách câu.
-- Sửa giọng phải giữ phạm vi: "khủng long chết hết" sai vì chim thuộc khủng long, viết "khủng long không phải chim". "Trong chớp mắt" chỉ dùng khi đúng thang thời gian.
-- Số 3-6 lần mỗi phút là điểm khởi đầu, không chồng quá 3 số. So sánh đời thường có chức năng mới dùng (dài bằng xe khách, răng to bằng quả chuối, nặng bằng 3 con voi).
-- Mỗi con số lớn đều quy đổi sang trải nghiệm thật (nhanh bằng 20 lần viên đạn; dày bằng tòa nhà 30 tầng).
-- Neo về địa danh hôm nay: "ngay chỗ Hạ Long bây giờ", "dưới chân bạn ở Lạng Sơn".
-- Câu nên dùng: "Hãy tưởng tượng…", "Nhưng đây mới là phần khó tin…", "Chúng ta biết điều này nhờ…", "Có một chi tiết ít ai để ý…", "Và rồi…".
-- Câu cấm: "Xin chào các bạn", "hãy cùng tôi", "hết video". Từ giật gân như kinh hoàng, sốc, thảm họa, xóa sổ, thủ phạm chỉ dùng khi có căn cứ khoa học (Sếp, 2026-10-31).
-- Mức chắc chắn nói thành lời và khớp badge: Đã xác nhận / Có thể ("nhiều khả năng") / Còn tranh cãi ("chưa ai dám chắc").
-- Tranh luận khoa học kể như vụ án: nghi phạm, chứng cứ, đồng phạm, phán quyết tạm thời. Hài nhẹ ≤1 câu mỗi 2 phút.
+## Luật cứng (Sếp chốt, không được trái)
+- Xưng hô: người kể không tự xưng "tôi", "chúng tôi"; không gọi "các bạn", "quý vị", "anh em ơi"; không có vai được gọi tên ("thám tử", "nhà điều tra") (Sếp 2026-10-28, 2026-11-02). "Chúng ta" dùng khi người kể và người xem cùng xem bằng chứng, hoặc khi nói về loài người. Việc đào, nghiên cứu ghi cho nhà khoa học có tên. Gọi "bạn" khi đặt người xem vào cảnh hoặc hỏi thẳng, khoảng 1 lần mỗi 1-2 phút.
+- "Mình", "ta", "tập", "chặng" là từ thường của tiếng Việt, dùng theo đúng nghĩa ("một mình", "nhà mình", "người ta", "ông cha ta", "tập tục", "chặng đường"). Không cấm theo chữ; người chấm xét theo nghĩa câu (Sếp 2026-11-03).
+- Gọi nội dung là "video" hoặc "câu chuyện". Không đánh số phần, không đọc lộ trình.
+- Chữ "vụ án", "nạn nhân", "nghi phạm" chỉ dùng khi có người hoặc con vật chết cụ thể. Tranh luận địa chất và khí hậu thì gọi là giả thuyết, bằng chứng, bí ẩn (Sếp 2026-11-03).
+- Chữ ký "Bằng chứng vẫn còn đó." đọc bình thản, đúng 1 lần mỗi video, ngay sau câu đọc lại hình ảnh mở đầu.
+- Mức chắc chắn: mỗi khối suy luận nói một lần, rõ, khớp badge: Đã xác nhận / Có thể ("nhiều khả năng") / Còn tranh cãi ("chưa ai dám chắc"). Điều đã xác nhận thì nói thẳng, không rào lại. Mỗi video có ít nhất một sự thật đã xác nhận làm phần thưởng chính.
+- Từ giật gân (kinh hoàng, sốc, thảm họa, xóa sổ, thủ phạm) chỉ dùng khi có căn cứ khoa học. Câu cấm: "Xin chào các bạn", "hãy cùng tôi", "hết video", xin like, xin bật chuông (Sếp 2026-10-31).
+- Không bịa số. Mỗi fact có nguồn trong brief hoặc `sources.md`. Không gán sắc tộc hiện đại cho người tiền sử; viết "trên phần lãnh thổ Việt Nam ngày nay". Không bàn chính trị. Bản đồ hiện đại có Hoàng Sa và Trường Sa. Không vẽ khủng long "của Việt Nam" như thể đã tìm thấy.
+- Không nhạc horror rẻ tiền, không jump-scare, không thuyết âm mưu. Kênh không dành cho trẻ em.
+- Không nhắc tới AI trong lời đọc, tiêu đề, mô tả, thumbnail (Sếp 2026-11-03).
 
-## Khung video
-1. 0-5 giây: một câu đầu cực mạnh, là một cảnh hoặc một nghịch lý có số. Chữ trên màn hình khớp câu nói.
-2. 5-20 giây: tăng tiền cược, kiểu "Đây không phải giả thuyết. Nó đã xảy ra, ngay trên đất Việt.", rồi xếp chồng 2-3 câu hỏi.
-3. Trước 0:35: lời hứa dạng câu hỏi lớn, ghi `[LỜI HỨA]`. Không chào, không giới thiệu kênh.
-4. Ngay sau đó, tối đa 8 giây: lời mời đăng ký trong lời dẫn, ghi `[ĐĂNG KÝ]`, có lý do gắn với câu chuyện, rồi quay lại chuyện ngay. Không lộ trình, không like, không bật chuông. Mẫu: "Đăng ký Tiền Sử Đất Việt để theo dõi những câu chuyện từ đất đá. Còn bây giờ, trở lại buổi sáng ấy."
-5. Chuỗi 8-10 bước leo thang, trung bình 2 phút, vòng tò mò mới mỗi 60-120 giây. Thành phần nhịp dùng khi có chức năng, không lặp thành công thức: so sánh với thứ ta biết, con số, "nhưng đây mới là…", bằng chứng (ai, ở đâu, năm nào), câu hỏi bắc cầu.
-6. Re-hook bắt buộc ở các mốc 25%, 50%, 75% (chỗ người xem hay bỏ): lật thông tin, câu hỏi mới, hoặc đổi hẳn hình hay nhạc.
-7. Đoạn "Còn ở Việt Nam thì sao?": cài ngay từ cold open, trả thưởng ở mốc 60-80%. Với tập về Việt Nam, đây chính là cao trào.
-8. Thứ tự trả thưởng: chi tiết hay nhất để ở 1/3 cuối, không tiêu sớm. Mỗi bước mạnh hơn bước trước.
-9. Kết (45-60 giây): cú lật làm nghĩa cả tập thay đổi → nối với hôm nay (cơ thể bạn, đất bạn đứng) → "Bằng chứng vẫn còn đó." → 1 câu hỏi bình luận đúng chủ đề → chỉ sang video tiếp theo. Dừng ngay, không outro dài.
-- Hình đổi mỗi 4-8 giây trong 60 giây đầu, sau đó 8-20 giây. Không để 1 hình tĩnh quá 20 giây.
-- Nhạc: cold open căng → bối cảnh ambient → bằng chứng nhịp đều → bước ngoặt nổi lên → kết lắng. Chừa im lặng 1-2 giây trước cú lật.
+## Giọng: điều kênh này giữ riêng (phần chung ở guide mục 4)
+- Số: tối đa 4 số mỗi phút, tối đa 2 khoảng số trong 20 giây. Mỗi số quan trọng quy đổi ra đồ vật hoặc trải nghiệm quen của người Việt, đúng tỷ lệ, và có câu "làm sao biết". (thử nghiệm) Mỗi số đo chỉ đọc một số; niên đại đọc tròn hoặc so sánh, khoảng chính xác để chữ trên màn hình.
+- Không quá 2 câu dưới 6 chữ liền nhau.
+- Hài khô ít nhất 1 chỗ mỗi 3-4 phút, có cả ở nửa sau video; không chế giễu người hay dân tộc nào.
+- Neo về địa danh hôm nay ("ngay chỗ Hạ Long bây giờ"). Tên tỉnh theo địa giới sau sáp nhập năm 2025, khi cần thì nói kèm tên cũ ("Hòa Bình cũ, nay thuộc Phú Thọ").
+- Viết cho người chỉ nghe: câu nào phải nhìn màn hình mới hiểu ("như bạn thấy", "con số này") thì nói lại bằng lời.
+- Mỗi mẫu câu nối ("Hãy tưởng tượng…", "Nhưng đây mới là phần khó tin…", "Chúng ta biết điều này nhờ…", "Có một chi tiết ít ai để ý…") tối đa 1 lần mỗi video.
+
+## Khung video (thứ tự cố định, cách kể trong từng phần thì tự do)
+1. 0-5 giây: câu đầu là một người, một vật, một cảnh, hoặc một nghịch lý có số. Câu đầu giữ đúng lời hứa của tiêu đề.
+2. 5-20 giây: tăng tiền cược bằng 2-4 mảnh manh mối hoặc câu hỏi.
+3. Trước 0:35 (đích, không kéo cho bằng được): câu hỏi lớn nói thành lời, ghi `[LỜI HỨA]`, hứa một cú lật, không hứa trước sự không chắc. Không chào, không giới thiệu kênh.
+4. 3 phút đầu không có thông tin hành chính (năm công nhận, danh sách tác giả, kích thước hố). Bối cảnh ngoài câu chuyện chính tối đa một câu.
+5. Chuỗi bước theo `steps` trong dna.yaml (video 10 phút chừng 5-6 bước, 20 phút chừng 8-10), mỗi bước trả một phần câu hỏi và mở một câu sâu hơn, vòng tò mò mới mỗi 60-120 giây.
+6. Đổi nhịp ở khoảng 25%, 50%, 75%: lật thông tin, câu hỏi mới, hoặc một cảnh. (thử nghiệm) Ở khoảng 40-60% đặt một câu cho người xem tự đoán trước khi trả lời. Tóm lại bằng chứng tối đa 1-2 lần, bằng lời kể thường.
+7. Câu trả lời chính, nếu đã đủ chắc, nói ra khoảng 60-75% video. Phần còn lại dành cho chi tiết hay nhất và khoảnh khắc cảm xúc. Mỗi bước mạnh hơn bước trước.
+8. Đề tài thế giới: cài câu hỏi "Còn ở Việt Nam thì sao?" trong 30 giây đầu, trả thưởng ở 60-80%. Đề tài Việt Nam: Việt Nam nằm ngay trong tiêu đề và câu đầu; mốc 60-80% để so với thế giới hoặc với người xem hôm nay. Không dùng heading "Còn ở Việt Nam thì sao?".
+9. Kết 45-60 giây: trả lời câu hỏi lớn → nối với hôm nay; có hiện vật thì nói nó đang ở đâu, có xem được không → đọc lại gần nguyên văn hình ảnh mở đầu → "Bằng chứng vẫn còn đó." → `[ĐĂNG KÝ]` tối đa 8 giây, có lý do → 1 câu hỏi chọn một, cụ thể (chọn giả thuyết nào và vì sao, hoặc hỏi trải nghiệm ở địa phương liên quan bằng chứng) → chỉ sang video tiếp theo. Dừng ngay.
+- Nhịp hình (chi tiết ở `core/standard/visual.md`): 0-15 giây 3-5 giây mỗi cảnh; 15-60 giây 4-7; phút 1-3 5-8; thân video khoảng 6-8, tối đa 12. Một bản nhạc đều suốt video, luôn nhỏ hơn giọng rõ ràng.
 
 ## Định dạng
-- Trụ cột "Biển và đất đã mất" (10%) không kể như bài địa lý: mỗi video có sinh vật hoặc con người cụ thể, tình huống sống còn và một điều bất ngờ về nơi người xem đang sống.
-- Chính (3/4 số video): một câu hỏi lớn kể theo chuỗi bước như trên.
-- Phụ (1/4): "N điều/loài…" đếm ngược từ thấp lên cao, mỗi mục 60-90 giây theo cùng công thức nhịp, mục số 1 luôn có liên hệ Việt Nam.
-- Bản tổng hợp theo chương 60-145 phút: 1 bản mỗi tháng, sau khi có từ 8 video, tiêu đề dạng "Tóm tắt [chủ đề] trong N phút". Ru ngủ là định dạng riêng, chỉ thử sau 10 video đầu.
+- Trụ cột "Biển và đất đã mất" (10%): mỗi video có một trung tâm cụ thể, tình huống sống còn, và một điều bất ngờ về nơi người xem đang sống.
+- Chính (3/4 số video): một câu hỏi lớn kể theo chuỗi bước. Phụ (1/4): "N điều/loài…" đếm ngược, mỗi mục 60-90 giây, mục số 1 luôn liên hệ Việt Nam.
+- Bản tổng hợp theo chương 60-145 phút: 1 bản mỗi tháng, sau khi có từ 8 video. Ru ngủ chỉ thử sau 10 video đầu.
 
 ## Tiêu đề và thumbnail
-- A "[Mốc thời gian/cảnh], [câu hỏi]" (vd "Ngày Thiên Thạch Xóa Sổ Khủng Long, Chuyện Gì Xảy Ra Trên Vùng Đất Việt Nam Bây Giờ?"); B "Vì Sao [nghịch lý VN]?"; C "[N] [thứ] + [điều gây tò mò]".
-- Tránh: câu tự hỏi tự trả lời; từ dịch máy ("Trái Đất suýt chết", "Việt Nam ở đâu"); địa danh nước ngoài ít người biết (dùng Indonesia, không Borneo); tên tỉnh cũ đã sáp nhập năm 2025. Viết đủ dấu, ≤70 ký tự (tối đa ~85 nếu ý chính nằm trong 60 ký tự đầu), có 1 từ khoá (khủng long, người tiền sử, Trái Đất, Việt Nam). Câu đầu của video phải giữ đúng lời hứa của tiêu đề.
-- Thumbnail: ghép sau khi render từ asset của tập, phong cách Vox, theo channels/tiensu-vn/thumbnail.md. Một chủ thể đang trong khoảnh khắc nguy hiểm hoặc bí ẩn. Hook gây tò mò, đủ nghĩa khi chỉ nhìn thumbnail, bổ sung cho tiêu đề, chữ trắng hoặc vàng viền đen, ghép sau, không để AI vẽ chữ.
-
-## Điều cấm
-- Không bịa số. Mỗi fact phải có nguồn trong brief hoặc sources.md. Đối thủ VN sai rất nhiều (65 triệu năm, "75% chết trong 3 phút"); kênh thắng bằng độ đúng.
-- Không gán sắc tộc hiện đại cho người tiền sử, không nói "ADN Việt thuần chủng". Viết "trên phần lãnh thổ Việt Nam ngày nay".
-- Không bàn chính trị. Bản đồ hiện đại phải có Hoàng Sa và Trường Sa.
-- Không vẽ khủng long "của Việt Nam" như thể đã tìm thấy. Tài liệu minh họa theo `core/standard/visual.md`.
-- Không nhạc horror rẻ tiền, không jump-scare, không câu view bằng thuyết âm mưu. Kênh không dành cho trẻ em.
+- Đạt khi: dưới 80 ký tự, vidIQ score_title trên 80 (chỉ tham khảo), Sếp thấy tò mò, đúng fact (Sếp 2026-11-04). Đủ dấu, tiếng Việt tự nhiên, không đưa trọn đáp án.
+- Người xem thường chưa biết sự kiện: tiêu đề phải chứa điều lạ có thật (con số khó tin, nghịch lý, điều đảo niềm tin, điều chạm thẳng người Việt), không chỉ nêu chủ đề hay hiện vật. Không dùng "như thế nào": chỉ hợp khi người xem đã biết sự kiện. Hợp: "Có thật…?" cho tin khó tin, "Tại sao…" cho nghịch lý, câu khẳng định gây sốc. Ẩn dụ (nghĩa địa, lấy vợ lấy chồng) được khi nội dung đỡ được, ghi vào brief.
+- Từ khóa chính, ưu tiên: người tiền sử, người cổ đại, Việt Nam, khủng long, Trái Đất. Đề tài khủng long phải có góc Việt Nam hoặc Đông Nam Á trong tiêu đề.
+- Tránh: câu tự hỏi tự trả lời; từ dịch máy ("Trái Đất suýt chết", "Việt Nam ở đâu"); chữ chỉ hiểu khi nhìn thumbnail; địa danh nước ngoài ít người biết; tên tỉnh cũ đã sáp nhập năm 2025.
+- Thumbnail theo `channels/tiensu-vn/thumbnail.md`: một chủ thể trong khoảnh khắc nguy hiểm hoặc bí ẩn, hook bổ sung cho tiêu đề, không để AI vẽ chữ.

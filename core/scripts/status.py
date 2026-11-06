@@ -3,14 +3,17 @@
   python core/scripts/status.py <tập> stage=render final=ok   cập nhật (khóa: stage, owner, brief, final, note, species, publish_date)
 Bước: brief → script → audio → assets → build → render → qc → package → publish → done.
 brief=ok chỉ nhận khi bảng fact đã qua qc_facts.py, không còn sai hoặc chưa xác minh. final=ok chỉ nhận khi QC bản render hiện tại không còn lỗi nặng.
-brief=sep, final=sep: Sếp tự duyệt, bỏ qua kiểm tra. AI chỉ dùng khi Sếp nói rõ. species bị từ chối nếu trùng no_repeat_species tập gần nhất. publish_date dạng YYYY-MM-DD."""
+brief=sep, final=sep: Sếp tự duyệt, bỏ qua kiểm tra. AI chỉ dùng khi Sếp nói rõ. species bị từ chối nếu trùng no_repeat_species tập gần nhất. publish_date dạng YYYY-MM-DD.
+can_sep: cờ "cần Sếp" do máy ghi khi chạm luật dừng (precheck 4 vòng, render lại 2 lần, kịch bản 5 vòng); Sếp trả lời xong thì xóa: can_sep=
+renders: số lần render đầy đủ (produce.py tự tăng). Tối đa 1 lần đầu + 2 lần render lại (MAX_RENDERS)."""
 import hashlib, json, re, sys
 from pathlib import Path
 import yaml
 from paths import ROOT
 
 STAGES = ["brief", "script", "audio", "assets", "build", "render", "qc", "package", "publish", "done"]
-DEFAULT = {"stage": "brief", "owner": "", "approved": {"brief": None, "final": None}, "species": [], "qc_rounds": 0, "publish": {}, "publish_date": "", "brief_sha": "", "final_sha": "", "note": ""}
+DEFAULT = {"stage": "brief", "owner": "", "approved": {"brief": None, "final": None}, "species": [], "qc_rounds": 0, "publish": {}, "publish_date": "", "brief_sha": "", "final_sha": "", "note": "", "can_sep": "", "renders": 0}
+MAX_RENDERS = 3  # render đầy đủ lần đầu + tối đa 2 lần render lại (core/roles/approver.md)
 
 
 def read(ep):
@@ -68,6 +71,9 @@ def final_stale(ep):
     return d["approved"]["final"] == "ok" and (not video.exists() or d.get("final_sha") != file_sha(video))
 
 
+QC_PASS = 9.0
+
+
 def final_problems(ep):
     """Điều kiện máy kiểm được để chốt bản cuối. Trả về danh sách lỗi, rỗng là đủ điều kiện."""
     ep = Path(ep)
@@ -80,7 +86,16 @@ def final_problems(ep):
     else:
         if rc.stat().st_mtime < video.stat().st_mtime:
             out.append("kiểm tra máy là của bản render cũ")
-        out += [f"kiểm tra máy: {p}" for p in json.loads(rc.read_text(encoding="utf-8")).get("problems", [])]
+        try:
+            import video_output
+            report = json.loads(rc.read_text(encoding="utf-8"))
+            out += video_output.report_problems(ep, report)
+            if not isinstance(report, dict) or not isinstance(report.get('problems'), list):
+                out.append('báo cáo kiểm tra máy thiếu danh sách lỗi')
+            else:
+                out += [f"kiểm tra máy: {p}" for p in report['problems']]
+        except (OSError, ValueError, TypeError):
+            out.append('không đọc được báo cáo kiểm tra máy')
     if not (ep / "thumb" / "thumbnail.jpg").exists():
         out.append("chưa có thumb/thumbnail.jpg")
     qcs = sorted((ep / "qa").glob("qc_v*.md"), key=lambda p: int(re.search(r"(\d+)", p.stem)[1]))
@@ -92,6 +107,9 @@ def final_problems(ep):
         out.append(f"không đọc được số lỗi nặng trong {qcs[-1].name}")
     elif int(m[1]):
         out.append(f"{qcs[-1].name} còn {m[1]} lỗi nặng")
+    sc = re.search(r"Điểm khung hình trung bình: ([\d.]+)/10", text)
+    if not sc or float(sc[1]) < QC_PASS:  # Sếp 2026-11-03: QC từ 9/10 mới đủ điều kiện gửi Sếp duyệt
+        out.append(f"{qcs[-1].name} điểm {sc[1] if sc else '?'}/10, cần từ {QC_PASS}/10")
     return out
 
 
@@ -162,14 +180,32 @@ def has_voice(ep):
 def waiting(ep, d):
     """Việc tập này đang chờ ai duyệt hoặc gửi gì, rỗng nếu không chờ."""
     ep, stage, ok = Path(ep), d["stage"], d["approved"]
+    if d.get("can_sep"):
+        return "Sếp: " + str(d["can_sep"])
     if stage == "brief" and not ok["brief"] and (ep / "brief.md").exists() and facts_checked(ep):
         return "Claude duyệt brief"
     if stage == "audio" and not (has_voice(ep) and any((ep / "audio").glob("*.srt"))):
-        return "Sếp gửi audio + srt"
+        return "Chạy gen_voice.py" if "tts:" in (ep.parent.parent / "channel.yaml").read_text(encoding="utf-8") else "Sếp gửi audio + srt"
     if stage == "qc" and any((ep / "qa").glob("qc_v*.md")):
         return "Claude quyết render lại"
     if stage == "publish" and not ok["final"]:
         return "Claude chốt bản cuối"
+    if ok["final"] and stage not in ("publish", "done"):
+        return "Đã chốt bản cuối: chuyển stage=publish"
+    if stage == "publish" and not d.get("publish", {}).get("drive"):
+        return "Chạy publish_clean (lên Drive)"
+    if stage == "publish":
+        return "Sếp đăng YouTube, xong ghi stage=done"
+    if stage == "script":
+        return "Viết kịch bản" if not (ep / "storyboard.md").exists() else "Chấm/sửa kịch bản (qc_script)"
+    if stage == "assets":
+        return "Tạo asset (gen_assets)"
+    if stage == "build":
+        return "Dựng cảnh (scene_dsl, validate)"
+    if stage == "render":
+        return "Render (produce)" if not (ep / "render" / "final.mp4").exists() else "QC video (qc_video)"
+    if stage == "package":
+        return "Meta + thumbnail (package)"
     return ""
 
 

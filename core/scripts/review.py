@@ -1,6 +1,6 @@
 """Vai trò chấm độc lập: gửi ảnh cho AI và nhận JSON. Nhà cung cấp lấy từ config/machine.yaml (review_provider: 9router | codex).
 Người viết hoặc tạo asset không tự chấm bài của mình."""
-import base64, io, json, subprocess, tempfile
+import base64, io, json, subprocess, tempfile, threading
 from pathlib import Path
 import requests
 from PIL import Image
@@ -114,10 +114,15 @@ def check_facts(r, ids):
     return facts
 
 
+_CACHE_LOCK = threading.Lock()
+
+
 def ask_json_cached(cache_path, key, prompt, paths, edge=1024, provider=None, tries=3, validate=check_qc):
-    """Như ask_json nhưng lưu từng kết quả: lỗi giữa chừng thì chạy lại không tốn lượt đã chấm. Trả lời sai dạng thì hỏi lại."""
+    """Như ask_json nhưng lưu từng kết quả: lỗi giữa chừng thì chạy lại không tốn lượt đã chấm. Trả lời sai dạng thì hỏi lại.
+    An toàn khi nhiều luồng chấm song song: chỉ khóa lúc đọc/ghi file, không khóa lúc chờ AI."""
     cache_path = Path(cache_path)
-    cache = json.loads(cache_path.read_text(encoding="utf-8")) if cache_path.exists() else {}
+    with _CACHE_LOCK:
+        cache = json.loads(cache_path.read_text(encoding="utf-8")) if cache_path.exists() else {}
     if key in cache:
         return validate(cache[key])
     for attempt in range(tries):
@@ -127,8 +132,10 @@ def ask_json_cached(cache_path, key, prompt, paths, edge=1024, provider=None, tr
         except ValueError:
             if attempt == tries - 1:
                 raise
-    cache[key] = r
-    cache_path.write_text(json.dumps(cache, ensure_ascii=False), encoding="utf-8")
+    with _CACHE_LOCK:
+        cache = json.loads(cache_path.read_text(encoding="utf-8")) if cache_path.exists() else {}
+        cache[key] = r
+        cache_path.write_text(json.dumps(cache, ensure_ascii=False), encoding="utf-8")
     return r
 
 

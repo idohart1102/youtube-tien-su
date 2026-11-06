@@ -28,7 +28,8 @@ export const Root: React.FC = () => (
     calculateMetadata={({ props }) => {
       const fps = props.fps || 30;
       const total = props.scenes.reduce((s, x) => s + x.duration_s, 0);
-      return { fps, durationInFrames: Math.max(1, Math.round(total * fps)) };
+      const tall = props.format === '9:16';
+      return { fps, durationInFrames: Math.max(1, Math.round(total * fps)), width: tall ? 1080 : 1920, height: tall ? 1920 : 1080 };
     }}
   />
   </>

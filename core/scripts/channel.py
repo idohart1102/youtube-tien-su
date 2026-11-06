@@ -20,7 +20,7 @@ REQUIRED = {
     "lang.card.unit": "word hoặc char",
     "lang.ago": "mẫu chữ số năm trước",
 }
-LABELS = ["xac-nhan", "co-the", "tranh-cai", "clock", "hoangsa", "truongsa", "biendong", "ai_notice", "today"]
+LABELS = ["xac-nhan", "co-the", "tranh-cai", "clock", "hoangsa", "truongsa", "biendong", "today"]  # ai_notice: không bắt buộc, niche tiền sử không dùng (Sếp 2026-11-03)
 
 
 def channel_of(path):

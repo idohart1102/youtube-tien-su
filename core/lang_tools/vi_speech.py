@@ -58,7 +58,8 @@ def screen(text):
 
 
 def display(s):
-    return screen(re.sub(r" \(([^()]*-[^()]*)\)", "", s))
+    s = screen(re.sub(r" \(([^()]*-[^()]*)\)", "", s))
+    return re.sub(r"\s+([.,?!:;…)])", r"\1", s)  # kịch bản để " ." cho TTS ngắt nghỉ, phụ đề thì bỏ
 
 
 def speak(s):

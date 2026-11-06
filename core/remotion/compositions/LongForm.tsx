@@ -6,6 +6,8 @@ import '@fontsource/noto-serif-jp/700.css';
 import '@fontsource/be-vietnam-pro/400.css';
 import '@fontsource/be-vietnam-pro/600.css';
 import '@fontsource/be-vietnam-pro/800.css';
+// Alata: font số liệu và thẻ của kênh tiếng Việt (Sếp chọn 2026-11-02). Chỉ có độ đậm 400, bản đậm do trình duyệt tự làm đậm
+import '@fontsource/alata/400.css';
 import { clamp } from '../lib/lib';
 import { EpisodeProps, DEFAULT_THEME } from '../types';
 import { ThemeCtx, SceneProps } from '../components/common';

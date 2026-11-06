@@ -1,7 +1,7 @@
 """Kiểm tra hệ thống, không cần API key. Dùng: python core/tests/run.py [--smoke] [--keep]
 vi: khớp srt cho kết quả giống hệt mốc so sánh. ja: chữ hiển thị và chữ đọc tách đúng, badge theo nhãn kênh, thẻ dài bị loại.
 en: tạo kênh mới từ mẫu, không sửa core, dựng 15 giây đầu đến cuối. --smoke chỉ chạy phần dựng, dùng cho doctor.py."""
-import json, re, shutil, subprocess, sys
+import json, os, re, shutil, subprocess, sys, tempfile, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -12,6 +12,7 @@ import channel as chan  # noqa: E402
 import review  # noqa: E402
 import status  # noqa: E402
 import make_shared_assets  # noqa: E402
+import video_output  # noqa: E402
 
 PY = sys.executable
 CHANNELS = ROOT / "channels"
@@ -108,10 +109,10 @@ def test_gates(d):
     run(PY, SCRIPTS / "status.py", b, "publish_date=mai", ok=(1,))
     check("có bước package và ngày đăng", status.read(b)["stage"] == "package" and status.read(b)["publish_date"] == "2026-11-05")
     run(PY, SCRIPTS / "status.py", b, "stage=audio")
-    check("bảng tiến độ báo chờ audio", status.waiting(b, status.read(b)) == "Sếp gửi audio + srt")
+    check("bảng tiến độ báo chờ audio", status.waiting(b, status.read(b)) == "Chạy gen_voice.py")
     (b / "audio").mkdir()
     (b / "audio" / "voice.srt").write_text("1", encoding="utf-8")
-    check("chỉ có srt thì vẫn chờ audio", status.waiting(b, status.read(b)) == "Sếp gửi audio + srt")
+    check("chỉ có srt thì vẫn chờ audio", status.waiting(b, status.read(b)) == "Chạy gen_voice.py")
     (b / "audio" / "voice.mp3").write_bytes(b"x")
     check("đủ audio và srt thì hết chờ", status.waiting(b, status.read(b)) == "")
     approve(b)
@@ -125,10 +126,18 @@ def test_gates(d):
     run(PY, SCRIPTS / "status.py", b, "final=ok", ok=(1,))
     check("chưa QC thì không chốt được", any("QC" in x for x in status.final_problems(b)))
     sha = status.file_sha(b / "render" / "final.mp4")
+    # Cổng duyệt kiểm hiệu lực báo cáo; dữ liệu giả chỉ dùng cho kiểm thử cổng.
+    (b / 'qa/render_check.json').write_text(json.dumps({'problems': [], 'technical': {
+        'passed': True, 'problems': [], 'video_sha': sha,
+        'config_sha': video_output.sha(video_output.CONFIG),
+        'inputs': video_output.input_hashes(b)}}), encoding='utf-8')
     (b / "qa" / "qc_v1.md").write_text(f"- Video: {sha}\n- Điểm: 7/10. Lỗi nặng: 2. Tổng lỗi: 2.\n", encoding="utf-8")
     run(PY, SCRIPTS / "status.py", b, "final=ok", ok=(1,))
     check("còn lỗi nặng thì không chốt được", any("lỗi nặng" in x for x in status.final_problems(b)))
-    (b / "qa" / "qc_v10.md").write_text(f"- Video: {sha}\n- Điểm: 8/10. Lỗi nặng: 0. Tổng lỗi: 1.\n", encoding="utf-8")
+    (b / "qa" / "qc_v9.md").write_text(f"- Video: {sha}\n- Điểm khung hình trung bình: 8.6/10. Lỗi nặng: 0. Tổng lỗi: 1.\n", encoding="utf-8")
+    run(PY, SCRIPTS / "status.py", b, "final=ok", ok=(1,))
+    check("QC dưới 9/10 thì chưa đủ điều kiện gửi Sếp", any("9.0/10" in x for x in status.final_problems(b)))
+    (b / "qa" / "qc_v10.md").write_text(f"- Video: {sha}\n- Điểm khung hình trung bình: 9.2/10. Lỗi nặng: 0. Tổng lỗi: 1.\n", encoding="utf-8")
     run(PY, SCRIPTS / "status.py", b, "final=ok")
     check("QC mới nhất sạch thì chốt được", status.read(b)["approved"]["final"] == "ok" and not status.final_stale(b))
     (b / "render" / "final.mp4").write_bytes(b"xy")
@@ -207,11 +216,11 @@ def test_vi():
     cap = d / "_qc_cap"
     (cap / "qa").mkdir(parents=True)
     (cap / "storyboard.md").write_text("đang sửa", encoding="utf-8")
-    for r in rows:
+    for r in rows + [{"round": 4, "gates_failed": 1, "fact_errors": 2, "pct": 70, "unnatural": 3}, {"round": 5, "gates_failed": 2, "fact_errors": 0, "pct": 60, "unnatural": 1}]:
         n = r["round"]
         (cap / "qa" / f"script_v{n}.json").write_text(json.dumps({**r, "n": n, "file": "storyboard.md"}), encoding="utf-8")
         (cap / "qa" / f"snapshot_v{n}.md").write_text(f"bản vòng {n}", encoding="utf-8")
-    check("QC dừng sau 3 vòng", "Bản tốt nhất: vòng 1" in run(PY, SCRIPTS / "qc_script.py", cap, ok=(1,)))
+    check("QC dừng sau 5 vòng", "Bản tốt nhất: vòng 1" in run(PY, SCRIPTS / "qc_script.py", cap, ok=(1,)))
     run(PY, SCRIPTS / "qc_script.py", cap, "--use-best")
     check("QC lấy lại bản tốt nhất", (cap / "storyboard.md").read_text(encoding="utf-8") == "bản vòng 1")
     test_gates(d)
@@ -277,7 +286,7 @@ def test_en(seconds=15):
     run("ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", "anullsrc=r=44100:cl=mono", "-t", seconds, ep / "audio" / "voice.mp3")
     make_shared_assets.fixtures(ep / "assets")
     run(PY, SCRIPTS / "align_srt.py", ep)
-    stage = {"cam": "in", "atmosphere": [{"type": "mist", "n": 3, "y": 450}], "layers": [{"asset": "cutout.png", "x": 900, "y": 800, "h": 300, "shadow": {"w": 200}}]}
+    stage = {"cam": "in", "atmosphere": [{"type": "leaves", "n": 6}], "layers": [{"asset": "cutout.png", "x": 900, "y": 800, "h": 300, "shadow": {"w": 200}, "motion": "breathe"}]}
     scenes = [{"id": "a", "lines": [0, min(1, n - 1)], "component": "Stage", "asset": "bg.jpg", "props": stage}]
     if n > 2:
         scenes.append({"id": "b", "lines": [2, min(3, n - 1)], "component": "GeoMap", "transition": "cut", "props": {"center": [107, 15], "scale": 2300, "strata_in": {"dir": "up", "dur_s": 1.0, "from_asset": "bg.jpg", "counter": {"from_ma": 66}}}})
@@ -286,13 +295,88 @@ def test_en(seconds=15):
     (ep / "scenes.json").write_text(json.dumps({"fps": 30, "scenes": scenes}), encoding="utf-8")
     run(PY, SCRIPTS / "align_srt.py", ep, "--apply")
     run(PY, SCRIPTS / "validate_scenes.py", ep / "scenes.json")
+    lock = ROOT / ".render.lock"
+    if not lock.exists():  # đang có render thật thì bỏ qua phần thử khóa
+        lock.write_text(json.dumps({"pid": os.getpid(), "ep": "test", "started": "now"}))
+        p = subprocess.Popen(["node", str(SCRIPTS / "render.mjs"), str(ep)], cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        time.sleep(4)
+        check("render thứ hai tự đợi khóa", p.poll() is None and not (ep / "render").exists())
+        lock.unlink()
+        out, _ = p.communicate()
+        check("hết khóa thì render tiếp", p.returncode == 0 and "Đang chờ" in out, out[-500:])
+        check("render xong tự gỡ khóa", not lock.exists())
+        lock.write_text(json.dumps({"pid": 999999, "ep": "test", "started": "now"}))  # khóa của tiến trình đã chết
     run("node", SCRIPTS / "render.mjs", ep)
-    check("có video", (ep / "render" / "final.mp4").exists())
+    check("khóa cũ tự gỡ, có video", (ep / "render" / "final.mp4").exists() and not lock.exists())
     out = run(PY, SCRIPTS / "render_check.py", ep, ok=(0, 1))
     probs = json.loads((ep / "qa" / "render_check.json").read_text(encoding="utf-8"))["problems"]
     probs = [p for p in probs if "Đứng hình" not in p]  # ảnh test tĩnh, không tính
     check("kiểm tra máy không có lỗi", not probs, str(probs))
+    if seconds >= 15:  # HT-11: render lại theo đoạn, dùng lại đoạn không đổi
+        print("Render lại theo đoạn (render/chunks)")
+        run("node", SCRIPTS / "render.mjs", ep, "--chunk-frames", "120")
+        o2 = run("node", SCRIPTS / "render.mjs", ep, "--chunk-frames", "120")
+        m2 = re.search(r"Đoạn: (\d+) render mới, (\d+) dùng lại", o2)
+        check("render lần 2 không đổi gì thì dùng lại mọi đoạn", m2 and m2[1] == "0", o2[-300:])
+        sp = ep / "scenes.json"
+        doc = json.loads(sp.read_text(encoding="utf-8"))
+        doc["scenes"][-1].setdefault("props", {})["label"] = "Đổi thử"
+        sp.write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")
+        o3 = run("node", SCRIPTS / "render.mjs", ep, "--chunk-frames", "120")
+        m3 = re.search(r"Đoạn: (\d+) render mới, (\d+) dùng lại", o3)
+        check("sửa cảnh cuối chỉ render lại đoạn chạm cảnh đó", m3 and 1 <= int(m3[1]) and int(m3[2]) >= 1, o3[-300:])
+        run(PY, SCRIPTS / "render_check.py", ep, ok=(0, 1))
+        probs = [p for p in json.loads((ep / "qa" / "render_check.json").read_text(encoding="utf-8"))["problems"] if "Đứng hình" not in p]
+        check("ghép đoạn dùng lại: kiểm tra máy không lỗi ở mối nối", not probs, str(probs))
     return d
+
+
+def test_scene_rules():
+    """HT-02: bộ mẫu dựng lại từ lỗi thật tập 1 phải bị máy bắt ≥ 90% theo cảnh, và validate dừng produce."""
+    print("Luật máy trên bộ mẫu lỗi tập 1 (scenes_loi_tap1.json)")
+    from PIL import Image
+    exp = json.loads((FIX / "scenes_loi_tap1.expect.json").read_text(encoding="utf-8"))
+    with tempfile.TemporaryDirectory() as tmp:
+        ep = Path(tmp)
+        for rel, (w, h) in exp["images"].items():
+            f = ep / "assets" / rel
+            f.parent.mkdir(parents=True, exist_ok=True)
+            Image.new("RGBA" if rel.endswith(".png") else "RGB", (w, h), (90, 80, 70)).save(f)
+        (ep / "qa").mkdir()
+        (ep / "qa" / "zones.json").write_text(json.dumps(exp["zones"]), encoding="utf-8")
+        (ep / "qa" / "asset_check.json").write_text(json.dumps(exp["asset_check"]), encoding="utf-8")
+        shutil.copy(FIX / "scenes_loi_tap1.json", ep / "scenes.json")
+        run(PY, SCRIPTS / "validate_scenes.py", ep / "scenes.json", "--report", ep / "rules.json", ok=(1,))
+        hits = json.loads((ep / "rules.json").read_text(encoding="utf-8"))
+        got = [sid for sid, rule in exp["expect"].items() if sid in hits.get(rule, [])]
+        miss = sorted(set(exp["expect"]) - set(got))
+        check("bắt ≥ 90% cảnh lỗi tập 1", len(got) >= 0.9 * len(exp["expect"]), f"{len(got)}/{len(exp['expect'])}, sót {miss}")
+        sys.path.insert(0, str(SCRIPTS))
+        import geo
+        check("mẫu bản đồ vn, dna, asia đủ Hoàng Sa và Trường Sa", all(not geo.island_problems({"preset": k}) for k in geo.PRESETS))
+        # HT-10: cảnh dựng bằng scene_dsl mặc định không vi phạm luật bản đồ, sương, dải phụ đề
+        (ep / "scene_plan.py").write_text('st([0, 0], "bg", "in", ["leaves"], [L("nguoi", 900, 1000, 430)])\n'
+                                          'gm([1, 1], "vn", [(103.41, 20.21, "Huà Phăn, Lào", 0.4)], highlight=["418"])\n'
+                                          'gm([2, 2], "asia", [(84.68, 51.4, "Siberia", 0.4)])\n', encoding="utf-8")
+        run(PY, SCRIPTS / "scene_dsl.py", ep)
+        import scene_rules
+        dd = json.loads((ep / "scenes.json").read_text(encoding="utf-8"))
+        for x in dd["scenes"]:
+            x["duration_s"] = 5
+        bad = {k: v for k, v in scene_rules.check(dd, ep).items() if v and k in ("ban-do-dao", "ban-do-to-mau", "mist", "phu-de-layer")}
+        check("scene_dsl mặc định đạt luật bản đồ, sương, dải phụ đề", not bad, str(bad))
+
+
+def test_learn_lock(n=20):
+    print("learn.py: nhiều tiến trình cùng thêm bài học")
+    with tempfile.TemporaryDirectory() as tmp:
+        env = {**os.environ, "LESSONS_FILE": str(Path(tmp) / "lessons.jsonl")}
+        ps = [subprocess.Popen([PY, SCRIPTS / "learn.py", "add", "--scope", "global", "--area", "ops", "--rule", f"luật {i}"], cwd=ROOT, env=env, stdout=subprocess.DEVNULL)
+              for i in range(n)]
+        for q in ps:
+            q.wait()
+        rows = [json.loads(l) for l in (Path(tmp) / "lessons.jsonl").read_text(encoding="utf-8").splitlines()]
+        check(f"đủ {n} bài học, id không trùng", len(rows) == n and len({r["id"] for r in rows}) == n, f"{len(rows)} dòng")
 
 
 if __name__ == "__main__":
@@ -302,6 +386,8 @@ if __name__ == "__main__":
         if "--smoke" in sys.argv:
             made.append(test_en(3))
         else:
+            test_learn_lock()
+            test_scene_rules()
             made += [test_vi(), test_ja(), test_en(15)]
     except RuntimeError as e:
         fails.append(str(e))

@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "fps": 30,
+  "landscape": [1920, 1080],
+  "portrait": [1080, 1920],
+  "codec": "h264",
+  "profile": "high",
+  "crf": 18,
+  "preset": "medium",
+  "gop": 15,
+  "bframes": 2,
+  "pixelFormat": "yuv420p",
+  "colorSpace": "bt709",
+  "audioCodec": "aac",
+  "audioBitrate": "384k",
+  "sampleRate": 48000,
+  "channels": 2
+}
