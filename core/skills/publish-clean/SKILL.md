@@ -6,4 +6,5 @@ description: Tải video thành phẩm và gói nguồn lên Drive, đối chi�
 2. Vai trò approver chốt: `python core/scripts/status.py <tập> final=ok`. Script từ chối thì dừng.
 3. Chạy `python core/scripts/publish_clean.py <tập>`. Script chỉ xóa `render/`, `audio/`, `assets/`, `thumb/`, `.cand/`, `asset_sheet.jpg` của đúng tập đó, sau khi Drive đã nhận và checksum khớp. File chữ giữ lại trên máy, bản sao lên Drive, không lên GitHub.
 4. Mỗi tuần chạy `python core/scripts/publish_clean.py --expire`: xóa gói nguồn quá 30 ngày, video thành phẩm giữ nguyên.
-5. Báo Sếp đường dẫn trên Drive, dung lượng đã giải phóng. Lỗi thì báo nguyên văn, không xóa tay.
+5. Chạy `python core/scripts/learn.py review`. Bài học lỗi sản xuất gặp từ 3 lần trở lên thì đưa vào báo cáo, đề xuất Sếp nâng lên `core/standard/` hoặc biến thành kiểm tra tự động trong script.
+6. Báo Sếp đường dẫn trên Drive, dung lượng đã giải phóng. Lỗi thì báo nguyên văn, không xóa tay.

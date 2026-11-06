@@ -109,6 +109,13 @@ def plan(ep):
     if not v.exists():
         raise SystemExit("Chưa có render/final.mp4")
     files.append((v, f"{base}/{slug}_{ep.name}.mp4"))
+    subs = ep / 'audio/subs.clean.srt'
+    if subs.exists():
+        files.append((subs, f'{base}/{slug}_{ep.name}.srt'))
+    for name in ('render_check.json', 'encoding.json'):
+        p = ep / 'qa' / name
+        if p.exists():
+            files.append((p, f'{base}/qa/{name}'))
     thumbs = sorted((ep / "thumb").glob("*.jpg")) if (ep / "thumb").exists() else []
     files += [(t, f"{base}/thumbnail/{t.name}") for t in thumbs]
     for name in ("meta.md", "brief.md", "storyboard.md", "script.md"):  # dữ liệu tập không lên GitHub, Drive giữ bản chữ

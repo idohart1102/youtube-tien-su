@@ -4,8 +4,10 @@ Dùng: python core/scripts/gen_assets.py <episode_dir> [--only ai|real] [--redo 
   kind "real":   tài liệu minh họa thật tìm trên internet bằng 9router cx/gpt-6.1-sol, không bắt buộc giấy phép, ghi nguồn vào <tập>/credits.json.
   kind "shared": asset dùng chung trong assets/shared, chỉ kiểm tra tồn tại.
 Mỗi asset thử tối đa --tries lần: tạo, AI độc lập chấm, sửa prompt theo lỗi, tạo lại. Đạt thì dừng sớm. Chọn bản điểm cao nhất, xóa các bản khác.
+asset_plan.json có thể ghi "setting": bối cảnh chung thêm vào mọi ảnh nền AI (vd "inland river valley, no sea"); mục riêng ghi "setting" để thay.
+File sắp bị ghi đè mà không do script tạo (ảnh cắt tay) được cất vào assets/_backup/ trước.
 Bản tốt nhất vẫn dưới ngưỡng thì không đưa vào sản xuất: ghi missing_assets.md để báo Sếp. Điểm từng lần ghi vào qa/assets.json."""
-import argparse, io, json, re, shutil, subprocess, sys, tempfile, time
+import argparse, hashlib, io, json, re, shutil, subprocess, sys, tempfile, time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import requests
@@ -32,11 +34,29 @@ plan = json.loads((ep / "asset_plan.json").read_text(encoding="utf-8"))
 theme = json.loads((ep.parents[1] / "theme.json").read_text(encoding="utf-8"))
 STYLE = theme.get("art_style_prompt", "")
 SPECIES = plan.get("species", {})
+SETTING = plan.get("setting", "")  # asset_plan.json: "setting" thêm vào mọi ảnh nền AI, để AI không tự vẽ biển, rừng... sai thời kỳ
 redo = set(filter(None, a.redo.split(",")))
 UA = {"User-Agent": "youtube-tien-su-asset-bot/1.0 (https://github.com/idohart1102/youtube-tien-su; education channel)"}
 NEUTRAL = ("Natural, neutral color balance with clean whites and shadows. No overall yellow, amber, orange or sepia color cast. "
            "Use yellow or gold only on objects whose real color is yellow or gold")
 PASS, FLOOR = 8.0, 6.0  # đạt thì dừng sớm; dưới FLOOR thì không dùng
+
+
+def md5(f):
+    return hashlib.md5(Path(f).read_bytes()).hexdigest()
+
+
+QA_P = ep / "qa" / "assets.json"
+MADE = {v.get("md5") for v in (json.loads(QA_P.read_text(encoding="utf-8")) if QA_P.exists() else {}).values()}
+
+
+def guard(dst):
+    """File sắp bị ghi đè mà không phải do script này tạo (ảnh cắt tay, sửa tay) thì cất bản sao, không bao giờ mất."""
+    if dst.exists() and md5(dst) not in MADE:
+        bak = A / "_backup" / f"{dst.stem}.{time.strftime('%Y%m%d-%H%M%S')}{dst.suffix}"
+        bak.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(dst, bak)
+        print(f"  ⚠ {dst.relative_to(A)} là bản sửa tay, đã cất vào {bak.relative_to(ep)} trước khi ghi đè")
 
 
 def out_path(x):
@@ -52,8 +72,18 @@ if sum(x["kind"] == "ai" for x in todo) > a.max:
     sys.exit(f"Cần tạo {sum(x['kind'] == 'ai' for x in todo)} ảnh AI, vượt --max {a.max}. Gộp cảnh dùng chung hình hoặc tăng --max.")
 
 
-def fit_bg(im):  # cắt về 16:9 rồi đưa về 1920x1080
+TALL = plan.get("format") == "9:16"  # asset_plan.json: "format", khớp với scenes.json
+
+
+def fit_bg(im):  # cắt về đúng khung rồi đưa về 1920x1080 (9:16: 1080x1920)
     w, h = im.size
+    if TALL:
+        nw = int(h * 9 / 16)
+        if w > nw:
+            im = im.crop(((w - nw) // 2, 0, (w - nw) // 2 + nw, h))
+        else:
+            nh = int(w * 16 / 9); im = im.crop((0, (h - nh) // 2, w, (h - nh) // 2 + nh))
+        return im.convert("RGB").resize((1080, 1920), Image.LANCZOS)
     if w / h > 16 / 9:
         nw = int(h * 16 / 9); im = im.crop(((w - nw) // 2, 0, (w - nw) // 2 + nw, h))
     else:
@@ -103,9 +133,11 @@ def make_ai(x, n, fix):
                   f"isolated on a fully transparent background, no ground, no cast shadow, no text, no letters, no watermark.{tail}")
         crop_cutout(Image.open(io.BytesIO(router.image(prompt, transparent=True)))).save(f)
     else:
-        prompt = (f"{x['prompt']}. {sp} {STYLE}. {NEUTRAL}. Wide 16:9 cinematic composition, keep the main subject inside the central area, "
+        setting = x.get("setting", SETTING)  # bối cảnh chung của tập (vd: thung lũng sông, no sea); mục riêng ghi "setting": "" để bỏ
+        setting = f" Setting: {setting}." if setting else ""
+        prompt = (f"{x['prompt']}.{setting} {sp} {STYLE}. {NEUTRAL}. {'Tall vertical 9:16' if TALL else 'Wide 16:9'} cinematic composition, keep the main subject inside the central area, "
                   f"leave calm areas for overlays, no text, no letters, no logos, no watermark.{tail}")
-        fit_bg(Image.open(io.BytesIO(router.image(prompt)))).save(f)
+        fit_bg(Image.open(io.BytesIO(router.image(prompt, size="1024x1536") if TALL else router.image(prompt)))).save(f)
     return f
 
 
@@ -205,6 +237,7 @@ def run(x):
         return x, None, history
     dst = out_path(x)
     dst.parent.mkdir(parents=True, exist_ok=True)
+    guard(dst)
     if dst.suffix.lower() in (".jpg", ".jpeg"):
         Image.open(best[1]).convert("RGB").save(dst, quality=90)
         best[1].unlink()
@@ -222,12 +255,13 @@ shutil.rmtree(CAND, ignore_errors=True)
 
 # Ghi kết quả: điểm QC, nguồn ảnh thật, asset thiếu
 (ep / "qa").mkdir(exist_ok=True)
-qa_p, cr_p = ep / "qa" / "assets.json", ep / "credits.json"
+qa_p, cr_p = QA_P, ep / "credits.json"
 qa = json.loads(qa_p.read_text(encoding="utf-8")) if qa_p.exists() else {}
 credits = json.loads(cr_p.read_text(encoding="utf-8")) if cr_p.exists() else {}
 missing = []
 for x, res, history in done:
-    qa[x["id"]] = {"file": str(out_path(x).relative_to(A)), "kept": bool(res), "score": res["score"] if res else None, "tries": history}
+    qa[x["id"]] = {"file": str(out_path(x).relative_to(A)), "kept": bool(res), "score": res["score"] if res else None, "tries": history,
+                   **({"md5": md5(out_path(x))} if res else {k: v for k, v in qa.get(x["id"], {}).items() if k == "md5"})}
     if not res:
         last = next((h.get("defects") for h in reversed(history) if h.get("defects")), None)
         missing.append(f"- {x['id']}: {x.get('prompt') or x.get('query')} | lỗi: {last}")
@@ -239,6 +273,17 @@ if credits:
 if missing:
     with open(ep / "missing_assets.md", "a", encoding="utf-8") as f:
         f.write("\n".join(missing) + "\n")
+
+# Vùng trống để đặt thẻ số liệu (ảnh mới làm lại thì tính lại)
+import asset_zones
+zp = ep / "qa" / "zones.json"
+if zp.exists():
+    zz = json.loads(zp.read_text(encoding="utf-8"))
+    for x, res, _ in done:
+        if res:
+            zz.pop(x["file"], None)
+    zp.write_text(json.dumps(zz, ensure_ascii=False, indent=1), encoding="utf-8")
+asset_zones.ensure(ep)
 
 # Bảng hình thu nhỏ để soát
 files = [(x["id"], out_path(x) if x["kind"] != "shared" else ROOT / "assets" / x["file"]) for x in plan["assets"]]
@@ -255,4 +300,9 @@ if files:
     sheet.save(ep / "asset_sheet.jpg", quality=85)
 fails = [x["id"] for x, r, _ in done if not r]
 print(f"Xong. Không đạt: {', '.join(fails) or 'không'}. Bảng hình: {ep / 'asset_sheet.jpg'}")
+# HT-09: kiểm ảnh ngay sau khi tải/tạo (kỹ thuật + 1 lượt chấm nội dung bảng hình); ảnh lỗi tạo lại trước khi dựng cảnh
+import check_assets
+redo = check_assets.main(ep)
+if redo:
+    print(f"Cần tạo lại {len(redo)} ảnh trước khi dựng cảnh: xem qa/asset_check.md, chạy: python core/scripts/gen_assets.py {ep} --redo <id,...>")
 sys.exit(1 if fails else 0)

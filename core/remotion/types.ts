@@ -9,6 +9,8 @@ export type Theme = {
   grain?: number;
   vignette?: number;
   subtitles?: boolean;
+  // Stage: cân màu layer theo nền (tone_auto do stage_prep.py tính), bóng tiếp đất mặc định, mép mềm. Mặc định bật, kênh tắt bằng false.
+  stage?: { auto_tone?: boolean; ground_shadow?: boolean; soft_edge?: boolean };
 };
 
 export type Scene = {
@@ -23,6 +25,7 @@ export type Scene = {
 
 export type EpisodeProps = {
   fps: number;
+  format?: '16:9' | '9:16'; // khung video, mặc định 16:9. scenes.json: "format"
   scenes: Scene[];
   theme: Theme;
   music?: { src: string; volume: number };

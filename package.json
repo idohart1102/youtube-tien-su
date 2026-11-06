@@ -6,6 +6,7 @@
     "render": "node core/scripts/render.mjs"
   },
   "dependencies": {
+    "@fontsource/alata": "5.2.8",
     "@fontsource/be-vietnam-pro": "5.2.8",
     "@fontsource/noto-serif-jp": "5.1.0",
     "@remotion/bundler": "4.0.242",

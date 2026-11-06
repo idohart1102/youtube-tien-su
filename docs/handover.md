@@ -16,6 +16,8 @@ Không ghi mật khẩu hay khóa vào repo. Khóa nằm trong `.env`, mật kh�
 | Claude Code | Vai trò chính, đọc `CLAUDE.md` | Đăng nhập tài khoản được giao | Codex đọc `AGENTS.md` |
 | 9router | Tạo ảnh, chấm, tìm ảnh | Chạy trên máy, khai `router_url`; khóa ở `NINEROUTER_API_KEY` hoặc tự đọc từ `~/.9router` | Chấm và tìm ảnh: `review_provider: codex`, `gen_assets.py --codex`. Tạo ảnh: tự chuyển Codex CLI |
 | Codex CLI | Dự phòng chấm, tìm ảnh, tạo ảnh | `codex login` | Mất dự phòng |
+| API TTS dùng chung (KingCong) | Tạo audio + srt cho kênh có mục `tts` (`gen_voice.py`) | Dịch vụ chạy trên máy, khai `TTS_URL` trong `.env` (bỏ trống là `http://127.0.0.1:8791`). Kiểm tra: `tts service status` và credit | Sếp tạo audio ngoài hệ thống và gửi vào cùng srt |
+| Kho nhạc nền | Nhạc cho kênh có mục `music` (`pick_music.py`) | Đồng bộ thư mục Drive của kênh bằng Drive Desktop, khai đường dẫn ở `music_libraries` trong `config/machine.yaml` | `produce.py` dừng ở bước chọn nhạc |
 | vidIQ | Nghiên cứu, số liệu | Kết nối trong tài khoản Claude | Sếp xuất số liệu từ YouTube Studio |
 | Google Drive | Lưu thành phẩm | `drive_mode: desktop` + `drive_path`, hoặc `rclone` + `drive_remote` | Không chạy được `publish_clean.py` |
 | GitHub | Lưu repo | Quyền truy cập repo | Không đồng bộ được |
@@ -35,6 +37,6 @@ Dịch vụ cổng AI chạy trên máy, tương thích OpenAI, do chủ hệ th
 1. `git pull`.
 2. `python core/scripts/status.py` xem từng tập đang ở đâu.
 3. Đọc `docs/decisions.md`, `core/standard/pipeline.md`, file vai trò của mình trong `core/roles/`.
-4. `python core/scripts/learn.py brief --area <mảng>` trước khi làm.
+4. `python core/scripts/learn.py brief --area <mảng> --channel <slug>` trước khi làm.
 
 GitHub chỉ chứa hệ thống, không có dữ liệu tập (`channels/*/episodes/`, `channels/*/archive/`). Tập đã xong có video, meta, brief, kịch bản trên Drive. Đổi máy giữa chừng thì chép thư mục tập sang máy mới. Muốn giữ luật không lặp nhân vật thì chép cả các tập gần nhất.

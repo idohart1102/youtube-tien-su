@@ -1,0 +1,5 @@
+{
+ "vn": {"center": [107.5, 15.5], "scale": 3000, "note": "Việt Nam cận, thấy cả Hoàng Sa và Trường Sa"},
+ "dna": {"center": [109, 12], "scale": 1700, "note": "Đông Nam Á"},
+ "asia": {"center": [100, 28], "scale": 800, "note": "châu Á, scale >= 800 để hiện nhãn đảo"}
+}

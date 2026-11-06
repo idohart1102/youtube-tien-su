@@ -8,8 +8,8 @@
 - {id: photo-source, rule: "Tài liệu minh họa đúng nội dung, có nguồn ghi trong credits.json", check: critic, gate: true, area: visual}
 - {id: chapters, rule: "Meta có mốc thời gian từng phần, mốc đầu 0:00", check: critic, gate: true, area: package}
 - {id: thumb-hook, rule: "Thumbnail có hook gây tò mò, đủ nghĩa khi chỉ nhìn thumbnail, đọc được ở 160x90, không lặp tiêu đề, đúng sự thật", check: critic, gate: true, area: package}
-- {id: ai-notice, rule: "Có dòng ghi chú AI ở cuối video", check: lint, gate: true, area: visual}
-- {id: subscribe-in-story, rule: "Lời mời đăng ký sau câu hỏi lớn, trước bước đầu tiên, viết như lời dẫn", check: lint, gate: true, area: script}
+- {id: no-ai-mention, rule: "Video, tiêu đề, mô tả, tag, thumbnail không chú thích hay nhắc tới việc dùng AI (Sếp 2026-11-03)", check: lint, gate: true, area: visual}
+- {id: subscribe-in-story, rule: "Có đúng 1 lời mời đăng ký, viết như lời dẫn, đúng vị trí kênh khai ở subscribe.position trong dna.yaml (mặc định sau câu hỏi lớn, trước bước đầu tiên; end là trong phần kết)", check: lint, gate: true, area: script}
 - {id: no-roadmap, rule: "Không đọc lộ trình phần hay chương", check: critic, gate: true, area: script}
 - {id: no-rival-copy, rule: "Không chép lời, số, tiêu đề đối thủ, không dịch từ kênh khác", check: critic, gate: true, area: script}
 - {id: reference-floor, rule: "Video tham chiếu cùng ngách, ít nhất 100K view, ưu tiên từ 500K", check: critic, gate: true, area: research}

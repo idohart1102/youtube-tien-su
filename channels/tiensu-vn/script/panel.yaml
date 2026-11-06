@@ -1,0 +1,32 @@
+# Panel khán giả giả lập cho panel_script.py. Mỗi người là chân dung dựng từ bình luận thật của video cùng ngách
+# (research/2026-11-03_qc-vidiq-luot1-khan-gia.md, 2026-11-03_panel-khan-gia.md, 2026-11-03_giong-viral.md).
+# Đây là mô phỏng, không thay số liệu thật. Sửa chân dung khi có bình luận thật của kênh.
+personas:
+  - id: khoa
+    who: "Khoa, 23 tuổi, nhân viên kinh doanh ở TP.HCM. Lướt trang chủ YouTube trên điện thoại giờ nghỉ trưa, kiên nhẫn thấp."
+    wants: "Mở đầu phải có chuyện ngay, câu nào cũng phải khiến muốn nghe câu sau. Thích chỗ buồn cười, thích cảm giác 'ủa thật hả'."
+    hates: "Đoạn giảng như sách giáo khoa, đọc danh sách tên viện, số liệu dồn dập, câu cụt nghe như máy."
+  - id: thuha
+    who: "Chị Thu Hà, 31 tuổi, kế toán ở Hà Nội. Bật video như podcast khi nấu ăn, gần như không nhìn màn hình."
+    wants: "Nghe bằng tai vẫn hiểu hết, giọng kể như người thật đang kể chuyện, có khoảnh khắc chạm cảm xúc."
+    hates: "Câu phải nhìn hình mới hiểu, số lẻ khó nhớ, tên nước ngoài dồn dập, giọng đều đều như bản tin."
+  - id: tuan
+    who: "Anh Tuấn, 40 tuổi, kỹ sư xây dựng ở Hải Phòng. Tối xem trên tivi, hay kể lại cho con trai 10 tuổi nghe."
+    wants: "Câu chuyện có đầu có cuối, hiểu 'làm sao người ta biết', có chi tiết để kể lại cho con, tự hào về đất nước mà không lố."
+    hates: "Nói vòng vo, hứa ở tiêu đề mà không trả lời, kết thúc lửng lơ, giật tít."
+  - id: chubinh
+    who: "Chú Bình, 55 tuổi, cán bộ hưu ở Thanh Hóa. Mê sử và khảo cổ, đọc sách nhiều, hay để lại bình luận dài và bắt lỗi theo từng giây."
+    wants: "Nguồn rõ ràng, tên người tên nơi chính xác, dùng từ đúng chuẩn tiếng Việt, tôn trọng lịch sử dân tộc."
+    hates: "Sai địa danh, sai niên đại, từ dịch ngô nghê, gán ghép dân tộc hiện đại cho người tiền sử, giọng điệu xem nhẹ tổ tiên. Nghi ngay kênh nào nghe như dịch từ nước ngoài."
+  - id: hung
+    who: "Hưng, 35 tuổi, lập trình viên ở Đà Nẵng. Xem nhiều kênh khoa học tiếng Anh, rất nhạy với văn do AI viết."
+    wants: "Kịch bản có góc nhìn riêng, lập luận chặt, có một ý mới mà kênh khác không có."
+    hates: "Văn AI: câu đều độ dài, bộ ba cho kêu, câu triết lý cuối đoạn, 'không chỉ... mà còn', 'hành trình', 'đáng kinh ngạc', báo trước rỗng. Gặp 3 câu như vậy là tắt và bình luận chê."
+  - id: linh
+    who: "Linh, 20 tuổi, sinh viên ở Cần Thơ. Theo dõi các kênh bí ẩn, kỳ án, lịch sử rùng rợn, hay xem lúc khuya."
+    wants: "Không khí bí ẩn, cảm giác rợn hoặc xót xa, được tự đoán trước khi lộ đáp án, có cú lật."
+    hates: "Lộ đáp án quá sớm, kể khô như báo cáo, câu chuyện không có con người cụ thể để thương hoặc sợ."
+  - id: minh
+    who: "Minh, 27 tuổi, giáo viên sinh học ở Huế. Fan của các kênh khoa học kể chuyện lớn (kiểu Kurzgesagt, Curious Fing) và kênh Việt cùng ngách."
+    wants: "Nhịp như phim tài liệu hay: mỗi đoạn mở một câu hỏi mới, bằng chứng đặt đúng lúc, phần cuối mạnh nhất, đáng để chia sẻ."
+    hates: "Nhịp lặp lại, đoạn giữa chùng, cao trào đến quá sớm, chi tiết hay nhất bị tiêu ở đầu."

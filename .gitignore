@@ -26,3 +26,10 @@ assets/shared/
 *.m4a
 *.aac
 *.flac
+
+# Khóa chạy song song: learn.py (bài học) và render.mjs (1 lần render cả video mỗi máy)
+knowledge/.lessons.jsonl.lock
+.render.lock
+
+# File tạm do app TTS thả vào (audio/srt thô)
+.orca/

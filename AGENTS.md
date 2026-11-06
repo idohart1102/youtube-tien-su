@@ -5,7 +5,8 @@
 
 ## Ai làm gì trong luồng tự động
 - 9router `cx/gpt-6.1-sol` QC: fact, kịch bản, asset, video; không tìm được 9router thì tự chuyển Codex CLI. Claude (vai trò approver) duyệt brief, quyết định render lại, chốt bản cuối (`final=ok`).
-- Việc của Sếp, AI không tự làm: gửi audio + srt (gửi vào là đã duyệt, không QC audio), đăng YouTube.
+- Audio + srt: kênh có mục `tts` trong `channel.yaml` (hiện có `tiensu-vn`) thì hệ thống tự tạo qua KingCong bằng `gen_voice.py`, ngay sau khi kịch bản qua QC. Kênh không có `tts` thì Sếp gửi audio + srt. Không QC audio và nhịp đọc.
+- Việc của Sếp, AI không tự làm: đăng YouTube; gửi audio + srt với kênh không có `tts`.
 - Đổi quyết định, `dna.yaml` hoặc `core/standard/` phải hỏi Sếp. Người viết không tự chấm bài của mình.
 
 ## Ngôn ngữ
@@ -25,8 +26,9 @@
 | Nghiên cứu kênh, đề tài | vai trò researcher | script |
 | Chọn đề tài, viết brief | plan-topics | script |
 | Viết kịch bản | write-script | script |
-| Chấm kịch bản | vai trò reviewer (chạy `qc_script.py`, tối đa 3 vòng, không tự chấm) | |
-| Dựng video (đã có audio + srt) | build-video | asset, motion, map |
+| Chấm kịch bản | vai trò reviewer (chạy `qc_script.py` rồi `panel_script.py` nếu kênh có `script/panel.yaml`, tối đa 5 vòng, không tự chấm) | |
+| Tạo audio + srt (kênh có `tts`) | lệnh `gen_voice.py` bên dưới | |
+| Dựng video (đã có audio + srt) | build-video | asset, motion, map, video |
 | Render | produce | ops |
 | QC video | vai trò qc-video | |
 | Duyệt brief, render lại, bản cuối | vai trò approver | |
@@ -43,6 +45,7 @@
 
 ## Lệnh không có trong skill
 - Tiến độ: `python core/scripts/status.py`. Duyệt brief theo vai trò approver: `python core/scripts/status.py <tap> brief=ok`. Chỉ dùng `brief=sep` hoặc `final=sep` khi Sếp nói rõ.
+- Tạo audio + srt qua KingCong (kênh có mục `tts`, tốn credit, chạy một lần mỗi tập): `python core/scripts/gen_voice.py <tap>`. Thêm `--replace` khi cần tạo lại. API lỗi thì không tự gửi lại, kiểm tra `tts service status` và credit trước.
 - Kiểm tra máy: `python core/scripts/doctor.py --smoke`. Kiểm tra toàn bộ: `python core/tests/run.py`.
 - Kênh mới: `python core/scripts/new_channel.py <slug> --lang <mã>`. Tập mới: `python core/scripts/new_episode.py <slug> <ten-tap>`.
 - Asset chỉ AI hoặc chỉ ảnh thật: `python core/scripts/gen_assets.py <tap> --only ai|real`.
