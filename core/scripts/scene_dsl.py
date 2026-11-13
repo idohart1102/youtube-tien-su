@@ -72,10 +72,30 @@ def sci(lines, photo, region, circle=None, **kw):
     return s
 
 
+_PLACES = None
+
+
+def _marker(m):
+    """(lon, lat, nhãn, at_s) hoặc theo tên trong knowledge/places.json: ("Phu Wiang", at_s) / ("Phu Wiang", at_s, "nhãn riêng")."""
+    global _PLACES
+    if not isinstance(m[0], str):
+        a, b, c, t = m
+        return dict(lon=a, lat=b, label=c, at_s=t)
+    if _PLACES is None:
+        _PLACES = json.loads((Path(__file__).resolve().parents[2] / "knowledge/places.json").read_text(encoding="utf-8"))["places"]
+    name, t = m[0], m[1]
+    p = _PLACES.get(name)
+    if not p:
+        sys.exit(f"scene_dsl: chưa có địa danh '{name}' trong knowledge/places.json: thêm tọa độ kèm nguồn")
+    if p["loai"] == "vung":
+        sys.exit(f"scene_dsl: '{name}' là vùng ({p.get('ghi_chu', '')}): dùng zones=, không dùng chấm")
+    return dict(lon=p["lon"], lat=p["lat"], label=m[2] if len(m) > 2 else p.get("label", name), at_s=t)
+
+
 def gm(lines, preset="vn", markers=(), arrows=(), highlight=None, cam="in", **kw):
-    """Bản đồ GeoMap. preset: vn | dna | asia (đã qua kiểm đảo), hoặc truyền center=, scale=.
-    markers: (lon, lat, nhãn, at_s); arrows: ((lon, lat), (lon, lat), at_s). highlight: mã ISO số của nước chứa địa điểm (mặc định chỉ Việt Nam)."""
-    pr = {"cam": cam, "highlight": list(highlight or ["704"]), "markers": [dict(lon=a, lat=b, label=c, at_s=t) for a, b, c, t in markers]}
+    """Bản đồ GeoMap. preset: vn | dna | asia | sunda (đã qua kiểm đảo), hoặc truyền center=, scale=.
+    markers: ("Tên trong knowledge/places.json", at_s[, nhãn]) (ưu tiên, Sếp 2026-11-07) hoặc (lon, lat, nhãn, at_s); địa danh vùng/hướng dùng zones; arrows: ((lon, lat), (lon, lat), at_s). highlight: mã ISO số của nước chứa địa điểm (mặc định chỉ Việt Nam)."""
+    pr = {"cam": cam, "highlight": list(highlight or ["704"]), "markers": [_marker(m) for m in markers]}
     if preset and "center" not in kw:
         pr["preset"] = preset
     if arrows:

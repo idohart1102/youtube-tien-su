@@ -24,6 +24,32 @@ export const PhotoCard: React.FC<SceneProps> = ({ dur, asset, props }) => {
   const rx = r ? (0.5 - (r[0] + r[2] / 2)) * 100 * rk : 0, ry = r ? (0.5 - (r[1] + r[3] / 2)) * 100 * rk : 0;
   const sweepOn = props.sweep ?? dur >= 120;
   const sk = clamp((f - dur * 0.25) / 40);
+  // Khung giấy (mặc định, Sếp 2026-11-07): ảnh tư liệu thật đặt trên tấm giấy cắt dán, màu giấy theo tông ảnh (paper_auto do stage_prep.py ghi,
+  // sáng hơn rõ, không trắng tinh), có vân giấy, nghiêng nhẹ, bóng đổ. paper: {color, rot, w, h} để chỉnh; paper: false hoặc theme.photo_paper = false về khung mảnh cũ.
+  const paper = props.paper === false || (t as any).photo_paper === false ? null : { ...(props.paper || {}) };
+  if (paper && src && !props.fill) {
+    const pc = paper.color || props.paper_auto || '#e6dccb';
+    const seed = String(asset).length + Math.round(dur);
+    const rot = (paper.rot ?? (seed % 2 ? -1.2 : 1.0)) + 0.5 * k;
+    const grainSvg = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' seed='4'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.3  0 0 0 0 0.22  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")`;
+    const pad = 18;
+    return (
+      <AbsoluteFill style={{ background: t.palette.bg }}>
+        <Img src={src} style={{ position: 'absolute', width: 1920, height: 1080, objectFit: 'cover', filter: 'blur(26px) saturate(0.5) brightness(0.42)', transform: `scale(${1.12 + 0.04 * k}) translateX(${-24 * k}px)` }} />
+        <AbsoluteFill style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: 40 }}>
+          <div style={{ position: 'relative', padding: pad, background: pc, boxShadow: '0 18px 46px rgba(0,0,0,0.55), 0 3px 8px rgba(0,0,0,0.4)', transform: `translate(${px * k}px,${py * k}px) rotate(${rot}deg) scale(${1 + ((props.z ?? 1.05) - 1) * k})` }}>
+            <div style={{ position: 'absolute', inset: 0, backgroundImage: grainSvg, mixBlendMode: 'multiply', opacity: 0.9 }} />
+            <div style={{ position: 'relative', width: paper.w ?? props.photo_w ?? 1280, height: paper.h ?? props.photo_h ?? 760, overflow: 'hidden' }}>
+              <Img src={src} style={{ width: '100%', height: '100%', objectFit: 'cover', transform: `scale(${(1 + (rz - 1) * rk) * (1 + 0.03 * k)}) translate(${rx}%,${ry}%)` }} />
+              {sweepOn && sk > 0 && sk < 1 ? <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(105deg, transparent ${sk * 140 - 30}%, rgba(255,245,225,0.16) ${sk * 140 - 20}%, transparent ${sk * 140 - 10}%)` }} /> : null}
+            </div>
+          </div>
+        </AbsoluteFill>
+        {props.credit ? <div style={{ position: 'absolute', left: 72, bottom: 24, fontFamily: fontOf(t), fontSize: 20, color: t.palette.fg, opacity: 0.8 }}>{props.credit}</div> : null}
+        {props.label ? <Label text={props.label} sub={props.sub} from={8} to={dur - 10} /> : null}
+      </AbsoluteFill>
+    );
+  }
   if (props.fill && src) {  // ảnh thật ngang, đủ nét: phủ kín khung (đổi kiểu trình bày, tránh lặp khung giữa nền mờ)
     return (
       <AbsoluteFill style={{ background: t.palette.bg, overflow: 'hidden' }}>

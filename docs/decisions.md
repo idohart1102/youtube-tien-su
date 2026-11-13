@@ -1,7 +1,41 @@
 # Quyết định của Sếp (mới nhất ở trên). Mọi AI phải tuân theo. Muốn đổi thì hỏi Sếp.
 Dòng gạch ngang là quyết định đã bị thay, giữ lại để biết lịch sử, không làm theo.
 
+## 2026-11-13 (Sếp duyệt đề xuất bản 2.0, `docs/de-xuat-v2.md`)
+- Chỉ nâng cấp hệ thống, không sửa lại video đã làm; luật mới áp từ lần chạy sau.
+- Fact: mã F cố định theo số đầu dòng; `qc_facts` chỉ kiểm lại dòng đã sửa, gửi lô 30 dòng; nguồn ghi câu trích nguyên văn, không lấy số qua Wikipedia, khoảng cách neo vào tọa độ địa danh có tên. Vẫn tối đa 3 lần.
+- Render: lần render chỉ dựng mới ≤25% số đoạn là "sửa nhỏ", không tính vào trần render, tối đa 3 lần/tập, được chạy cả khi đã chạm trần. Thay một phần dòng "render lại chạm 2 lần thì dừng" ngày 2026-11-05.
+- QC video: bảng khung hình không đổi dùng lại kết quả bản trước; điểm lượt 1 trong 8,5-9,3 thì tự chấm lượt 2 các bảng mới, lỗi nặng chỉ 1 lượt thấy hạ thành vừa. Vẫn 1 lần chạy mỗi bản render (thay một phần dòng 2026-11-03).
+- Bản đồ: thêm mẫu `sunda`; vùng tô đa giác tay, tô cả nước nhiều đảo, chấm chồng/ngoài khung là cảnh báo máy.
+- Kho bài học: bác 11 bài lỗi thời hoặc trùng.
+- Giọng: tốc độ đọc tính 225 âm tiết/phút; kịch bản ước dưới 10 phút thì không tạo giọng. KingCong thiếu srt thì dựng bằng `tts align` (Whisper).
+
+## 2026-11-08
+- Tiền Sử Đất Việt: Sếp chốt tập 8 là đề thiên thạch, tiêu đề "Có Thật 800.000 Năm Trước Một Thiên Thạch Khổng Lồ Đã Rơi Sát Việt Nam?" (vidIQ 88), thay đề 8 cũ Titanoboa (không có liên hệ Việt Nam). Trung tâm: tektite Khe Sanh; hố ứng viên dưới dung nham Bolaven (Sieh 2020), còn tranh cãi. Thư mục `2026-11-08_thien-thach-bolaven`. Dòng "bỏ tập thiên thạch" ngày 2026-11-01 nói về đề tài cũ, không áp cho đề này.
+- Tiền Sử Đất Việt: Sếp chốt tập 9 là "Có Thật King Kong Từng Sống Trong Rừng Việt Nam?" (đề 9 trong danh sách đề xuất tập 7-10, `channels/tiensu-vn/research/2026-11-03_10-de-dau-tien.md`). Thư mục `2026-11-08_king-kong-viet-nam`. Đề 7, 8, 10 vẫn chờ Sếp chốt.
+
+## 2026-11-07 (Sếp duyệt tập 2 khủng long render-5, duyệt đề xuất `de-xuat-tap3`)
+- Format tập 2 là chuẩn mọi tập tiensu-vn: viền mảnh màu theo nền, ảnh thật khung giấy, không rig, chuyển động theo bối cảnh, bản đồ chỉ hình đảo.
+- Cutout được dùng lại trong một video (máy chỉ cảnh báo, không chặn); nên đổi lật, cỡ, chuyển động mỗi lần. Ảnh nền AI tối đa 3 cảnh/video (quá 3 là lỗi máy chặn). Thay dòng "Ảnh AI không dùng lại ở cảnh không liền kề" ngày 2026-11-02 và mức 2 cảnh/nền bên dưới.
+- Nhiều cutout hơn: cảnh tái hiện có cutout ≥60% thời lượng, cảnh chính 2-3 cutout lệch nhịp, cutout phải gắn đối tượng lời đang nói (cảnh báo, không chặn). Thêm cutout đạo cụ/hiện vật, người hiện đại, sinh vật phụ đủ lớn. Ghép cutout có mặt đất đỡ, đúng tỉ lệ thật, không đứng trên nước.
+- Bản đồ: chấm địa danh lấy từ bảng có nguồn `knowledge/places.json`; địa danh vùng/hướng (Tây Bắc, tây Quảng Bình) tô vùng, không dùng chấm. Camera bản đồ trôi đều suốt cảnh.
+- Thumbnail: lập asset riêng cho thumbnail từ asset_plan; panel 3 người xem lạ (16, 30, 52 tuổi), mục tiêu tham khảo trung bình ≥8, vẫn giữ cổng đoán đúng chủ đề.
+- 3 nguồn cutout: (1) AI tạo thẳng PNG nền trong suốt, mặc định; (2) AI vẽ trên nền trơn rồi tách nền, dự phòng khi (1) 3 lần chưa đạt hoặc cần ánh sáng đặc biệt (`cut_method: "bg"`), `gen_assets` tự chuyển; (3) ảnh thật tách nền (`cut_real.py`), chỉ hiện vật chụp nền sạch, ghi nguồn như ảnh thật; hóa thạch lẫn trong đá để nguyên trong khung giấy. AI không vẽ giả hiện vật thật.
+- Không làm bản thử 30 giây: áp luật mới từ tập 3.
+
+## 2026-11-07 (sau bản thử tập 2 khủng long)
+- Viền asset (Sếp xem bản thử 32 giây): cutout trong video có viền mảnh màu giấy ngả theo nền (`stage_prep.py` lấy màu nền quanh cutout, sáng hơn rõ), không trắng tinh. Lớp nhòe cận cảnh không viền. Ảnh thật đặt trên khung giấy cắt dán, màu giấy theo tông ảnh, vân giấy, nghiêng nhẹ, bóng đổ; ảnh phủ kín khung (`fill`) không có khung. Thay dòng "Cutout trong video không viền trắng" ngày 2026-10-31.
+- Không rig nữa: rig cắt tay chân từ ảnh phẳng hay rách, lộ vết nối và bóng ma chân (bản thử `_thu-vien`). Mọi người, con vật và vật thể chỉ cho asset chuyển động: `motion` (breathe, sway, bob, walk), `path`, `drift`, `wind`. Viền cutout mảnh 2-4 px. Thay phần rig của dòng 2026-11-06 (nhân vật chính rig, phụ rig khi cần).
+- Asset chuyển động theo bối cảnh và tình huống: kiểu, độ mạnh (`amp`), hướng ngang (`drift`), xa gần (`dz`, `depth`) chọn theo lời đọc (bảng trong `visual.md`). Là hướng dẫn dựng, máy không chặn.
+- Bản đồ: chỉ vẽ hình 2 quần đảo Hoàng Sa, Trường Sa, không ghi chữ "Quần đảo Hoàng Sa", "Quần đảo Trường Sa". Vẫn bắt buộc có đủ 2 quần đảo trong khung.
+- Thumbnail: ảnh thật quan trọng được đưa vào thumbnail (khung giấy màu theo tông ảnh); vùng nền dưới chữ hook tối hơn để chữ nổi; viền chủ thể mảnh, màu hợp nền, không mặc định trắng; viền chữ mảnh vừa. Thay "Thumbnail vẫn có viền trắng" ngày 2026-10-31.
+- Không tách ảnh nền thành nhiều lớp theo độ sâu: bản thử lệch nhẹ thì không thấy khác, lệch mạnh thì lộ vết vá.
+- ~~Ảnh nền AI: mỗi nền dùng tối đa 2 cảnh trong một video, tốt nhất 1 cảnh; tính cả cảnh liền kề và nền địa điểm `sync`. Quá 2 cảnh là lỗi máy chặn (`validate_scenes`), 2 cảnh là cảnh báo. Ảnh thật không áp mức này, vẫn dùng lại được khi đổi vùng phóng. Thay phần "nền địa điểm sync được dùng lại" của dòng 2026-11-02.~~ (2026-11-07 sau: tối đa 3 cảnh)
+- Nhân vật đang đi phải tiến theo hướng mặt, không trôi giật lùi: cutout đi lại khai `facing` trong `asset_plan.json`, `validate_scenes` chặn khi chuyển động so với nền ngược hướng mặt. Stage nhận `drift` (tiến đều cả cảnh).
+- Cảnh mở đầu không cắt sang chính ảnh vừa xem; bối cảnh phải đúng địa điểm (bảo tàng Hà Nội không có chùa tháp kiểu Lào/Thái).
+
 ## 2026-11-06
+- Asset: mỗi tập khai `cast` trong `asset_plan.json`. Tách cutout nhân vật nhiều nhất có thể, tùy tình huống; ~~nhân vật chính rig, nhân vật phụ rig khi cần~~ (2026-11-07: không rig, chỉ cho asset chuyển động), asset còn lại chỉ chuyển động, không rig. Mọi nhân vật trên cảnh đều cử động (thay luật "chỉ cutout chính có motion"); trên 3 lớp lặp là cảnh báo. Là hướng dẫn dựng, máy không chặn.
 - Sếp: chỉ chặn lỗi thật sự nghiêm trọng, không siết luật cứng làm khó sáng tạo. Máy chỉ chặn điều sai khách quan: sai fact, bản đồ thiếu Hoàng Sa/Trường Sa, lộ đáp án, câu hỏi thiếu thẻ, lệch audio, thiếu dấu, thiếu asset, nhịp và số thẻ chữ đã chốt, lỗi precheck mức cao. Luật thẩm mỹ còn lại (sương, dải phụ đề, số hiệu ứng, cutout đứng yên, hình lệch lời theo tên gọi, ảnh nhỏ, giữ bố cục, region) là cảnh báo, người dựng tự xét. Thay các dòng cổng render và sương ngày 2026-11-05.
 - Panel khán giả là tham khảo, không phải cổng. Lời hứa quá 35 giây là cảnh báo. Lỗi kịch bản báo nhầm ghi `qa/script_accepted.json`.
 
@@ -46,7 +80,7 @@ Dòng gạch ngang là quyết định đã bị thay, giữ lại để biết 
 ## 2026-11-02 (sau tập Tràng An)
 - QC kịch bản tối đa 5 vòng. Câu có số ghi mã fact [F..]; fact mức "có thể" phải nói thành lời.
 - Hình khớp lời theo đối tượng (`subjects`/`subject`), mọi câu hỏi gắn [HỎI]/[ĐÁP]/[TU-TỪ], duyệt nháp ảnh tĩnh trước khi render.
-- Không có khoảnh khắc tĩnh; hiệu ứng thời tiết, động đất theo nội dung. Ảnh AI không dùng lại ở cảnh không liền kề, trừ nền địa điểm `sync`.
+- Không có khoảnh khắc tĩnh; hiệu ứng thời tiết, động đất theo nội dung. ~~Ảnh AI không dùng lại ở cảnh không liền kề, trừ nền địa điểm `sync`.~~ (2026-11-07: cutout dùng lại được, nền tối đa 3 cảnh)
 - Cảnh dài cứ ≤4 giây có chi tiết mới (nhịp: xem 2026-11-03).
 - Thẻ chỉ khi thật sự cần, ở góc trên màn hình (2026-11-03), né chủ thể; thẻ chú thích một vật thì đứng cạnh vật có đường dẫn. Font số liệu kênh vi: Alata.
 - Bỏ vai "thám tử thời gian": người kể vô hình, không tự xưng, "chúng ta" khi cùng xem bằng chứng, "bạn" khi hỏi thẳng.
@@ -93,7 +127,7 @@ Dòng gạch ngang là quyết định đã bị thay, giữ lại để biết 
 - Luồng chuẩn dùng chung mọi kênh; điều phụ thuộc ngôn ngữ đặt ở kênh. Hiện làm tiếng Việt, tiếng Nhật; mở thêm theo kênh, tối đa 5 ngôn ngữ phổ biến.
 - Kịch bản đứng độc lập theo kênh, chỉ chung nguyên tắc viral. Sếp và AI sẽ cùng hoàn thiện nguyên tắc này.
 - Dựng full video, không duyệt mẫu 60 giây. QC độc lập đề xuất sửa. ~~Sếp quyết định render lại.~~ Thay bằng Claude (approver) quyết định render lại (2026-11-01).
-- Cutout trong video không viền trắng, không thẻ "Tái hiện". Thumbnail vẫn có viền trắng. Giữ viền vàng thoáng qua ở cảnh hóa thạch.
+- ~~Cutout trong video không viền trắng~~ (2026-11-07: viền màu giấy theo nền), không thẻ "Tái hiện". ~~Thumbnail vẫn có viền trắng.~~ (2026-11-07: viền mảnh màu theo nền) Giữ viền vàng thoáng qua ở cảnh hóa thạch.
 - Phụ đề dày vừa (600, viền 4 px).
 - ~~4 giây cuối có dòng ghi chú AI nhỏ ở góc dưới.~~ Bỏ từ 2026-11-03.
 - Asset làm mới mỗi video, tránh lặp loài. Không có thư viện ảnh loài.
@@ -101,9 +135,13 @@ Dòng gạch ngang là quyết định đã bị thay, giữ lại để biết 
 - Bản đồ: ưu tiên tên theo ngôn ngữ của kênh. Liên quan đến Việt Nam thì phải có Hoàng Sa, Trường Sa. Kênh Nhật ghi 南シナ海 (Biển Nam Trung Hoa).
 - Sếp đăng tay. Meta có mốc thời gian từng phần. Thumbnail có hook đủ mạnh để tăng CTR.
 - Thành phẩm lên Drive "00 Thành phẩm AI nộp", đối chiếu xong xóa media trên máy. Gói nguồn giữ 30 ngày rồi xóa.
-- Claude dùng Opus 5.5. 9router dùng `cx/gpt-6.1-sol` cho chấm, ~~`cx/gpt-image-2.5`~~ `cx/gpt-image-2.5-sunburst` cho ảnh (2026-11-01). Codex là phương án thay thế, ghi trong hướng dẫn.
+- Claude dùng Opus 5.5. 9router dùng `cx/gpt-6.1-sol` cho chấm, ~~`cx/gpt-image-2.5`~~ ~~`cx/gpt-image-2.5-sunburst`~~ `cx/gpt-image-2.6-sunburst` cho ảnh (2026-11-11). Codex là phương án thay thế, ghi trong hướng dẫn.
 - Thay toàn bộ repo cũ bằng bản này, đánh số 1.0.0.
 - Có cơ chế học hỏi trong `knowledge/`.
 
 ## 2026-10-30
 - Trao đổi với Sếp bằng tiếng Việt; sản phẩm video bằng ngôn ngữ kênh, viết như người bản xứ; từ nước ngoài có nghĩa tiếng Việt bên cạnh.
+
+
+## 2026-11-06 — model tạo ảnh dùng chung
+- Theo chỉ đạo Sếp: tạo/sửa ảnh qua 9router `cx/gpt-image-2.6-sunburst`. Không tự chuyển Codex CLI/built-in hoặc model khác khi lỗi hay ảnh áo chưa đạt; sửa prompt/tham chiếu trên cùng tuyến. Cấu hình `NINEROUTER_IMAGE_MODEL` vẫn là override tường minh của operator; không thấy override hiện hữu trong các file env đã kiểm.

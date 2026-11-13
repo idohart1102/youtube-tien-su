@@ -178,6 +178,18 @@ if (chunk && chunk < composition.durationInFrames) {
   const total = composition.durationInFrames;
   const parts = [], next = {};
   let reused = 0;
+  // --max-new-ratio R (produce.py, bản 2.0): khi đã chạm trần render chỉ cho sửa nhỏ; quá R phần đoạn phải render mới thì dừng trước khi render
+  if (process.argv.includes('--max-new-ratio')) {
+    const R = Number(process.argv[process.argv.indexOf('--max-new-ratio') + 1]);
+    let n = 0, k = 0;
+    for (let a = 0, i = 0; a < total; a += chunk, i++, k++) {
+      const h = chunkHash(a, Math.min(total, a + chunk) - 1, total);
+      const f = man[i] && path.join(work, man[i].file);
+      if (!(man[i]?.hash === h && f && fs.existsSync(f))) n++;
+    }
+    console.log(`Đoạn cần render mới: ${n}/${k} (giới hạn sửa nhỏ ${Math.round(R * 100)}%)`);
+    if (n > Math.max(1, Math.floor(R * k))) { console.error('Không phải sửa nhỏ: quá nhiều đoạn đổi, cần Sếp cho render thêm (--sep)'); process.exit(3); }
+  }
   for (let a = 0, i = 0; a < total; a += chunk, i++) {
     const b = Math.min(total, a + chunk) - 1;
     const h = chunkHash(a, b, total);

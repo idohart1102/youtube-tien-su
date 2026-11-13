@@ -8,3 +8,5 @@ scipy>=1.11
 sudachipy==0.7.0
 sudachidict-core==20261015
 pillow-avif-plugin==1.6.0
+rembg==2.0.67
+onnxruntime>=1.18

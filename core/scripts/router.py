@@ -1,15 +1,15 @@
-"""Gọi 9router trên máy (OpenAI-compatible): tạo ảnh cx/gpt-image-2.5-sunburst và hỏi model có tìm web.
-9router không tạo được ảnh thì tự chuyển Codex CLI cho hết lượt chạy.
+"""Gọi 9router trên máy (OpenAI-compatible): tạo ảnh cx/gpt-image-2.6-sunburst và hỏi model có tìm web.
+Ảnh lỗi thì báo lỗi từ 9router, không tự chuyển backend/model khác.
 Key: NINEROUTER_API_KEY trong .env, nếu không có thì đọc ~/.9router/db/data.sqlite (chỉ đọc).
 Có 2 key cùng bật thì đặt NINEROUTER_KEY_NAME=<tên key> trong .env để chọn đúng key."""
-import base64, io, json, os, sqlite3, subprocess, tempfile, time
+import base64, io, json, os, sqlite3, time
 from pathlib import Path
 import requests
 from paths import load_env, machine
 
 load_env()
 BASE = machine().get("router_url", "http://localhost:20128/v1").rstrip("/")
-IMAGE_MODEL = os.environ.get("NINEROUTER_IMAGE_MODEL", "cx/gpt-image-2.5-sunburst")
+IMAGE_MODEL = os.environ.get("NINEROUTER_IMAGE_MODEL", "cx/gpt-image-2.6-sunburst")
 SEARCH_MODEL = os.environ.get("NINEROUTER_SEARCH_MODEL", "cx/gpt-6.1-sol")
 
 
@@ -57,40 +57,14 @@ def _image_9router(prompt, transparent, size):
         r.raise_for_status()
         data = r.content
     from PIL import Image
-    Image.open(io.BytesIO(data)).verify()  # hỏng thì báo lỗi ở đây để image() chuyển Codex CLI
+    Image.open(io.BytesIO(data)).verify()  # ảnh hỏng thì báo lỗi cho caller
     return data
 
-
-def _image_codex(prompt, transparent, size):
-    """Tạo ảnh bằng công cụ tạo ảnh của Codex CLI."""
-    from PIL import Image
-    w, h = (int(x) for x in size.split("x"))
-    shape = "wide 16:9 landscape" if w > h else "square"
-    back = " The PNG must have a real alpha channel with a fully transparent background." if transparent else ""
-    task = f"Use the image generation tool to create exactly one {shape} image, then save it as out.png in the current directory. Reply only with the file name.{back}\nImage prompt: {prompt}"
-    with tempfile.TemporaryDirectory() as td:
-        subprocess.run(["codex", "exec", "--skip-git-repo-check", "--ephemeral", "-s", "workspace-write", "-C", td, task],
-                       stdin=subprocess.DEVNULL, capture_output=True, timeout=600, check=True)
-        data = (Path(td) / "out.png").read_bytes()
-    im = Image.open(io.BytesIO(data))
-    if transparent and (im.mode != "RGBA" or im.getextrema()[3][0] == 255):
-        raise RuntimeError("Codex CLI trả về ảnh không có nền trong suốt")
-    return data
-
-
-_image_down = False  # 9router đã lỗi thì không chờ thử lại cho từng ảnh trong lượt chạy này
 
 
 def image(prompt, transparent=False, size="1536x1024"):
-    """Trả về bytes PNG. Kích thước thật có thể khác size yêu cầu, script gọi tự cắt lại."""
-    global _image_down
-    if not _image_down:
-        try:
-            return _image_9router(prompt, transparent, size)
-        except (Exception, SystemExit) as e:
-            _image_down = True
-            print(f"9router không tạo được ảnh, chuyển Codex CLI: {str(e)[:200]}", flush=True)
-    return _image_codex(prompt, transparent, size)
+    """Trả bytes PNG qua 9router; không tự đổi model/provider khi lỗi."""
+    return _image_9router(prompt, transparent, size)
 
 
 def ask(prompt, web=True):

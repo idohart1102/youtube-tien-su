@@ -141,8 +141,8 @@ RIÊNG DUYỆT NHÁP, kiểm từng ô:
 4. chu-nho / chu-cat-mep / chu-chong: chữ trong sơ đồ, bản đồ hoặc ảnh không đọc được trên điện thoại, chữ bị cắt mép, nhãn đè nhau, hai khối chữ nội dung cùng lúc (không tính phụ đề).
 5. so-de-chi-tiet: thẻ số liệu hoặc chữ đè lên chủ thể hoặc chi tiết quan trọng đang được nói tới; phụ đề đè mặt hoặc thân chủ thể.
 6. chinh-ta: chữ trên hình sai chính tả hoặc thiếu dấu.
-7. anh-loi, cutout-loi: chữ rác, sai giải phẫu, cutout bị cắt thân, viền, lơ lửng, ánh sáng hoặc tông màu của cutout/ảnh ghép không khớp nền (ghép lệch sáng là cutout-loi).
-8. ban-do: bản đồ có Việt Nam mà thiếu Hoàng Sa hoặc Trường Sa trong khung; tô cùng màu Việt Nam với nước láng giềng làm chấm địa điểm trông như nằm sai nước.
+7. anh-loi, cutout-loi: chữ rác, sai giải phẫu, cutout bị cắt thân, viền trắng tinh hoặc viền đứt, quầng bẩn (viền mảnh màu giấy theo nền là cố ý), lơ lửng, ánh sáng hoặc tông màu của cutout/ảnh ghép không khớp nền (ghép lệch sáng là cutout-loi).
+8. ban-do: bản đồ có Việt Nam mà thiếu hình quần đảo Hoàng Sa hoặc Trường Sa trong khung (không ghi chữ tên đảo là cố ý, không báo); tô cùng màu Việt Nam với nước láng giềng làm chấm địa điểm trông như nằm sai nước.
 9. mau: cả cảnh ám vàng, cam hoặc sepia khi chủ đề không cần; sương/khói thành dải sáng nằm ngang che hình.
 Mức (cùng thang với QC video): cao = phải sửa trước khi render: sai fact, asset hỏng, chữ không đọc được (chu-nho, chu-cat-mep), lỗi bản đồ, lộ đáp án, chữ nhắc AI. vừa = thấy rõ. thấp = trau chuốt.
 Thẻ chữ không phải số liệu hoặc tên quan trọng là thừa (vừa). Đom đóm không hợp cảnh là lỗi (vừa).
@@ -168,6 +168,9 @@ def sheet(part, k, cols):
 
 # Mã băm từng cảnh: đổi props, asset, lời đọc, câu hỏi đang mở, mã nguồn component hoặc luật chấm thì chấm lại cảnh đó
 def file_sig(p):
+    if p.is_dir():  # sprite rig: base là thư mục khung hình, băm rig.json và danh sách khung
+        rig = p / "rig.json"
+        return hashlib.sha256(((status.file_sha(rig) if rig.exists() else "") + "|".join(sorted(str(f.relative_to(p)) for f in p.rglob("*.webp")))).encode()).hexdigest()
     return status.file_sha(p) if p.exists() else "thiếu"
 
 

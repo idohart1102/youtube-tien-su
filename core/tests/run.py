@@ -171,17 +171,22 @@ def test_gates(d):
         r2 = review.ask_json_cached(cache, "k", "p", [])
     finally:
         review.ask_images = old
-    img_calls, old_post, old_img = [], review.router._post, review.router._image_codex
+    img_calls, old_post = [], review.router._post
 
     def down(*x, **k):
         img_calls.append("9router")
         raise RuntimeError("9router không sẵn sàng")
-    review.router._post, review.router._image_codex = down, lambda *x, **k: (img_calls.append("codex"), b"png")[1]
+    review.router._post = down
+    errors = []
     try:
-        got = [review.router.image("p"), review.router.image("p")]
+        for _ in range(2):
+            try:
+                review.router.image("p")
+            except RuntimeError as error:
+                errors.append(str(error))
     finally:
-        review.router._post, review.router._image_codex, review.router._image_down = old_post, old_img, False
-    check("9router không tạo được ảnh thì chuyển Codex CLI, không thử lại từng ảnh", got == [b"png", b"png"] and img_calls == ["9router", "codex", "codex"], str(img_calls))
+        review.router._post = old_post
+    check("ảnh lỗi trả nguyên tuyến, không tự đổi model/provider", len(errors) == 2 and img_calls == ["9router", "9router"], str(img_calls))
     old_ask, old_codex = review.router.ask, review._via_codex
 
     def no_key(*x, **k):
@@ -353,7 +358,7 @@ def test_scene_rules():
         check("bắt ≥ 90% cảnh lỗi tập 1", len(got) >= 0.9 * len(exp["expect"]), f"{len(got)}/{len(exp['expect'])}, sót {miss}")
         sys.path.insert(0, str(SCRIPTS))
         import geo
-        check("mẫu bản đồ vn, dna, asia đủ Hoàng Sa và Trường Sa", all(not geo.island_problems({"preset": k}) for k in geo.PRESETS))
+        check("mẫu bản đồ vn, dna, asia, sunda đủ Hoàng Sa và Trường Sa", all(not geo.island_problems({"preset": k}) for k in geo.PRESETS))
         # HT-10: cảnh dựng bằng scene_dsl mặc định không vi phạm luật bản đồ, sương, dải phụ đề
         (ep / "scene_plan.py").write_text('st([0, 0], "bg", "in", ["leaves"], [L("nguoi", 900, 1000, 430)])\n'
                                           'gm([1, 1], "vn", [(103.41, 20.21, "Huà Phăn, Lào", 0.4)], highlight=["418"])\n'
@@ -383,6 +388,7 @@ if __name__ == "__main__":
     made = []
     make_shared_assets.ensure()
     try:
+        run(PY, ROOT / "core/tests/test_router_images.py")
         if "--smoke" in sys.argv:
             made.append(test_en(3))
         else:

@@ -7,11 +7,12 @@ import { clamp, ease, ramp } from '../lib/lib';
 import { SceneProps, Svg, useTheme, fontOf, tr } from './common';
 import PRESETS from '../lib/map_presets.json';
 
-// Bản đồ hiện đại dựng từ dữ liệu Natural Earth (không dùng ảnh AI). Luôn vẽ quần đảo Hoàng Sa, Trường Sa và nhãn Biển Đông khi nằm trong khung.
+// Bản đồ hiện đại dựng từ dữ liệu Natural Earth (không dùng ảnh AI). Luôn vẽ quần đảo Hoàng Sa, Trường Sa (chỉ hình đảo, không chữ tên) và nhãn Biển Đông khi nằm trong khung.
 // Bản đồ thế giới (scale < 800) chỉ vẽ chấm đảo, không nhãn; scale < 1500 bỏ nhãn Biển Đông, nhãn đảo dời sang phải chấm.
-// props: preset ("vn" | "dna" | "asia", core/remotion/lib/map_presets.json, đã qua kiểm đảo) hoặc center [lon, lat] (mặc định [108, 14]), scale (mặc định 2200), cam ("in" | "out"),
+// props: preset ("vn" | "dna" | "asia" | "sunda", core/remotion/lib/map_presets.json, đã qua kiểm đảo) hoặc center [lon, lat] (mặc định [108, 14]), scale (mặc định 2200), cam ("in" | "out"),
 //   highlight: mã số ISO quốc gia (mặc định ["704"] = Việt Nam),
 //   markers: [{lon, lat, label, at_s}], arrows: [{from: [lon, lat], to: [lon, lat], at_s}] (tối đa 3 marker, 2 mũi tên)
+//   zones: [{pts: [[lon, lat], ...], at_s, color?}] (tối đa 4 vùng sơ đồ, ví dụ dải đá đỏ; tô mờ có gạch chéo, hiện dần)
 // Chữ tối thiểu 34 px ở khung 1080 (đọc được trên điện thoại). Nhãn đảo đặt trước, nhãn marker né nhãn đảo, né nhau và né dải phụ đề (y > 864).
 const SUB_Y = 840; // đường chân chữ cao nhất được phép, dưới đó là dải phụ đề
 const MIN_FONT = 34;
@@ -24,8 +25,10 @@ const ISLANDS: { key: string; lon: number; lat: number; dots: [number, number][]
 export const GeoMap: React.FC<SceneProps> = ({ dur, props }) => {
   const f = useCurrentFrame();
   const t = useTheme();
-  const k = ease(clamp(f / dur));
-  const zoom = props.cam === 'out' ? 1.08 - 0.08 * k : 1 + 0.08 * k;
+  // Camera trôi đều suốt cảnh (Sếp 2026-11-07): tuyến tính, không ease, để đầu/cuối cảnh không đứng yên; thêm trôi ngang nhẹ.
+  const k = clamp(f / dur);
+  const zoom = props.cam === 'out' ? 1.1 - 0.1 * k : 1 + 0.1 * k;
+  const driftX = (props.cam === 'out' ? 1 : -1) * 14 * k;
   const pre = (PRESETS as any)[props.preset || ''] || {};
   const center = props.center || pre.center || [108, 14];
   const scale = props.scale || pre.scale || 2200;
@@ -62,7 +65,9 @@ export const GeoMap: React.FC<SceneProps> = ({ dur, props }) => {
     placed.push([x, y, w]);
     return { is, c, x, y, w };
   });
-  const fixed: number[][] = isl.filter((a) => near && inView(a.c)).map((a) => [a.x, a.y, a.w]);
+  // Sếp 2026-11-07: chỉ vẽ hình 2 quần đảo, không ghi chữ tên đảo (theme.island_labels = true để bật lại)
+  const islLabels = (t as any).island_labels === true;
+  const fixed: number[][] = isl.filter((a) => islLabels && near && inView(a.c)).map((a) => [a.x, a.y, a.w]);
   // Chấm đảo cũng là vùng cấm của nhãn marker (khung bao các chấm + lề)
   for (const a of isl) {
     if (!inView(a.c)) continue;
@@ -73,11 +78,27 @@ export const GeoMap: React.FC<SceneProps> = ({ dur, props }) => {
   if (near && !mid && inView(sea)) fixed.push([sea[0], sea[1], textW(tr(t, 'biendong'), MIN_FONT)]);
   return (
     <AbsoluteFill style={{ background: '#121820' }}>
-      <Svg style={{ transform: `scale(${zoom})` }}>
+      <Svg style={{ transform: `translateX(${driftX}px) scale(${zoom})` }}>
         <path d={grat} fill="none" stroke={t.palette.fg} strokeOpacity={0.06} strokeWidth={1.5} />
         {land.map((c: any) => (
           <path key={c.id + c.d.length} d={c.d} fill={hi.includes(c.id) ? t.palette.accent : '#3b3128'} fillOpacity={hi.includes(c.id) ? 0.9 : 1} stroke={ink} strokeWidth={1.5} />
         ))}
+        <defs>
+          <pattern id="zoneHatch" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="18" stroke="#ffffff" strokeOpacity={0.35} strokeWidth={5} />
+          </pattern>
+        </defs>
+        {(props.zones || []).slice(0, 4).map((z: any, i: number) => {
+          const g = ramp(f, (z.at_s ?? 0.5) * 30, (z.at_s ?? 0.5) * 30 + 18);
+          const d = 'M' + (z.pts || []).map(([lo, la]: number[]) => P(lo, la).join(',')).join(' L') + ' Z';
+          const col = z.color || '#d2452f';
+          return (
+            <g key={'z' + i} opacity={g}>
+              <path d={d} fill={col} fillOpacity={0.75} stroke="#ffd9cf" strokeWidth={3} strokeLinejoin="round" />
+              <path d={d} fill="url(#zoneHatch)" />
+            </g>
+          );
+        })}
         {isl.map(({ is, c, x: lx, y: ly }) => {
           if (!inView(c)) return null;
           return (
@@ -86,7 +107,7 @@ export const GeoMap: React.FC<SceneProps> = ({ dur, props }) => {
                 const [x, y] = P(lon, lat);
                 return <circle key={i} cx={x} cy={y} r={4} fill={hi.includes('704') ? t.palette.accent : t.palette.fg} />;
               })}
-              {near ? label(tr(t, is.key), lx, ly, MIN_FONT, 1) : null}
+              {near && islLabels ? label(tr(t, is.key), lx, ly, MIN_FONT, 1) : null}
             </g>
           );
         })}
@@ -113,7 +134,9 @@ export const GeoMap: React.FC<SceneProps> = ({ dur, props }) => {
             const [x, y] = P(m.lon, m.lat);
             const w = textW(m.label || '', 36), h = 48;
             const cands = [[x, y - 30, 0], [x - w / 2 - 30, y + 12, 1], [x, y + 62, 1], [x + w / 2 + 30, y + 12, 1], [x - w / 2 - 20, y - 40, 1], [x + w / 2 + 20, y - 40, 1], [x, y - 84, 1], [x, y + 116, 1]];
-            const hit = (c: number[]) => boxes.some((b) => Math.abs(b[0] - c[0]) < (b[2] + w) / 2 + 8 && Math.abs(b[1] - c[1]) < h);
+            const others = pins.filter((_: any, j: number) => j !== ms.indexOf(m)); // chấm của marker khác cũng là vùng cấm
+            const hit = (c: number[]) => boxes.some((b) => Math.abs(b[0] - c[0]) < (b[2] + w) / 2 + 8 && Math.abs(b[1] - c[1]) < h)
+              || others.some(([px, py]: number[]) => Math.abs(px - c[0]) < w / 2 + 16 && py > c[1] - 44 && py < c[1] + 20);
             const fits = (c: number[]) => c[1] <= SUB_Y && c[1] >= 60 && c[0] - w / 2 >= 40 && c[0] + w / 2 <= 1880;
             const c = cands.find((k) => fits(k) && !hit(k)) || cands.find(fits) || cands[0];
             boxes.push([c[0], c[1], w]);

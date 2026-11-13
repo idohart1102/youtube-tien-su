@@ -2,7 +2,7 @@
 - {id: fact-source, rule: "Mọi con số và sự thật có nguồn", check: critic, gate: true, area: script}
 - {id: promise-match, rule: "Phần mở đầu giữ đúng lời hứa của tiêu đề và thumbnail", check: critic, gate: true, area: script}
 - {id: hidden-answer, rule: "Hình đáp án không lộ trước câu trả lời", check: lint, gate: true, area: visual}
-- {id: no-sticker, rule: "Cutout trong video không viền trắng", check: critic, gate: true, area: visual}
+- {id: no-sticker, rule: "Cutout có viền mảnh màu giấy theo nền, không viền trắng tinh, không quầng bẩn", check: critic, gate: true, area: visual}
 - {id: no-recon-tag, rule: "Không có thẻ Tái hiện", check: lint, gate: true, area: visual}
 - {id: vn-islands, rule: "Bản đồ có Việt Nam phải có Hoàng Sa, Trường Sa", check: critic, gate: true, area: map}
 - {id: photo-source, rule: "Tài liệu minh họa đúng nội dung, có nguồn ghi trong credits.json", check: critic, gate: true, area: visual}

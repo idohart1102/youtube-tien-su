@@ -17,8 +17,11 @@ MODE = {
     # Sếp 2026-11-06: chỉ chặn điều sai khách quan. Bản đồ thiếu Hoàng Sa/Trường Sa là chặn; còn lại là cảnh báo để người dựng tự xét.
     "ban-do-dao": "chan", "ban-do-to-mau": "canh-bao", "mist": "canh-bao", "phu-de-layer": "canh-bao", "phu-de-anh": "canh-bao",
     "anh-nho": "canh-bao", "tinh": "canh-bao", "giu-bo-cuc": "canh-bao", "region-cat": "canh-bao", "anh-nhieu-o": "canh-bao",
+    # Bản 2.0 (lỗi bản đồ tập Indonesia): vùng tay, tô cả nước nhiều đảo, chấm chồng hoặc ra ngoài khung là cảnh báo
+    "ban-do-vung": "canh-bao", "ban-do-cham": "canh-bao",
 }
 VN_NEIGHBORS = {"418", "116", "156"}  # Lào, Campuchia, Trung Quốc
+MULTI_ISLAND = {"360", "608", "458"}  # Indonesia, Philippines, Malaysia: tô cả nước là gồm cả đảo xa (Sulawesi, Papua, Sabah)
 CONTINUOUS_ATM = {"rain", "snow", "embers", "firerain", "ash", "leaves", "smoke", "mist", "fireflies", "debris"}
 _size = {}
 
@@ -65,7 +68,7 @@ def photo_rect(ep, s, zones):
 
 def events(s):
     pr = s.get("props", {})
-    ts = [x.get("at_s") for k in ("cards", "badges", "annotate", "markers", "arrows", "layers", "items", "grade", "atmosphere") for x in pr.get(k, [])]
+    ts = [x.get("at_s") for k in ("cards", "badges", "annotate", "markers", "arrows", "zones", "layers", "items", "grade", "atmosphere") for x in pr.get(k, [])]
     ts += [x.get("unmask_s") for x in pr.get("layers", []) + pr.get("items", [])]
     ts += [k.get("at_s") for x in pr.get("layers", []) for k in x.get("path", [])]
     ts += [(pr.get(k) or {}).get("at_s") for k in ("spotlight", "shake", "quake")]
@@ -95,7 +98,7 @@ def moving(s):
     elif c in ("Stage", "Parallax"):
         rate = (0.06 if pr.get("cam", "in") in ("in", "out") else 80 / 1500) / d
     elif c == "GeoMap":
-        rate = 0.08 / d
+        rate = 0.1 / d  # camera tuyến tính từ 2026-11-07
     else:
         return True  # TitleCard, Collage, SizeCompare, GeoClock... có diễn biến riêng
     return rate >= 0.004  # hiệu chỉnh trên tập 1 bản cuối: chỉ còn 1:58 gần tĩnh, khớp render_check
@@ -117,6 +120,19 @@ def check(data, ep, plan=None, zones=None, asset_check=None):
             hi = set(map(str, pr.get("highlight", ["704"])))
             if pr.get("markers") and "704" in hi and hi & VN_NEIGHBORS:
                 out["ban-do-to-mau"].append((sid, f"Cảnh {sid} ({at}): tô cùng màu Việt Nam và nước láng giềng ({', '.join(sorted(hi & VN_NEIGHBORS))}) khi có chấm địa điểm: chỉ tô nước chứa địa điểm, ghi tên nước trong nhãn (bài học 82)"))
+            for z in pr.get("zones", []):
+                if 0 < len(z.get("pts", [])) < 12:
+                    out["ban-do-vung"].append((sid, f"Cảnh {sid} ({at}): vùng tô chỉ {len(z['pts'])} đỉnh, nhìn như đa giác vẽ tay; QC hay chấm sai phạm vi. Dùng đa giác bám bản đồ có nguồn hoặc chấm di chỉ"))
+                    break
+            many = hi & MULTI_ISLAND
+            if many:
+                out["ban-do-vung"].append((sid, f"Cảnh {sid} ({at}): tô cả nước nhiều đảo ({', '.join(sorted(many))}); lời chỉ nói một phần (vd thềm Sunda) thì đừng tô cả nước, dùng chấm di chỉ"))
+            ctr, sc = geo.view(pr)
+            pts = [geo.project(m["lon"], m["lat"], ctr, sc) for m in pr.get("markers", []) if "lon" in m and "lat" in m]
+            if any(not geo.on_screen(x, y, margin=60) or y > 864 for x, y in pts):
+                out["ban-do-cham"].append((sid, f"Cảnh {sid} ({at}): có chấm địa điểm ngoài khung hoặc trong dải phụ đề; đổi preset/center"))
+            elif any(abs(a[0] - b[0]) < 50 and abs(a[1] - b[1]) < 50 for i, a in enumerate(pts) for b in pts[i + 1:]):
+                out["ban-do-cham"].append((sid, f"Cảnh {sid} ({at}): 2 chấm cách nhau dưới 50 px, chồng nhau; phóng to (scale lớn hơn) hoặc tách cảnh"))
         # Sương/khói trên cảnh có nhân vật, layer chủ thể hoặc ảnh thật (bài học 87). Cảnh phong cảnh trống vẫn dùng được.
         fog = [a.get("type") for a in pr.get("atmosphere", []) if a.get("type") in ("mist", "smoke")]
         has_subject = c in ("PhotoCard", "KenBurns", "Collage", "FossilReveal") or any(not x.get("hide") for x in pr.get("layers", []))
@@ -130,8 +146,9 @@ def check(data, ep, plan=None, zones=None, asset_check=None):
                 # Stage phóng layer quanh focus theo độ sâu: chân ở y thật = (y - cy) * s + cy lúc cuối cảnh
                 cam = pr.get("cam", "in")
                 zoom = 0.06 if cam in ("in", "out") else 0.04 if cam in ("up", "down") else 0.02
-                k_s, cy = 1 + zoom * (1 + 2 * x.get("depth", 0.6)), (pr.get("focus") or [W / 2, H / 2])[1]
-                ys = [(yy - cy) * k_s + cy for yy in [x.get("y", H - 80)] + [k.get("y") for k in x.get("path", []) if k.get("y") is not None]]
+                dz = max(0, x.get("dz") or 0)  # đi lại gần: cuối cảnh to thêm dz, chân xuống thêm 160*dz
+                k_s, cy = (1 + zoom * (1 + 2 * x.get("depth", 0.6))) * (1 + dz), (pr.get("focus") or [W / 2, H / 2])[1]
+                ys = [(yy + 160 * dz - cy) * k_s + cy for yy in [x.get("y", H - 80)] + [k.get("y") for k in x.get("path", []) if k.get("y") is not None]]
                 asp = x.get("aspect") or ((lambda wh: wh[0] / wh[1] if wh else 1)(size(ep, x["asset"]) if x.get("asset") else None))
                 half = (x.get("h") or 600) * asp / 2
                 xs = [x.get("x", W / 2)] + [k.get("x") for k in x.get("path", []) if k.get("x") is not None]

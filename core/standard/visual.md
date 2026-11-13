@@ -4,21 +4,32 @@ Bảng màu và font do kênh khai trong `theme.json`. Chữ hiển thị do kê
 ## Phong cách
 - Video storytelling dựng từ bối cảnh, asset và chuyển động. Phong cách ảnh chung cho mọi kênh: `art_style_prompt` trong theme.json là Semi-Realistic Paleoart Concept Art, giải phẫu đúng, ánh sáng điện ảnh, không có chữ trong ảnh AI.
 - Dùng `Stage`: 1 ảnh nền + cutout + lớp lá cận cảnh nhòe + không khí (sương, tàn lửa, mưa lửa, tro) + mặt nước gợn.
-- Cutout trong video không viền trắng, không thẻ "Tái hiện". Cutout phải hòa vào nền: bóng tiếp đất, chỉnh tone theo nền, viền sáng theo nguồn sáng, rìa đã làm sạch. `Stage` tự làm bóng tiếp đất, mép mềm và cân màu theo nền dưới chân (`stage_prep.py`, kênh tắt được ở `theme.json` mục `stage`). Ảnh ghép nhiều cutout phải cùng ánh sáng với nền.
+- Cutout trong video có viền mảnh (2-4 px) màu giấy ngả theo nền (Sếp 2026-11-07), không trắng tinh, không thẻ "Tái hiện". `Stage` tự vẽ viền theo `outline_auto` (`stage_prep.py`), lớp nhòe không viền, kênh tắt ở `theme.json` `stage.outline`. Cutout vẫn phải khớp nền: bóng tiếp đất, chỉnh tone theo nền, rìa đã làm sạch.
+- Ảnh thật (`PhotoCard`) đặt trên khung giấy cắt dán: màu giấy theo tông ảnh (`paper_auto`), vân giấy, nghiêng nhẹ, bóng đổ. Ảnh `fill` phủ kín khung, không khung. `Stage` tự làm bóng tiếp đất, mép mềm và cân màu theo nền dưới chân (`stage_prep.py`, kênh tắt được ở `theme.json` mục `stage`). Ảnh ghép nhiều cutout phải cùng ánh sáng với nền.
 - Sương, khói (`mist`, `smoke`) nên tránh trên cảnh có nhân vật, layer chủ thể hoặc ảnh thật: tập 1 QC thấy thành dải che hình (bài học 87). `Stage` vẽ sương sau nhân vật; `validate_scenes` chỉ cảnh báo. Thay bằng bụi, lá rơi hoặc đổi `grade`.
 - Hạn chế ám vàng: ảnh và màu chỉnh trong `Stage` giữ cân bằng trung tính, không phủ vàng, cam hay sepia toàn cảnh. Màu vàng chỉ dùng khi đó là màu thật của chi tiết trong ảnh, hoặc cảnh có lửa, dung nham, hoàng hôn theo nội dung.
 - Asset làm mới mỗi video. Nhân vật chính không lặp trong `no_repeat_species` video gần nhất.
-- Trong một video (Sếp chốt 2026-11-02): ảnh AI minh họa chung không dùng lại ở cảnh không liền kề, mỗi lần là 1 biến thể; nhân vật chính giữ đặc điểm nhưng mỗi cảnh 1 tư thế hoặc góc nhìn; chỉ nền địa điểm quay lại được dùng lại và phải đổi trạng thái hoặc hướng máy. Ảnh thật dùng lại thì đổi vùng phóng hoặc cách cắt.
+- Trong một video (Sếp 2026-11-07): cutout dùng lại được, mỗi lần đổi lật, cỡ, vị trí hoặc chuyển động; nhân vật chính giữ đặc điểm, có nhiều tư thế theo hành động. Mỗi ảnh nền AI tối đa 3 cảnh, lần quay lại đổi trạng thái hoặc hướng máy. Nhiều cutout: cảnh tái hiện có cutout ≥60% thời lượng, cảnh chính 2-3 cutout, gắn đối tượng lời đang nói. Ghép cutout có mặt đất đỡ, không đứng trên nước, đúng tỉ lệ thật. Nhân vật đang đi tiến theo hướng mặt, không trôi giật lùi. Ảnh thật dùng lại thì đổi vùng phóng hoặc cách cắt.
+- Nguồn cutout (Sếp 2026-11-07): AI tạo PNG trong suốt (mặc định), AI vẽ nền trơn rồi tách (dự phòng), ảnh thật tách nền chỉ cho hiện vật chụp nền sạch. Không vẽ AI giả hiện vật thật.
 - Tài liệu minh họa thật (ảnh, hình khoa học, bản đồ) tìm trên toàn internet bằng 9router `cx/gpt-6.1-sol`, không bắt buộc giấy phép. Giữ màu gốc, khung mảnh màu accent, ghi nguồn khi cần. Không dùng AI giả ảnh thật.
 
 ## Bốn dấu ấn của hệ thống
 1. **Xuyên lớp đất** (`props.strata_in`): chỉ dùng khi đổi thời đại, đi lên là về hiện tại, chìm xuống là về quá khứ. Có số đếm khi đổi mốc thời gian lớn.
 2. **Một chỗ đứng, nhiều trạng thái** (`props.grade`): một bối cảnh quay lại nhiều lần với trạng thái khác để thấy thời gian trôi.
 3. **Từ hóa thạch thành sinh vật** (`FossilReveal`): ảnh thật, viền vàng thoáng qua, con vật hiện dần, 1-2 lần mỗi video. Nhãn ghi rõ loài và nơi tìm thấy.
-4. **Một nhân vật xuyên suốt:** theo một con vật cụ thể qua câu chuyện, cử động bằng rig từ một ảnh gốc.
+4. **Một nhân vật xuyên suốt:** theo một con vật cụ thể qua câu chuyện, mỗi cảnh 1 tư thế, cử động bằng motion/path/drift.
+   Mỗi tập khai dàn nhân vật (`cast`, Sếp 2026-11-06): tách cutout nhiều nhất có thể; không rig (Sếp 2026-11-07), mọi asset chỉ cho chuyển động (`motion`, `path`, `drift`, `wind`); không vẽ nhân vật chính, phụ chung vào ảnh nền.
 
 ## Chuyển động
-- Mỗi cảnh 1 chuyển động máy, tối đa 1 hiệu ứng chính, chỉ nhân vật chính có chuyển động lặp. Hai cảnh liền nhau khác hướng máy. Zoom không quá 1,08.
+- Mỗi cảnh 1 chuyển động máy, tối đa 1 hiệu ứng chính. Mọi nhân vật trên cảnh đều cử động (Sếp 2026-11-06): nhân vật chính rõ nhất, nhân vật phụ nhẹ hơn và khác kiểu để không cùng nhịp. Hai cảnh liền nhau khác hướng máy. Zoom không quá 1,08.
+- Chuyển động asset theo bối cảnh và tình huống (Sếp 2026-11-07), không dùng một kiểu cho mọi cảnh. Chọn 4 thứ theo lời đọc: kiểu (`breathe`, `sway`, `bob`, `walk`, `run`), độ mạnh (`amp` 0,5-2), hướng ngang (`drift`, cùng hướng mặt), xa gần (`dz`: + đi lại gần máy, - đi ra xa; `depth` gần thì lệch theo máy nhiều).
+  - Con vật lớn, cảnh rộng, yên bình: `walk` amp 0,5-0,8, drift chậm 80-160, depth 0,5-0,7.
+  - Săn mồi, lao tới, hoảng loạn, chạy trốn: `run` amp 1,3-1,8, drift 300-500 hoặc dz +0,2-0,35 (lao về phía máy).
+  - Rời đi, kết chặng, biến mất: `walk`, dz -0,15 đến -0,3, drift về phía mép.
+  - Xuất hiện, được giới thiệu: dz +0,1-0,15 kèm walk nhẹ.
+  - Người làm việc tại chỗ (đào, ghi chép, quan sát): `breathe` amp 0,6-1, không drift; người đi tìm, khảo sát: `walk` amp 0,8, drift 120-220.
+  - Sinh vật biển, bay: `bob` amp 1-1,5, `float`, `path` cong. Cây, cỏ: `sway` amp 0,4-0,8. Xương, đá, công cụ: không motion, `path` trôi chậm.
+  - Nhân vật chính cử động rõ hơn nhân vật phụ; 2 cảnh liền nhau không lặp cùng kiểu và cùng hướng.
 - Rung tối đa 3 lần mỗi video. Một hiệu ứng không dùng quá 15% số cảnh.
 - Chừa dải phụ đề: chủ thể (người, vật, mặt sọ) không nằm trong 1/5 dưới khung (y > 864), kể cả lúc máy phóng to (bài học 90). Ảnh dọc phóng to phải kiểm phụ đề không đè mặt.
 - Câu hỏi chỉ minh họa bằng sự bí ẩn. Hình đáp án ẩn (`hide`) đến đúng câu trả lời. Mọi câu hỏi gắn `[HỎI]/[ĐÁP]` hoặc `[TU-TỪ]`.
@@ -46,12 +57,14 @@ Bảng màu và font do kênh khai trong `theme.json`. Chữ hiển thị do kê
 - Không chú thích bất kỳ nội dung nào về việc dùng AI trong video: không dòng ghi chú AI, không chữ hay lời đọc nhắc tới AI (Sếp 2026-11-03). Kênh không khai `lang.labels.ai_notice`.
 
 ## Bản đồ
-- Có Việt Nam hoặc liên quan đến Việt Nam: luôn có Hoàng Sa, Trường Sa trong khung (bài học 86, 88). Dùng mẫu `preset` của `GeoMap` (`vn`, `dna`, `asia`, đã qua kiểm đảo); tự đặt khung thì `validate_scenes` chặn khi thiếu đảo.
+- Có Việt Nam hoặc liên quan đến Việt Nam: luôn có hình quần đảo Hoàng Sa, Trường Sa trong khung (bài học 86, 88), không ghi chữ tên đảo (Sếp 2026-11-07). Dùng mẫu `preset` của `GeoMap` (`vn`, `dna`, `asia`, `sunda`, đã qua kiểm đảo); tự đặt khung thì `validate_scenes` chặn khi thiếu đảo.
 - Chỉ tô màu nước chứa địa điểm đang nói, không tô cùng màu Việt Nam với nước láng giềng khi có chấm địa điểm; ghi tên nước trong nhãn chấm, ví dụ "Hang Cốc Muối, Việt Nam" (bài học 82).
 - Chữ bản đồ tối thiểu 34 px ở khung 1080, nhãn tự né nhau và né dải phụ đề.
+- Chấm địa danh lấy từ `knowledge/places.json` (tọa độ có nguồn), gọi theo tên trong `gm`; địa danh vùng hoặc hướng (Tây Bắc, tây Quảng Bình) tô `zones`, không dùng chấm. Camera bản đồ trôi đều suốt cảnh (Sếp 2026-11-07).
 - Tên địa danh theo ngôn ngữ của kênh, khai ở `lang.labels`. Bản đồ khác dùng `GeoMap` chung.
 - Không vẽ đường yêu sách lên vùng biển của nước khác.
 - Bản đồ cổ phải xem ảnh trước khi dùng: không nhận ảnh có chú giải riêng của bài báo.
+- Vùng tô (`zones`) không vẽ đa giác tay ít đỉnh cho thềm lục địa hay vùng phân bố; dùng đa giác bám bản đồ có nguồn, hoặc chấm di chỉ. Lời chỉ nói một phần nước nhiều đảo (Indonesia, Philippines, Malaysia) thì không `highlight` cả nước (bài học 126, 127). Máy cảnh báo `ban-do-vung`, `ban-do-cham`.
 
 ## Âm thanh
 - Giọng lớn hơn nhạc nền 18-20 dB (`scenes.json`: `music: {asset, db: -19}`). Kênh có mục `music` trong `channel.yaml`: `produce.py` tự chọn ngẫu nhiên 1 bản trong kho, lặp hết video, chỉnh theo `db` của kênh, không ghi tay. Nhạc phải có giấy phép dùng thương mại. Không nhạc horror, không jump-scare.

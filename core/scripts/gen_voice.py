@@ -1,6 +1,6 @@
 """script.md → audio/voice.mp3 + audio/voice.srt qua API TTS dùng chung, theo mục tts trong channel.yaml. Kênh không có mục tts thì Sếp gửi audio.
 Dùng: python core/scripts/gen_voice.py <episode_dir> [--replace]. Mỗi lần tạo tốn credit; yêu cầu trùng hệt được dịch vụ dùng lại, không tính tiền.
-KingCong có thể trả srt một dòng dài cho cả đoạn. Khi đó thời gian mỗi câu tính theo độ dài câu rồi bám vào khoảng lặng thật trong audio; srt gốc lưu ở audio/voice.kingcong.txt.
+KingCong thiếu srt thì dựng bằng `tts align` (Whisper) tại máy, không có thì ghép khoảng lặng. KingCong có thể trả srt một dòng dài cho cả đoạn. Khi đó thời gian mỗi câu tính theo độ dài câu rồi bám vào khoảng lặng thật trong audio; srt gốc lưu ở audio/voice.kingcong.txt.
 Địa chỉ API: biến TTS_URL, mặc định http://127.0.0.1:8791."""
 import argparse, json, os, re, subprocess, sys, time, urllib.error, urllib.request
 from pathlib import Path
@@ -76,6 +76,17 @@ def sentence_cues(text, split_re, count, dur, gaps):
     return body, len(cues), snapped
 
 
+def whisper_srt(voice, script, audio_dir):
+    """srt từ Whisper qua lệnh tts align (skill tts dùng chung); không có lệnh hoặc lỗi thì trả None."""
+    import shutil
+    exe = shutil.which("tts")
+    if not exe:
+        return None
+    out = audio_dir / "voice.align.srt"
+    r = subprocess.run([exe, "align", "--audio", str(voice), "--text", str(script), "--out", str(out)], capture_output=True, text=True)
+    return out.read_text(encoding="utf-8-sig") if r.returncode == 0 and out.exists() else None
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("episode")
@@ -98,7 +109,7 @@ def main():
         sys.exit(f"Tập đang chờ Sếp ({status.read(ep)['can_sep']}): không tạo giọng cho tới khi Sếp quyết và xóa cờ can_sep.")
     if not args.force and sb.exists():
         import review
-        rows = [json.loads(q.read_text(encoding="utf-8")) for q in (ep / "qa").glob("script_v*.json")]
+        rows = [json.loads(q.read_text(encoding="utf-8")) for q in (ep / "qa").glob("script_v*.json") if not q.name.endswith(".raw.json")]
         rows = [x for x in rows if x.get("file") == "storyboard.md"]
         ok = [x for x in rows if not x["gates_failed"] and not x["fact_errors"] and x["pct"] >= 80]
         if len(rows) >= 5:
@@ -112,6 +123,11 @@ def main():
     voice, srt = audio_dir / "voice.mp3", audio_dir / "voice.srt"
     if (voice.exists() or srt.exists()) and not args.replace:
         sys.exit("Tập đã có audio. Muốn thay thì thêm --replace.")
+    # Bản 2.0: ước độ dài trước khi tốn credit (độ dài kênh 10-20 phút, Sếp 2026-11-03)
+    est = chan.speech(cfg).count(script.read_text(encoding="utf-8")) / cfg["lang"]["pace"]["per_min"]
+    if est < cfg.get("min_minutes", 10) and not args.force:
+        sys.exit(f"Kịch bản ước {est:.1f} phút, dưới {cfg.get('min_minutes', 10)} phút: viết thêm trước khi tạo giọng (tốn credit). --force chỉ khi Sếp yêu cầu.")
+    print(f"Ước độ dài: {est:.1f} phút")
     base = load_env().get("TTS_URL", os.environ.get("TTS_URL", "http://127.0.0.1:8791")).rstrip("/")
     text = script.read_text(encoding="utf-8")
     body = {"text": text, "project": tts["project"], "provider": tts["provider"], "model_id": tts["model_id"],
@@ -124,12 +140,19 @@ def main():
         job = json.loads(call(base, "GET", f"/v1/jobs/{job['id']}"))
     if job["state"] != "done":
         sys.exit(f"Job {job['id']} ở trạng thái {job['state']}: {job.get('error')}. Không tự gửi lại vì có thể đã bị trừ credit; báo Sếp.")
-    if not job.get("srt_url"):
-        sys.exit(f"Job {job['id']} không có phụ đề: {job.get('error')}")
     audio_dir.mkdir(parents=True, exist_ok=True)
-    voice.write_bytes(call(base, "GET", job["audio_url"]))
-    raw = call(base, "GET", job["srt_url"]).decode("utf-8-sig")
+    voice.write_bytes(call(base, "GET", job["audio_url"]))  # đã trừ credit: luôn lấy audio, kể cả khi thiếu srt
     dur, gaps = media_info(voice)
+    if job.get("srt_url"):
+        raw = call(base, "GET", job["srt_url"]).decode("utf-8-sig")
+    else:  # bản 2.0 (bài học 80, 123): KingCong thiếu srt thì dựng bằng Whisper tại máy, không gửi lại job
+        raw = whisper_srt(voice, script, audio_dir) or ""
+        if not raw:
+            raw, n, snapped = sentence_cues(text, cfg["lang"]["sentence_split"], chan.speech(cfg).count, dur, gaps)
+            srt.write_text(raw, encoding="utf-8")
+            print(f"audio/voice.mp3 {dur:.1f} giây, KingCong thiếu srt, không có tts align: srt ghép khoảng lặng ({n} câu, có thể trôi vài giây), job {job['id']}")
+            return
+        print("KingCong thiếu srt: đã dựng srt bằng tts align (Whisper, miễn phí)")
     longest = max(cue_lengths(raw) or [dur])
     note = f"srt gốc, cue dài nhất {longest:.1f} giây"
     if longest > MAX_CUE_S:

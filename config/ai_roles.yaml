@@ -4,7 +4,7 @@
 models:
   claude: claude-opus-5-5
   9router_text: cx/gpt-6.1-sol
-  9router_image: cx/gpt-image-2.5-sunburst
+  9router_image: cx/gpt-image-2.6-sunburst
 roles:
   orchestrator: {ai: claude, backup: codex, does: "Điều phối, cập nhật status.yaml, báo Sếp"}
   researcher:   {ai: claude, backup: codex, does: "Nghiên cứu kênh và đề tài, dùng vidIQ"}

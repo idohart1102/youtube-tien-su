@@ -14,6 +14,7 @@ from paths import ROOT
 STAGES = ["brief", "script", "audio", "assets", "build", "render", "qc", "package", "publish", "done"]
 DEFAULT = {"stage": "brief", "owner": "", "approved": {"brief": None, "final": None}, "species": [], "qc_rounds": 0, "publish": {}, "publish_date": "", "brief_sha": "", "final_sha": "", "note": "", "can_sep": "", "renders": 0}
 MAX_RENDERS = 3  # render đầy đủ lần đầu + tối đa 2 lần render lại (core/roles/approver.md)
+MAX_SMALL, SMALL_RATIO = 3, 0.25  # bản 2.0: lần render chỉ dựng mới ≤25% số đoạn là sửa nhỏ, không tính trần; tối đa 3 lần/tập
 
 
 def read(ep):

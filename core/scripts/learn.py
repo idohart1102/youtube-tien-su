@@ -76,7 +76,7 @@ VIDEO_DEFECTS = {
     "chu-cat-mep": "Chữ, nhãn và sơ đồ nằm trọn trong vùng an toàn, không bị cắt mép",
     "chu-chong": "Nhãn không đè nhau; mỗi lúc chỉ một khối chữ, không trùng lúc với phụ đề",
     "chinh-ta": "Chữ trên màn hình đúng chính tả và đủ dấu theo ngôn ngữ kênh",
-    "cutout-loi": "Cutout đủ thân, không viền, không bị cắt ngang, chân chạm đất, ánh sáng khớp nền",
+    "cutout-loi": "Cutout đủ thân, viền màu giấy theo nền (không trắng tinh), không bị cắt ngang, chân chạm đất, ánh sáng khớp nền",
     "anh-loi": "Ảnh không có chữ rác, sai giải phẫu, sai thời kỳ hoặc vật thể lạ",
     "ban-do": "Bản đồ đúng địa lý, có Hoàng Sa, Trường Sa khi có Việt Nam, không có đường yêu sách biển",
     "lap-nhip": "Không giữ một bố cục quá lâu hoặc lặp cùng ý máy nhiều cảnh liền",

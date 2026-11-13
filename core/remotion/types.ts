@@ -10,7 +10,7 @@ export type Theme = {
   vignette?: number;
   subtitles?: boolean;
   // Stage: cân màu layer theo nền (tone_auto do stage_prep.py tính), bóng tiếp đất mặc định, mép mềm. Mặc định bật, kênh tắt bằng false.
-  stage?: { auto_tone?: boolean; ground_shadow?: boolean; soft_edge?: boolean };
+  stage?: { auto_tone?: boolean; ground_shadow?: boolean; soft_edge?: boolean; outline?: boolean };
 };
 
 export type Scene = {

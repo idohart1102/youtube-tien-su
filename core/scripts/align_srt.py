@@ -308,6 +308,10 @@ for s in sc:
     pr = s.setdefault("props", {})
     if s["component"] == "PhotoCard" and not pr.get("credit") and s.get("asset") in credits:
         pr["credit"] = credits[s["asset"]]["credit"]
+    if s["component"] in ("Stage", "Parallax") and not pr.get("credit"):  # cutout tách từ ảnh thật (cut_real.py): hiện nguồn ảnh gốc
+        cs = [credits[l["asset"]]["credit"] for l in pr.get("layers", []) if l.get("asset") in credits and credits[l["asset"]].get("credit")]
+        if cs:
+            pr["credit"] = " · ".join(dict.fromkeys(cs))
     for it in pr.get("items", []):
         if it.get("photo") and not it.get("credit") and it.get("asset") in credits:
             it["credit"] = credits[it["asset"]]["credit"]

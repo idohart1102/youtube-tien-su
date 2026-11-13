@@ -34,6 +34,7 @@ plan = json.loads((ep / "asset_plan.json").read_text(encoding="utf-8"))
 theme = json.loads((ep.parents[1] / "theme.json").read_text(encoding="utf-8"))
 STYLE = theme.get("art_style_prompt", "")
 SPECIES = plan.get("species", {})
+GROUND = "leave a clear open stretch of solid walkable ground in the lower-middle foreground where characters will be added later, " if any(x.get("role") == "cutout" for x in plan.get("assets", [])) else ""  # Sếp 2026-11-07: cutout cần mặt đất đỡ
 SETTING = plan.get("setting", "")  # asset_plan.json: "setting" thêm vào mọi ảnh nền AI, để AI không tự vẽ biển, rừng... sai thời kỳ
 redo = set(filter(None, a.redo.split(",")))
 UA = {"User-Agent": "youtube-tien-su-asset-bot/1.0 (https://github.com/idohart1102/youtube-tien-su; education channel)"}
@@ -128,7 +129,15 @@ def make_ai(x, n, fix):
     sp = SPECIES.get(x.get("species", ""), "")
     tail = f" Avoid these problems seen before: {fix}." if fix else ""
     f = CAND / f"{x['id']}-{n}.png"
-    if x.get("role") == "cutout":
+    if x.get("role") == "cutout" and (n > 3 or x.get("cut_method") == "bg"):
+        # Dự phòng (Sếp 2026-11-07): PNG trong suốt 3 lần chưa đạt, hoặc cần ánh sáng đặc biệt (cut_method: "bg"):
+        # vẽ trên nền trơn một màu rồi tách nền (rembg), ánh sáng tự nhiên hơn.
+        prompt = (f"{x['prompt']}. {sp} {STYLE}. {NEUTRAL}. Single subject, entire body visible with wide margin, "
+                  f"on a plain flat uniform light grey studio backdrop, no ground, no props, no cast shadow, no text, no letters, no watermark.{tail}")
+        from rembg import remove, new_session
+        raw = Image.open(io.BytesIO(router.image(prompt))).convert("RGB")
+        crop_cutout(remove(raw, session=new_session("isnet-general-use"), post_process_mask=True)).save(f)
+    elif x.get("role") == "cutout":
         prompt = (f"{x['prompt']}. {sp} {STYLE}. {NEUTRAL}. Single subject, entire body visible with margin, "
                   f"isolated on a fully transparent background, no ground, no cast shadow, no text, no letters, no watermark.{tail}")
         crop_cutout(Image.open(io.BytesIO(router.image(prompt, transparent=True)))).save(f)
@@ -136,7 +145,7 @@ def make_ai(x, n, fix):
         setting = x.get("setting", SETTING)  # bối cảnh chung của tập (vd: thung lũng sông, no sea); mục riêng ghi "setting": "" để bỏ
         setting = f" Setting: {setting}." if setting else ""
         prompt = (f"{x['prompt']}.{setting} {sp} {STYLE}. {NEUTRAL}. {'Tall vertical 9:16' if TALL else 'Wide 16:9'} cinematic composition, keep the main subject inside the central area, "
-                  f"leave calm areas for overlays, no text, no letters, no logos, no watermark.{tail}")
+                  f"leave calm areas for overlays, {GROUND}no text, no letters, no logos, no watermark.{tail}")
         fit_bg(Image.open(io.BytesIO(router.image(prompt, size="1024x1536") if TALL else router.image(prompt)))).save(f)
     return f
 
