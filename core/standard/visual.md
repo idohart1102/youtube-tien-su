@@ -57,13 +57,14 @@ Bảng màu và font do kênh khai trong `theme.json`. Chữ hiển thị do kê
 - Không chú thích bất kỳ nội dung nào về việc dùng AI trong video: không dòng ghi chú AI, không chữ hay lời đọc nhắc tới AI (Sếp 2026-11-03). Kênh không khai `lang.labels.ai_notice`.
 
 ## Bản đồ
-- Có Việt Nam hoặc liên quan đến Việt Nam: luôn có hình quần đảo Hoàng Sa, Trường Sa trong khung (bài học 86, 88), không ghi chữ tên đảo (Sếp 2026-11-07). Dùng mẫu `preset` của `GeoMap` (`vn`, `dna`, `asia`, đã qua kiểm đảo); tự đặt khung thì `validate_scenes` chặn khi thiếu đảo.
+- Có Việt Nam hoặc liên quan đến Việt Nam: luôn có hình quần đảo Hoàng Sa, Trường Sa trong khung (bài học 86, 88), không ghi chữ tên đảo (Sếp 2026-11-07). Dùng mẫu `preset` của `GeoMap` (`vn`, `dna`, `asia`, `sunda`, đã qua kiểm đảo); tự đặt khung thì `validate_scenes` chặn khi thiếu đảo.
 - Chỉ tô màu nước chứa địa điểm đang nói, không tô cùng màu Việt Nam với nước láng giềng khi có chấm địa điểm; ghi tên nước trong nhãn chấm, ví dụ "Hang Cốc Muối, Việt Nam" (bài học 82).
 - Chữ bản đồ tối thiểu 34 px ở khung 1080, nhãn tự né nhau và né dải phụ đề.
 - Chấm địa danh lấy từ `knowledge/places.json` (tọa độ có nguồn), gọi theo tên trong `gm`; địa danh vùng hoặc hướng (Tây Bắc, tây Quảng Bình) tô `zones`, không dùng chấm. Camera bản đồ trôi đều suốt cảnh (Sếp 2026-11-07).
 - Tên địa danh theo ngôn ngữ của kênh, khai ở `lang.labels`. Bản đồ khác dùng `GeoMap` chung.
 - Không vẽ đường yêu sách lên vùng biển của nước khác.
 - Bản đồ cổ phải xem ảnh trước khi dùng: không nhận ảnh có chú giải riêng của bài báo.
+- Vùng tô (`zones`) không vẽ đa giác tay ít đỉnh cho thềm lục địa hay vùng phân bố; dùng đa giác bám bản đồ có nguồn, hoặc chấm di chỉ. Lời chỉ nói một phần nước nhiều đảo (Indonesia, Philippines, Malaysia) thì không `highlight` cả nước (bài học 126, 127). Máy cảnh báo `ban-do-vung`, `ban-do-cham`.
 
 ## Âm thanh
 - Giọng lớn hơn nhạc nền 18-20 dB (`scenes.json`: `music: {asset, db: -19}`). Kênh có mục `music` trong `channel.yaml`: `produce.py` tự chọn ngẫu nhiên 1 bản trong kho, lặp hết video, chỉnh theo `db` của kênh, không ghi tay. Nhạc phải có giấy phép dùng thương mại. Không nhạc horror, không jump-scare.

@@ -2,19 +2,339 @@
  "fps": 30,
  "_note": "Dựng lại các cảnh lỗi thật của tập 1 (gen-denisova, precheck v1-v12, QC v1-v4). Kỳ vọng ở scenes_loi_tap1.expect.json. Ảnh do test tự tạo.",
  "scenes": [
-  {"id": "map-thieu-dao", "duration_s": 6, "component": "GeoMap", "props": {"center": [100, 22], "scale": 3000, "cam": "in", "markers": [{"lon": 103.41, "lat": 20.21, "label": "Huà Phăn, Lào", "at_s": 0.4}, {"lon": 105.0, "lat": 21.0, "label": "Sơn La", "at_s": 2.4}, {"lon": 102.0, "lat": 19.0, "label": "Luang Prabang", "at_s": 4.4}]}},
-  {"id": "map-to-gop", "duration_s": 6, "component": "GeoMap", "props": {"preset": "vn", "highlight": ["704", "418"], "markers": [{"lon": 103.41, "lat": 20.21, "label": "Huà Phăn", "at_s": 0.3}, {"lon": 104.0, "lat": 21.3, "label": "Sơn La", "at_s": 2.3}, {"lon": 105.0, "lat": 18.0, "label": "Nghệ An", "at_s": 4.3}]}},
-  {"id": "mist-nhan-vat", "duration_s": 5, "component": "Stage", "asset": "backgrounds/bg.jpg", "props": {"cam": "left", "atmosphere": [{"type": "mist"}], "layers": [{"asset": "creatures/nguoi.png", "x": 900, "y": 820, "h": 400, "motion": "breathe"}]}},
-  {"id": "phu-de-chan", "duration_s": 5, "component": "Stage", "asset": "backgrounds/bg.jpg", "props": {"cam": "left", "atmosphere": [{"type": "leaves"}], "layers": [{"asset": "creatures/nguoi.png", "x": 760, "y": 1000, "h": 430, "motion": "breathe"}]}},
-  {"id": "phu-de-chan-zoom", "duration_s": 4.6, "component": "Stage", "asset": "backgrounds/bg.jpg", "props": {"cam": "in", "atmosphere": [{"type": "dust"}], "layers": [{"asset": "creatures/nguoi.png", "x": 1000, "y": 830, "h": 360, "depth": 0.8, "motion": "breathe"}]}},
-  {"id": "phu-de-mat-so", "duration_s": 4.8, "component": "PhotoCard", "asset": "photos/so-doc.jpg", "props": {"credit": "x", "z": 1.12, "fill": true}},
-  {"id": "anh-nho", "duration_s": 3.5, "component": "PhotoCard", "asset": "photos/anh-ngang.jpg", "props": {"credit": "x"}},
-  {"id": "tinh-suong-mu", "duration_s": 2.3, "component": "Stage", "asset": "backgrounds/bg.jpg", "props": {"cam": "in", "atmosphere": [{"type": "dust"}], "hide": {"mode": "fog"}}},
-  {"id": "tinh-ken-burns", "duration_s": 6, "component": "KenBurns", "asset": "backgrounds/bg2.jpg", "props": {"z0": 1.0, "z1": 1.02, "annotate": [{"type": "circle", "x": 900, "y": 500, "w": 300, "h": 200, "at_s": 3.2}]}},
-  {"id": "bo-cuc-1", "duration_s": 6.7, "component": "KenBurns", "asset": "backgrounds/bg-cao-rang.jpg", "props": {"z0": 1.0, "z1": 1.6, "annotate": [{"type": "circle", "x": 1140, "y": 520, "w": 520, "h": 360, "at_s": 3.6}]}},
-  {"id": "bo-cuc-chen", "duration_s": 2.0, "component": "Stage", "asset": "backgrounds/bg.jpg", "props": {"cam": "out", "atmosphere": [{"type": "leaves"}]}},
-  {"id": "bo-cuc-lap", "duration_s": 3.7, "component": "KenBurns", "asset": "backgrounds/bg-cao-rang.jpg", "props": {"z0": 1.7, "z1": 1.45}},
-  {"id": "region-cat", "duration_s": 3.5, "component": "PhotoCard", "asset": "photos/mau-vat.jpg", "props": {"credit": "x", "region": [0.3, 0.1, 0.6, 0.6]}},
-  {"id": "anh-nhieu-o", "duration_s": 3.5, "component": "PhotoCard", "asset": "photos/hinh-bai-bao.jpg", "props": {"credit": "x", "region": [0.0, 0.0, 0.5, 0.5]}}
+  {
+   "id": "map-thieu-dao",
+   "duration_s": 6,
+   "component": "GeoMap",
+   "props": {
+    "center": [
+     100,
+     22
+    ],
+    "scale": 3000,
+    "cam": "in",
+    "markers": [
+     {
+      "lon": 103.41,
+      "lat": 20.21,
+      "label": "Huà Phăn, Lào",
+      "at_s": 0.4
+     },
+     {
+      "lon": 105.0,
+      "lat": 21.0,
+      "label": "Sơn La",
+      "at_s": 2.4
+     },
+     {
+      "lon": 102.0,
+      "lat": 19.0,
+      "label": "Luang Prabang",
+      "at_s": 4.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "map-to-gop",
+   "duration_s": 6,
+   "component": "GeoMap",
+   "props": {
+    "preset": "vn",
+    "highlight": [
+     "704",
+     "418"
+    ],
+    "markers": [
+     {
+      "lon": 103.41,
+      "lat": 20.21,
+      "label": "Huà Phăn",
+      "at_s": 0.3
+     },
+     {
+      "lon": 104.0,
+      "lat": 21.3,
+      "label": "Sơn La",
+      "at_s": 2.3
+     },
+     {
+      "lon": 105.0,
+      "lat": 18.0,
+      "label": "Nghệ An",
+      "at_s": 4.3
+     }
+    ]
+   }
+  },
+  {
+   "id": "mist-nhan-vat",
+   "duration_s": 5,
+   "component": "Stage",
+   "asset": "backgrounds/bg.jpg",
+   "props": {
+    "cam": "left",
+    "atmosphere": [
+     {
+      "type": "mist"
+     }
+    ],
+    "layers": [
+     {
+      "asset": "creatures/nguoi.png",
+      "x": 900,
+      "y": 820,
+      "h": 400,
+      "motion": "breathe"
+     }
+    ]
+   }
+  },
+  {
+   "id": "phu-de-chan",
+   "duration_s": 5,
+   "component": "Stage",
+   "asset": "backgrounds/bg.jpg",
+   "props": {
+    "cam": "left",
+    "atmosphere": [
+     {
+      "type": "leaves"
+     }
+    ],
+    "layers": [
+     {
+      "asset": "creatures/nguoi.png",
+      "x": 760,
+      "y": 1000,
+      "h": 430,
+      "motion": "breathe"
+     }
+    ]
+   }
+  },
+  {
+   "id": "phu-de-chan-zoom",
+   "duration_s": 4.6,
+   "component": "Stage",
+   "asset": "backgrounds/bg.jpg",
+   "props": {
+    "cam": "in",
+    "atmosphere": [
+     {
+      "type": "dust"
+     }
+    ],
+    "layers": [
+     {
+      "asset": "creatures/nguoi.png",
+      "x": 1000,
+      "y": 830,
+      "h": 360,
+      "depth": 0.8,
+      "motion": "breathe"
+     }
+    ]
+   }
+  },
+  {
+   "id": "phu-de-mat-so",
+   "duration_s": 4.8,
+   "component": "PhotoCard",
+   "asset": "photos/so-doc.jpg",
+   "props": {
+    "credit": "x",
+    "z": 1.12,
+    "fill": true
+   }
+  },
+  {
+   "id": "anh-nho",
+   "duration_s": 3.5,
+   "component": "PhotoCard",
+   "asset": "photos/anh-ngang.jpg",
+   "props": {
+    "credit": "x"
+   }
+  },
+  {
+   "id": "tinh-suong-mu",
+   "duration_s": 2.3,
+   "component": "Stage",
+   "asset": "backgrounds/bg.jpg",
+   "props": {
+    "cam": "in",
+    "atmosphere": [
+     {
+      "type": "dust"
+     }
+    ],
+    "hide": {
+     "mode": "fog"
+    }
+   }
+  },
+  {
+   "id": "tinh-ken-burns",
+   "duration_s": 6,
+   "component": "KenBurns",
+   "asset": "backgrounds/bg2.jpg",
+   "props": {
+    "z0": 1.0,
+    "z1": 1.02,
+    "annotate": [
+     {
+      "type": "circle",
+      "x": 900,
+      "y": 500,
+      "w": 300,
+      "h": 200,
+      "at_s": 3.2
+     }
+    ]
+   }
+  },
+  {
+   "id": "bo-cuc-1",
+   "duration_s": 6.7,
+   "component": "KenBurns",
+   "asset": "backgrounds/bg-cao-rang.jpg",
+   "props": {
+    "z0": 1.0,
+    "z1": 1.6,
+    "annotate": [
+     {
+      "type": "circle",
+      "x": 1140,
+      "y": 520,
+      "w": 520,
+      "h": 360,
+      "at_s": 3.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "bo-cuc-chen",
+   "duration_s": 2.0,
+   "component": "Stage",
+   "asset": "backgrounds/bg.jpg",
+   "props": {
+    "cam": "out",
+    "atmosphere": [
+     {
+      "type": "leaves"
+     }
+    ]
+   }
+  },
+  {
+   "id": "bo-cuc-lap",
+   "duration_s": 3.7,
+   "component": "KenBurns",
+   "asset": "backgrounds/bg-cao-rang.jpg",
+   "props": {
+    "z0": 1.7,
+    "z1": 1.45
+   }
+  },
+  {
+   "id": "region-cat",
+   "duration_s": 3.5,
+   "component": "PhotoCard",
+   "asset": "photos/mau-vat.jpg",
+   "props": {
+    "credit": "x",
+    "region": [
+     0.3,
+     0.1,
+     0.6,
+     0.6
+    ]
+   }
+  },
+  {
+   "id": "anh-nhieu-o",
+   "duration_s": 3.5,
+   "component": "PhotoCard",
+   "asset": "photos/hinh-bai-bao.jpg",
+   "props": {
+    "credit": "x",
+    "region": [
+     0.0,
+     0.0,
+     0.5,
+     0.5
+    ]
+   }
+  },
+  {
+   "id": "map-vung-tay",
+   "duration_s": 6,
+   "component": "GeoMap",
+   "props": {
+    "preset": "sunda",
+    "zones": [
+     {
+      "pts": [
+       [
+        95,
+        5
+       ],
+       [
+        106,
+        -7
+       ],
+       [
+        118,
+        -8
+       ],
+       [
+        118,
+        7
+       ],
+       [
+        104,
+        10
+       ]
+      ],
+      "at_s": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "id": "map-to-indonesia",
+   "duration_s": 6,
+   "component": "GeoMap",
+   "props": {
+    "preset": "sunda",
+    "highlight": [
+     "360"
+    ]
+   }
+  },
+  {
+   "id": "map-cham-chong",
+   "duration_s": 6,
+   "component": "GeoMap",
+   "props": {
+    "preset": "asia",
+    "markers": [
+     {
+      "lon": 105.9,
+      "lat": 20.3,
+      "label": "Tràng An",
+      "at_s": 0.4
+     },
+     {
+      "lon": 106.0,
+      "lat": 20.4,
+      "label": "Hang Múa",
+      "at_s": 2.4
+     }
+    ]
+   }
+  }
  ]
 }

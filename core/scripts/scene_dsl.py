@@ -93,7 +93,7 @@ def _marker(m):
 
 
 def gm(lines, preset="vn", markers=(), arrows=(), highlight=None, cam="in", **kw):
-    """Bản đồ GeoMap. preset: vn | dna | asia (đã qua kiểm đảo), hoặc truyền center=, scale=.
+    """Bản đồ GeoMap. preset: vn | dna | asia | sunda (đã qua kiểm đảo), hoặc truyền center=, scale=.
     markers: ("Tên trong knowledge/places.json", at_s[, nhãn]) (ưu tiên, Sếp 2026-11-07) hoặc (lon, lat, nhãn, at_s); địa danh vùng/hướng dùng zones; arrows: ((lon, lat), (lon, lat), at_s). highlight: mã ISO số của nước chứa địa điểm (mặc định chỉ Việt Nam)."""
     pr = {"cam": cam, "highlight": list(highlight or ["704"]), "markers": [_marker(m) for m in markers]}
     if preset and "center" not in kw:

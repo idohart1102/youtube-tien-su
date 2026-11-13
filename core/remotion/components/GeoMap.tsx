@@ -9,7 +9,7 @@ import PRESETS from '../lib/map_presets.json';
 
 // Bản đồ hiện đại dựng từ dữ liệu Natural Earth (không dùng ảnh AI). Luôn vẽ quần đảo Hoàng Sa, Trường Sa (chỉ hình đảo, không chữ tên) và nhãn Biển Đông khi nằm trong khung.
 // Bản đồ thế giới (scale < 800) chỉ vẽ chấm đảo, không nhãn; scale < 1500 bỏ nhãn Biển Đông, nhãn đảo dời sang phải chấm.
-// props: preset ("vn" | "dna" | "asia", core/remotion/lib/map_presets.json, đã qua kiểm đảo) hoặc center [lon, lat] (mặc định [108, 14]), scale (mặc định 2200), cam ("in" | "out"),
+// props: preset ("vn" | "dna" | "asia" | "sunda", core/remotion/lib/map_presets.json, đã qua kiểm đảo) hoặc center [lon, lat] (mặc định [108, 14]), scale (mặc định 2200), cam ("in" | "out"),
 //   highlight: mã số ISO quốc gia (mặc định ["704"] = Việt Nam),
 //   markers: [{lon, lat, label, at_s}], arrows: [{from: [lon, lat], to: [lon, lat], at_s}] (tối đa 3 marker, 2 mũi tên)
 //   zones: [{pts: [[lon, lat], ...], at_s, color?}] (tối đa 4 vùng sơ đồ, ví dụ dải đá đỏ; tô mờ có gạch chéo, hiện dần)

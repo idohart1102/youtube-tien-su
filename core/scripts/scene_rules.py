@@ -17,8 +17,11 @@ MODE = {
     # Sếp 2026-11-06: chỉ chặn điều sai khách quan. Bản đồ thiếu Hoàng Sa/Trường Sa là chặn; còn lại là cảnh báo để người dựng tự xét.
     "ban-do-dao": "chan", "ban-do-to-mau": "canh-bao", "mist": "canh-bao", "phu-de-layer": "canh-bao", "phu-de-anh": "canh-bao",
     "anh-nho": "canh-bao", "tinh": "canh-bao", "giu-bo-cuc": "canh-bao", "region-cat": "canh-bao", "anh-nhieu-o": "canh-bao",
+    # Bản 2.0 (lỗi bản đồ tập Indonesia): vùng tay, tô cả nước nhiều đảo, chấm chồng hoặc ra ngoài khung là cảnh báo
+    "ban-do-vung": "canh-bao", "ban-do-cham": "canh-bao",
 }
 VN_NEIGHBORS = {"418", "116", "156"}  # Lào, Campuchia, Trung Quốc
+MULTI_ISLAND = {"360", "608", "458"}  # Indonesia, Philippines, Malaysia: tô cả nước là gồm cả đảo xa (Sulawesi, Papua, Sabah)
 CONTINUOUS_ATM = {"rain", "snow", "embers", "firerain", "ash", "leaves", "smoke", "mist", "fireflies", "debris"}
 _size = {}
 
@@ -117,6 +120,19 @@ def check(data, ep, plan=None, zones=None, asset_check=None):
             hi = set(map(str, pr.get("highlight", ["704"])))
             if pr.get("markers") and "704" in hi and hi & VN_NEIGHBORS:
                 out["ban-do-to-mau"].append((sid, f"Cảnh {sid} ({at}): tô cùng màu Việt Nam và nước láng giềng ({', '.join(sorted(hi & VN_NEIGHBORS))}) khi có chấm địa điểm: chỉ tô nước chứa địa điểm, ghi tên nước trong nhãn (bài học 82)"))
+            for z in pr.get("zones", []):
+                if 0 < len(z.get("pts", [])) < 12:
+                    out["ban-do-vung"].append((sid, f"Cảnh {sid} ({at}): vùng tô chỉ {len(z['pts'])} đỉnh, nhìn như đa giác vẽ tay; QC hay chấm sai phạm vi. Dùng đa giác bám bản đồ có nguồn hoặc chấm di chỉ"))
+                    break
+            many = hi & MULTI_ISLAND
+            if many:
+                out["ban-do-vung"].append((sid, f"Cảnh {sid} ({at}): tô cả nước nhiều đảo ({', '.join(sorted(many))}); lời chỉ nói một phần (vd thềm Sunda) thì đừng tô cả nước, dùng chấm di chỉ"))
+            ctr, sc = geo.view(pr)
+            pts = [geo.project(m["lon"], m["lat"], ctr, sc) for m in pr.get("markers", []) if "lon" in m and "lat" in m]
+            if any(not geo.on_screen(x, y, margin=60) or y > 864 for x, y in pts):
+                out["ban-do-cham"].append((sid, f"Cảnh {sid} ({at}): có chấm địa điểm ngoài khung hoặc trong dải phụ đề; đổi preset/center"))
+            elif any(abs(a[0] - b[0]) < 50 and abs(a[1] - b[1]) < 50 for i, a in enumerate(pts) for b in pts[i + 1:]):
+                out["ban-do-cham"].append((sid, f"Cảnh {sid} ({at}): 2 chấm cách nhau dưới 50 px, chồng nhau; phóng to (scale lớn hơn) hoặc tách cảnh"))
         # Sương/khói trên cảnh có nhân vật, layer chủ thể hoặc ảnh thật (bài học 87). Cảnh phong cảnh trống vẫn dùng được.
         fog = [a.get("type") for a in pr.get("atmosphere", []) if a.get("type") in ("mist", "smoke")]
         has_subject = c in ("PhotoCard", "KenBurns", "Collage", "FossilReveal") or any(not x.get("hide") for x in pr.get("layers", []))

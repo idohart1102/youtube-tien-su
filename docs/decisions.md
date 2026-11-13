@@ -1,6 +1,15 @@
 # Quyết định của Sếp (mới nhất ở trên). Mọi AI phải tuân theo. Muốn đổi thì hỏi Sếp.
 Dòng gạch ngang là quyết định đã bị thay, giữ lại để biết lịch sử, không làm theo.
 
+## 2026-11-13 (Sếp duyệt đề xuất bản 2.0, `docs/de-xuat-v2.md`)
+- Chỉ nâng cấp hệ thống, không sửa lại video đã làm; luật mới áp từ lần chạy sau.
+- Fact: mã F cố định theo số đầu dòng; `qc_facts` chỉ kiểm lại dòng đã sửa, gửi lô 30 dòng; nguồn ghi câu trích nguyên văn, không lấy số qua Wikipedia, khoảng cách neo vào tọa độ địa danh có tên. Vẫn tối đa 3 lần.
+- Render: lần render chỉ dựng mới ≤25% số đoạn là "sửa nhỏ", không tính vào trần render, tối đa 3 lần/tập, được chạy cả khi đã chạm trần. Thay một phần dòng "render lại chạm 2 lần thì dừng" ngày 2026-11-05.
+- QC video: bảng khung hình không đổi dùng lại kết quả bản trước; điểm lượt 1 trong 8,5-9,3 thì tự chấm lượt 2 các bảng mới, lỗi nặng chỉ 1 lượt thấy hạ thành vừa. Vẫn 1 lần chạy mỗi bản render (thay một phần dòng 2026-11-03).
+- Bản đồ: thêm mẫu `sunda`; vùng tô đa giác tay, tô cả nước nhiều đảo, chấm chồng/ngoài khung là cảnh báo máy.
+- Kho bài học: bác 11 bài lỗi thời hoặc trùng.
+- Giọng: tốc độ đọc tính 225 âm tiết/phút; kịch bản ước dưới 10 phút thì không tạo giọng. KingCong thiếu srt thì dựng bằng `tts align` (Whisper).
+
 ## 2026-11-08
 - Tiền Sử Đất Việt: Sếp chốt tập 8 là đề thiên thạch, tiêu đề "Có Thật 800.000 Năm Trước Một Thiên Thạch Khổng Lồ Đã Rơi Sát Việt Nam?" (vidIQ 88), thay đề 8 cũ Titanoboa (không có liên hệ Việt Nam). Trung tâm: tektite Khe Sanh; hố ứng viên dưới dung nham Bolaven (Sieh 2020), còn tranh cãi. Thư mục `2026-11-08_thien-thach-bolaven`. Dòng "bỏ tập thiên thạch" ngày 2026-11-01 nói về đề tài cũ, không áp cho đề này.
 - Tiền Sử Đất Việt: Sếp chốt tập 9 là "Có Thật King Kong Từng Sống Trong Rừng Việt Nam?" (đề 9 trong danh sách đề xuất tập 7-10, `channels/tiensu-vn/research/2026-11-03_10-de-dau-tien.md`). Thư mục `2026-11-08_king-kong-viet-nam`. Đề 7, 8, 10 vẫn chờ Sếp chốt.

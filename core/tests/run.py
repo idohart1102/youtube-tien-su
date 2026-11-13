@@ -358,7 +358,7 @@ def test_scene_rules():
         check("bắt ≥ 90% cảnh lỗi tập 1", len(got) >= 0.9 * len(exp["expect"]), f"{len(got)}/{len(exp['expect'])}, sót {miss}")
         sys.path.insert(0, str(SCRIPTS))
         import geo
-        check("mẫu bản đồ vn, dna, asia đủ Hoàng Sa và Trường Sa", all(not geo.island_problems({"preset": k}) for k in geo.PRESETS))
+        check("mẫu bản đồ vn, dna, asia, sunda đủ Hoàng Sa và Trường Sa", all(not geo.island_problems({"preset": k}) for k in geo.PRESETS))
         # HT-10: cảnh dựng bằng scene_dsl mặc định không vi phạm luật bản đồ, sương, dải phụ đề
         (ep / "scene_plan.py").write_text('st([0, 0], "bg", "in", ["leaves"], [L("nguoi", 900, 1000, 430)])\n'
                                           'gm([1, 1], "vn", [(103.41, 20.21, "Huà Phăn, Lào", 0.4)], highlight=["418"])\n'

@@ -39,7 +39,7 @@ lang:                    # mọi thứ phụ thuộc ngôn ngữ nằm ở đây
   speech: vi_speech
   tokenize: word
   sentence_split: '(?<=[.?!…])\s+'
-  pace: {unit: syllable, per_min: 214}  # đo trên giọng Thanh, ổn định 0%, 2026-11-03: 3.685 âm tiết ra 1.031,5 giây
+  pace: {unit: syllable, per_min: 225}  # giọng mặc định 2026-11-04 đọc ~225 âm tiết/phút (bài học 116); trước đây 214 với giọng Thanh
   subtitle: {max: 42, break_after: ","}
   card: {max: 6, unit: word}
   ago:

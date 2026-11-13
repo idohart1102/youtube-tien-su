@@ -12,3 +12,4 @@
    - Đang render: viết meta, chương, thumbnail. Tập sau viết kịch bản trong lúc tập trước render hoặc QC.
    - Không chia `scenes.json` hay kịch bản theo chương cho nhiều agent viết rồi gộp: một người dựng cả video để nhịp, biến thể asset và giọng thống nhất.
    - `qc_video.py` và `precheck.py` tự chấm các bảng song song.
+6. Giữ lịch 1 video/ngày (bản 2.0): luôn có 2-3 tập đi trước ở bước nghiên cứu, fact, kịch bản, cách ngày đăng ít nhất 3 ngày. Fact là bước chậm nhất (3-10 vòng ở các tập đầu), nên bắt đầu sớm. Dựng (asset, scenes, render) mỗi lúc 1 tập, chỉ bắt đầu khi tập trước đã render xong. Tập kẹt chờ Sếp thì chuyển sang tập khác, không đứng chờ.
