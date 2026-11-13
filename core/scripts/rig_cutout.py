@@ -2,7 +2,8 @@
 Dùng: python core/scripts/rig_cutout.py <file.rig.json> [clip1,clip2]  → <out>/<clip>/000.webp ..., <out>/outline.webp
       python core/scripts/rig_cutout.py --clean a.png b.png → a-clean.png, b-clean.png (chỉ làm sạch rìa)
 Toạ độ trong rig.json theo pixel ảnh gốc. Trọng số xương là vùng đa giác làm mờ biên, nên chỗ uốn liền mạch, không lộ vết cắt.
-limbs: chi tách thành lớp riêng (far nằm dưới thân, near nằm trên), trọng số theo độ cao nên chân quay nhiều cũng không rách."""
+limbs: chi tách thành lớp riêng (far nằm dưới thân, near nằm trên), trọng số theo độ cao (ramp_y) hoặc theo trục chi (ramp: [p0, p1])
+nên chân, tay quay nhiều cũng không rách."""
 import json, sys
 from pathlib import Path
 import numpy as np
@@ -112,7 +113,14 @@ def build(spec_path, only=None):
         body = body * (1 - m[..., None])
         lbones = []
         for b in lb["bones"]:
-            k = np.clip((yy - b["ramp_y"][0]) / (b["ramp_y"][1] - b["ramp_y"][0]), 0, 1)
+            if "ramp" in b:  # trọng số theo trục [p0, p1] (tay đưa ngang, chân xiên): 0 ở p0, 1 ở p1
+                (x0, y0), (x1, y1) = [(q[0] + L, q[1] + T) for q in b["ramp"]]
+                ux, uy = x1 - x0, y1 - y0
+                n2 = ux * ux + uy * uy or 1
+                xx = np.mgrid[0:size[1], 0:size[0]][1].astype("float32")
+                k = np.clip(((xx - x0) * ux + (yy + T - y0) * uy) / n2, 0, 1)
+            else:
+                k = np.clip((yy - b["ramp_y"][0]) / (b["ramp_y"][1] - b["ramp_y"][0]), 0, 1)
             lbones.append({"name": b["name"], "pivot": (b["pivot"][0] + L, b["pivot"][1] + T), "w": k * k * (3 - 2 * k)})
         limbs.append({"under": lb.get("under", False), "img": prem * m[..., None], "bones": lbones})
     scale = spec.get("scale", 0.5)

@@ -1,0 +1,409 @@
+{
+ "_ghi_chu": "Bảng địa danh cho GeoMap (Sếp 2026-11-07). gm() trong scene_dsl gọi chấm theo tên: markers=[(\"Phu Wiang\", at_s)]. Thêm địa danh mới phải có 'nguon' (trang địa danh, bài báo có tọa độ). loai: diem | vung (tô zones, không chấm) | bien-gioi.",
+ "places": {
+  "Phu Wiang": {
+   "lon": 102.4,
+   "lat": 16.6,
+   "nuoc": "Thái Lan",
+   "iso": "764",
+   "label": "Phu Wiang, Thái Lan",
+   "loai": "diem",
+   "nguon": "đã qua precheck tập 2026-11-06_khung-long-viet-nam (v15)"
+  },
+  "Savannakhet": {
+   "lon": 105.8,
+   "lat": 16.5,
+   "nuoc": "Lào",
+   "iso": "418",
+   "label": "Savannakhet, Lào",
+   "loai": "diem",
+   "nguon": "đã qua precheck tập 2026-11-06_khung-long-viet-nam (v15)"
+  },
+  "Tang Vay": {
+   "lon": 106.0,
+   "lat": 16.2,
+   "nuoc": "Lào",
+   "iso": "418",
+   "label": "Tang Vay, Savannakhet, Lào",
+   "loai": "diem",
+   "nguon": "đã qua precheck tập 2026-11-06_khung-long-viet-nam (v15)"
+  },
+  "Koh Kong": {
+   "lon": 103.1,
+   "lat": 11.2,
+   "nuoc": "Campuchia",
+   "iso": "116",
+   "label": "Koh Kong, Campuchia",
+   "loai": "diem",
+   "nguon": "đã qua precheck tập 2026-11-06_khung-long-viet-nam (v15)"
+  },
+  "Myitkyina": {
+   "lon": 97.4,
+   "lat": 25.4,
+   "nuoc": "Myanmar",
+   "iso": "104",
+   "label": "Myitkyina, Myanmar",
+   "loai": "diem",
+   "nguon": "đã qua precheck tập 2026-11-06_khung-long-viet-nam (v15)"
+  },
+  "Trị An": {
+   "lon": 107.05,
+   "lat": 11.1,
+   "nuoc": "Việt Nam",
+   "iso": "704",
+   "label": "Trị An, Đồng Nai",
+   "loai": "diem",
+   "nguon": "đã qua precheck tập 2026-11-06_khung-long-viet-nam (v15)"
+  },
+  "Lạng Sơn, Quảng Ninh": {
+   "lon": 106.76,
+   "lat": 21.85,
+   "nuoc": "Việt Nam",
+   "iso": "704",
+   "label": "Lạng Sơn, Quảng Ninh",
+   "loai": "diem",
+   "nguon": "đã qua precheck tập 2026-11-06_khung-long-viet-nam (v15)"
+  },
+  "Phù Tuy": {
+   "lon": 107.9,
+   "lat": 22.6,
+   "nuoc": "Trung Quốc",
+   "iso": "156",
+   "label": "Phù Tuy, Quảng Tây, Trung Quốc",
+   "loai": "diem",
+   "nguon": "đã qua precheck tập 2026-11-06_khung-long-viet-nam (v15)"
+  },
+  "Khorat": {
+   "lon": 102.1,
+   "lat": 15.0,
+   "nuoc": "Thái Lan",
+   "iso": "764",
+   "label": "Khorat, Thái Lan",
+   "loai": "diem",
+   "nguon": "đã qua precheck tập 2026-11-06_khung-long-viet-nam (v15)"
+  },
+  "Fukui": {
+   "lon": 136.2,
+   "lat": 36.0,
+   "nuoc": "Nhật Bản",
+   "iso": "392",
+   "label": "Fukui, Nhật Bản",
+   "loai": "diem",
+   "nguon": "đã qua precheck tập 2026-11-06_khung-long-viet-nam (v15)"
+  },
+  "Hà Nội": {
+   "lon": 105.85,
+   "lat": 21.03,
+   "nuoc": "Việt Nam",
+   "iso": "704",
+   "label": "Hà Nội",
+   "loai": "diem",
+   "nguon": "đã qua precheck tập 2026-11-06_khung-long-viet-nam (v15)"
+  },
+  "Tây Bắc": {
+   "loai": "vung",
+   "nuoc": "Việt Nam",
+   "ghi_chu": "vùng: tô zones, không dùng chấm",
+   "nguon": ""
+  },
+  "Tây Quảng Bình": {
+   "loai": "vung",
+   "nuoc": "Việt Nam",
+   "ghi_chu": "vùng sát biên giới Việt-Lào: tô zones, không dùng chấm",
+   "nguon": ""
+  },
+  "Nam Bộ": {
+   "loai": "vung",
+   "nuoc": "Việt Nam",
+   "ghi_chu": "vùng: tô zones hoặc nhãn trên vùng",
+   "nguon": ""
+  },
+  "Đèo Mụ Giạ": {
+   "loai": "bien-gioi",
+   "lon": 105.75,
+   "lat": 17.68,
+   "nuoc": "Việt Nam/Lào",
+   "ghi_chu": "trên biên giới: chấm phải nằm đúng đường biên, kiểm lại nguồn trước khi dùng",
+   "nguon": ""
+  },
+  "Mán Bạc": {
+   "lon": 105.983,
+   "lat": 20.133,
+   "nuoc": "Việt Nam",
+   "iso": "704",
+   "label": "Mán Bạc, Ninh Bình",
+   "loai": "diem",
+   "nguon": "Oxenham et al. 2009 Anthropological Science 117(2) tr.107: 20°08′N; kinh độ in 109°59′E là lỗi in, Yên Mô ở khoảng 105°59′E"
+  },
+  "Tràng An": {
+   "lon": 105.9,
+   "lat": 20.25,
+   "nuoc": "Việt Nam",
+   "iso": "704",
+   "label": "Tràng An, Ninh Bình",
+   "loai": "diem",
+   "nguon": "UNESCO WHC 1438, Trang An Landscape Complex: 20°15′N 105°54′E"
+  },
+  "Shanidar": {
+   "lon": 44.22,
+   "lat": 36.83,
+   "nuoc": "Iraq",
+   "iso": "368",
+   "label": "Hang Shanidar, Iraq",
+   "loai": "diem",
+   "nguon": "Trinkaus & Villotte 2017 PLoS ONE 12(10):e0186684; Wikipedia Shanidar Cave 36°50′N 44°13′E"
+  },
+  "Windover": {
+   "lon": -80.8,
+   "lat": 28.53,
+   "nuoc": "Mỹ",
+   "iso": "840",
+   "label": "Windover, Florida, Mỹ",
+   "loai": "diem",
+   "nguon": "Wikipedia Windover Archaeological Site (Titusville, Florida) khoảng 28°32′N 80°48′W; Dickel & Doran 1989"
+  },
+  "Côn Đảo": {
+   "lon": 106.6,
+   "lat": 8.68,
+   "nuoc": "Việt Nam",
+   "iso": "704",
+   "label": "Côn Đảo, Việt Nam",
+   "loai": "diem",
+   "nguon": "Wikipedia (infobox tọa độ): 8°41′N 106°36′E"
+  },
+  "Thẩm Khuyên": {
+   "lon": 106.414,
+   "lat": 21.924,
+   "nuoc": "Việt Nam",
+   "iso": "704",
+   "label": "Hang Thẩm Khuyên, Lạng Sơn",
+   "loai": "diem",
+   "nguon": "Wikipedia Thẩm Khuyên Cave: 21°55′25″N 106°24′50″E"
+  },
+  "Ngườm": {
+   "lon": 106.05,
+   "lat": 21.8,
+   "nuoc": "Việt Nam",
+   "iso": "704",
+   "label": "Mái đá Ngườm, Thái Nguyên",
+   "loai": "diem",
+   "nguon": "xã Thần Sa, Võ Nhai, Thái Nguyên (Nhân Dân); tọa độ cấp xã, gần đúng"
+  },
+  "Cát Tiên": {
+   "lon": 107.38,
+   "lat": 11.44,
+   "nuoc": "Việt Nam",
+   "iso": "704",
+   "label": "Vườn quốc gia Cát Tiên",
+   "loai": "diem",
+   "nguon": "Wikipedia (infobox tọa độ) Cát Tiên National Park: 11°26′N 107°23′E"
+  },
+  "Mũi Cà Mau": {
+   "lon": 104.72,
+   "lat": 8.6,
+   "nuoc": "Việt Nam",
+   "iso": "704",
+   "label": "Mũi Cà Mau",
+   "loai": "diem",
+   "nguon": "Wikipedia (infobox tọa độ) Mũi Cà Mau: 8°36′N 104°43′E"
+  },
+  "TP.HCM": {
+   "lon": 106.7,
+   "lat": 10.78,
+   "nuoc": "Việt Nam",
+   "iso": "704",
+   "label": "TP.HCM",
+   "loai": "diem",
+   "nguon": "Wikipedia (infobox tọa độ): 10°46′N 106°42′E"
+  },
+  "Hạ Long": {
+   "lon": 107.08,
+   "lat": 20.95,
+   "nuoc": "Việt Nam",
+   "iso": "704",
+   "label": "Hạ Long, Quảng Ninh",
+   "loai": "diem",
+   "nguon": "Wikipedia (infobox tọa độ): 20°57′N 107°05′E"
+  },
+  "Đồng Văn": {
+   "lon": 105.36,
+   "lat": 23.28,
+   "nuoc": "Việt Nam",
+   "iso": "704",
+   "label": "Đồng Văn, Hà Giang",
+   "loai": "diem",
+   "nguon": "Wikipedia (infobox tọa độ) Đồng Văn district: 23°17′N 105°22′E"
+  },
+  "Tam Pà Ling": {
+   "lon": 103.41,
+   "lat": 20.21,
+   "nuoc": "Lào",
+   "iso": "418",
+   "label": "Tam Pà Ling, Lào",
+   "loai": "diem",
+   "nguon": "Demeter et al. 2012 PNAS: Huà Phăn, 20°12′N 103°24′E"
+  },
+  "Lida Ajer": {
+   "lon": 100.6,
+   "lat": -0.3,
+   "nuoc": "Indonesia",
+   "iso": "360",
+   "label": "Lida Ajer, Sumatra",
+   "loai": "diem",
+   "nguon": "Westaway et al. 2017 Nature: Padang Highlands, phía nam Payakumbuh (0°13′S 100°38′E); gần đúng"
+  },
+  "Niah": {
+   "lon": 113.78,
+   "lat": 3.81,
+   "nuoc": "Malaysia",
+   "iso": "458",
+   "label": "Hang Niah, Borneo",
+   "loai": "diem",
+   "nguon": "Wikipedia (infobox tọa độ) Niah Caves: 3°49′N 113°47′E"
+  },
+  "Liang Bua": {
+   "lon": 120.46,
+   "lat": -8.53,
+   "nuoc": "Indonesia",
+   "iso": "360",
+   "label": "Liang Bua, Flores",
+   "loai": "diem",
+   "nguon": "Wikipedia (infobox tọa độ) Liang Bua: 8°32′S 120°28′E"
+  },
+  "Ujung Kulon": {
+   "lon": 105.33,
+   "lat": -6.75,
+   "nuoc": "Indonesia",
+   "iso": "360",
+   "label": "Ujung Kulon, Java",
+   "loai": "diem",
+   "nguon": "Wikipedia (infobox tọa độ) Ujung Kulon NP: 6°45′S 105°20′E"
+  },
+  "Tanjung Datu": {
+   "lon": 109.65,
+   "lat": 2.08,
+   "nuoc": "Indonesia",
+   "iso": "360",
+   "label": "Tanjung Datu, Borneo",
+   "loai": "diem",
+   "nguon": "Wikipedia (infobox tọa độ) Tanjung Datu: 2°05′N 109°39′E"
+  },
+  "Bali": {
+   "lon": 115.1,
+   "lat": -8.4,
+   "nuoc": "Indonesia",
+   "iso": "360",
+   "label": "Bali",
+   "loai": "diem",
+   "nguon": "Wikipedia Bali: 8°20′S 115°05′E"
+  },
+  "Lombok": {
+   "lon": 116.35,
+   "lat": -8.6,
+   "nuoc": "Indonesia",
+   "iso": "360",
+   "label": "Lombok",
+   "loai": "diem",
+   "nguon": "Wikipedia Lombok: 8°34′S 116°21′E"
+  },
+  "Nusa Penida": {
+   "lon": 115.54,
+   "lat": -8.73,
+   "nuoc": "Indonesia",
+   "iso": "360",
+   "label": "Nusa Penida",
+   "loai": "diem",
+   "nguon": "Wikipedia Nusa Penida: 8°44′S 115°32′E"
+  },
+  "Flores": {
+   "lon": 121.0,
+   "lat": -8.65,
+   "nuoc": "Indonesia",
+   "iso": "360",
+   "label": "Flores",
+   "loai": "diem",
+   "nguon": "Wikipedia Flores: 8°40′S 121°00′E"
+  },
+  "Sông Kapuas": {
+   "lon": 110.5,
+   "lat": 0.0,
+   "nuoc": "Indonesia",
+   "iso": "360",
+   "label": "Sông Kapuas, Borneo",
+   "loai": "diem",
+   "nguon": "Wikipedia Kapuas River: Kalimantan Tây, cửa sông gần Pontianak 0°02′S 109°20′E; chấm giữa dòng, gần đúng"
+  },
+  "Tahiti": {
+   "lon": -149.43,
+   "lat": -17.65,
+   "nuoc": "Polynesia thuộc Pháp",
+   "iso": "258",
+   "label": "Tahiti, Thái Bình Dương",
+   "loai": "diem",
+   "nguon": "Wikipedia Tahiti: 17°39′S 149°26′W"
+  },
+  "Lũng Cú": {
+   "lon": 105.316,
+   "lat": 23.364,
+   "nuoc": "Việt Nam",
+   "iso": "704",
+   "label": "Lũng Cú, Việt Nam",
+   "loai": "diem",
+   "nguon": "Wikipedia Cột cờ Lũng Cú (infobox tọa độ): 23°21′49″N 105°18′58″E"
+  },
+  "Everest": {
+   "lon": 86.925,
+   "lat": 27.988,
+   "nuoc": "Nepal/Trung Quốc",
+   "iso": "524",
+   "label": "Đỉnh Everest",
+   "loai": "diem",
+   "nguon": "Wikipedia Mount Everest (infobox tọa độ): 27°59′17″N 86°55′31″E"
+  },
+  "Kon Tum": {
+   "lon": 108.0,
+   "lat": 14.35,
+   "nuoc": "Việt Nam",
+   "iso": "704",
+   "label": "Kon Tum",
+   "loai": "diem",
+   "nguon": "Wikipedia Kon Tum (thành phố, infobox tọa độ): 14°21′N 108°00′E"
+  },
+  "Trung Kỳ": {
+   "loai": "vung",
+   "nuoc": "Việt Nam",
+   "ghi_chu": "vùng miền Trung thời Pháp: tô zones, không chấm",
+   "nguon": ""
+  },
+  "Vân Nam": {
+   "loai": "vung",
+   "nuoc": "Trung Quốc",
+   "ghi_chu": "tỉnh: tô zones, không chấm",
+   "nguon": ""
+  },
+  "Quý Châu": {
+   "loai": "vung",
+   "nuoc": "Trung Quốc",
+   "ghi_chu": "tỉnh: tô zones, không chấm",
+   "nguon": ""
+  },
+  "Hà Giang": {
+   "lon": 104.984,
+   "lat": 22.823,
+   "nuoc": "Việt Nam",
+   "iso": "704",
+   "label": "Hà Giang cũ",
+   "loai": "diem",
+   "nguon": "Wikipedia Hà Giang (thành phố, infobox tọa độ): 22°49′N 104°59′E. Ghi chú: chấm Đồng Văn (23,28°B) chỉ cách biên giới ~0,06° trên dữ liệu 50m nên ở tỉ lệ toàn quốc dễ trông như nằm ngoài biên giới"
+  },
+  "Côn Minh": {
+   "lon": 102.71,
+   "lat": 25.04,
+   "nuoc": "Trung Quốc",
+   "iso": "156",
+   "label": "Côn Minh, Vân Nam, Trung Quốc",
+   "loai": "diem",
+   "nguon": "Wikipedia Kunming (infobox tọa độ): 25°02′N 102°43′E"
+  }
+ }
+}

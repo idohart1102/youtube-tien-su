@@ -49,4 +49,3 @@
 - Kiểm tra máy: `python core/scripts/doctor.py --smoke`. Kiểm tra toàn bộ: `python core/tests/run.py`.
 - Kênh mới: `python core/scripts/new_channel.py <slug> --lang <mã>`. Tập mới: `python core/scripts/new_episode.py <slug> <ten-tap>`.
 - Asset chỉ AI hoặc chỉ ảnh thật: `python core/scripts/gen_assets.py <tap> --only ai|real`.
-- Rig nhân vật: `python core/scripts/rig_auto.py <tap> <file> --plan biped|quad`.

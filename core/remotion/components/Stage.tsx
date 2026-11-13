@@ -2,7 +2,7 @@ import React from 'react';
 import { AbsoluteFill, Img, random, staticFile, useCurrentFrame } from 'remotion';
 import { clamp, ease, ramp } from '../lib/lib';
 import { assetPath } from '../types';
-import { SceneProps, Label, CUTOUT_SHADOW, enterFx, idleFx, hiddenAmount, hideFx, useFrameSize, useTheme } from './common';
+import { SceneProps, Label, CUTOUT_SHADOW, enterFx, idleFx, hiddenAmount, hideFx, useFrameSize, useTheme, fontOf } from './common';
 
 // Sân khấu sống: cùng một bối cảnh đổi trạng thái theo thời gian, có không khí, mặt nước, cutout cử động.
 // props: cam, focus (như Parallax), bg_filter
@@ -11,9 +11,13 @@ import { SceneProps, Label, CUTOUT_SHADOW, enterFx, idleFx, hiddenAmount, hideFx
 //     rain: mưa xiên (angle độ), snow: tuyết rơi, dust: bụi lơ lửng trong nắng, fireflies: đom đóm, smoke: khói bốc từ (x, y),
 //     leaves: lá rơi, debris: đá vụn rơi từ trần (đi với quake), lightning: chớp sáng cả khung ở at_s
 //   water: {poly: [[x,y]...], top, bottom, amp, boost: [{at_s, to_s, amp}]}
-//   layers: [{asset | sprite: {base, clips: [{name, n, at_s, loop}]}, x, y, h, depth, at_s, to_s, enter, flip, motion, hide, unmask_s,
+//   layers: [{asset | sprite: {base, clips: [{name, n, at_s, loop}]}, x, y, h, depth, at_s, to_s, enter, flip, drift (px tiến đều cả cảnh, cùng hướng mặt), motion, hide, unmask_s,
 //             path: [{at_s, x, y}], shadow: {w, o} | false (w ≤ 3: tỷ lệ theo bề ngang cutout, lớn hơn: px), tone (CSS filter riêng, thắng tone_auto),
-//             rim (true: viền sáng theo nguồn sáng), blur, wind, float (true: bay/lơ lửng, không bóng tiếp đất)}]
+//             rim (true: viền sáng theo nguồn sáng), blur, wind, float (true: bay/lơ lửng, không bóng tiếp đất),
+//             amp (độ mạnh motion 0.5..2), dz (đi lại gần máy: +0.3 to dần, chân xuống; ra xa: -0.3 nhỏ dần, chân lên; nội suy cả cảnh),
+//             outline (màu viền riêng | false; mặc định outline_auto do stage_prep.py lấy theo màu nền quanh cutout)}]
+//   Viền cutout (Sếp 2026-11-07): mọi cutout rõ nét có viền mảnh màu giấy ngả theo nền, không trắng tinh; lớp nhòe (blur) không viền;
+//   đang ẩn đáp án thì viền mờ theo độ ẩn. Kênh tắt bằng theme.stage.outline = false.
 //   Mặc định (theme.stage, kênh tắt được): cutout đứng trên nền có bóng tiếp đất; mép cutout làm mềm 1 px (bỏ viền sáng/bẩn);
 //   tone_auto (stage_prep.py ghi vào scenes.json) cân độ sáng, bão hòa, ám màu của cutout theo vùng nền dưới chân.
 //   mist và smoke vẽ sau nhân vật (front: true để vẽ trước), sương tản theo chiều dọc, không thành dải ngang.
@@ -141,7 +145,8 @@ const BEHIND = (a: any) => (a.type === 'mist' || a.type === 'smoke') && !a.front
 
 export const Stage: React.FC<SceneProps> = ({ dur, asset, props, lead = 0 }) => {
   const frame = useCurrentFrame();
-  const st = useTheme().stage || {};
+  const th = useTheme();
+  const st = th.stage || {};
   const f = frame - lead;
   const t = f / 30;
   const k = ease(clamp(frame / dur));
@@ -163,6 +168,7 @@ export const Stage: React.FC<SceneProps> = ({ dur, asset, props, lead = 0 }) => 
   const g = gradeAt(props.grade, t);
   const filter = `brightness(${g.b}) saturate(${g.s}) contrast(${g.c}) hue-rotate(${g.h}deg) sepia(${g.sepia})`;
   const [sr, sg, sb, sa] = g.sky;
+  const uid = React.useId().replace(/[^a-zA-Z0-9]/g, '');
   const layers: any[] = props.layers || [];
   const atm: any[] = props.atmosphere || [];
   return (
@@ -178,9 +184,11 @@ export const Stage: React.FC<SceneProps> = ({ dur, asset, props, lead = 0 }) => 
         {layers.map((l, i) => {
           if (l.to_s != null && t > l.to_s) return null;
           const d = l.depth ?? 0.6;
-          const s = 1 + zoom * (1 + 2 * d);
-          const x = (pathAt(l.path, 'x', l.x ?? W / 2, t) - cx) * s + cx + pan * (1 + 1.5 * d);
-          const y = (pathAt(l.path, 'y', l.y ?? H - 80, t) - cy) * s + cy + tilt * (1 + 1.5 * d);
+          const zk = 1 + (l.dz || 0) * ease(clamp(frame / dur)); // đi lại gần / ra xa
+          const s = (1 + zoom * (1 + 2 * d)) * zk;
+          // drift: nhân vật tự tiến (px, cả cảnh) so với nền; dấu phải cùng hướng mặt (validate_scenes kiểm)
+          const x = (pathAt(l.path, 'x', l.x ?? W / 2, t) + (l.drift || 0) * clamp(frame / dur) - cx) * s + cx + pan * (1 + 1.5 * d);
+          const y = (pathAt(l.path, 'y', l.y ?? H - 80, t) + (zk - 1) * 160 - cy) * s + cy + tilt * (1 + 1.5 * d);
           const [o, sc, dy] = enterFx(f, (l.at_s || 0) * 30, l.enter || 'fade');
           const out = l.to_s != null ? 1 - ramp(t, l.to_s - 0.3, l.to_s) : 1;
           const hid = hideFx(l.hide, hiddenAmount(f, l.hide, l.unmask_s));
@@ -189,19 +197,34 @@ export const Stage: React.FC<SceneProps> = ({ dur, asset, props, lead = 0 }) => 
           const rim = l.rim ? ' drop-shadow(3px -1px 1.5px rgba(255,205,140,0.45))' : '';
           const soft = st.soft_edge !== false && !l.sprite ? 'url(#cutout-soft)' : '';
           const tone = l.tone ?? (st.auto_tone !== false ? l.tone_auto : '');
-          const fx = [soft, hid.filter, tone, l.blur ? `blur(${l.blur}px)` : '', l.hide || l.blur ? '' : CUTOUT_SHADOW].filter(Boolean).join(' ') + rim;
+          const olColor = l.outline === false || l.blur || st.outline === false ? null : l.outline || l.outline_auto || '#e9dfcb';
+          const olId = `ol-${uid}-${i}`;
+          const olR = Math.max(2, Math.min(4, Math.round((l.h || 600) * s * 0.006))); // viền mảnh 2-4 px (Sếp 2026-11-07)
+          const olOp = l.hide ? 1 - hiddenAmount(f, l.hide, l.unmask_s) : 1;
+          const fx = [soft, hid.filter, tone, olColor && olOp > 0.01 ? `url(#${olId})` : '', l.blur ? `blur(${l.blur}px)` : '', l.hide || l.blur ? '' : CUTOUT_SHADOW].filter(Boolean).join(' ') + rim;
           // Bóng tiếp đất: mặc định cho cutout đứng trên nền (không ẩn, không nhòe, không bay); w ≤ 3 là tỷ lệ bề ngang cutout
           const lw = (l.h || 600) * (l.aspect || 1);
           const sh = l.shadow === false ? null : l.shadow || (st.ground_shadow !== false && !l.hide && !l.blur && !l.float ? { w: 0.7, o: 0.55 } : null);
           const shW = sh ? (sh.w <= 3 ? sh.w * lw : sh.w) : 0;
           return (
             <React.Fragment key={i}>
+              {olColor ? (
+                <svg width={0} height={0} style={{ position: 'absolute' }}>
+                  <filter id={olId} x="-5%" y="-5%" width="110%" height="110%">
+                    <feMorphology in="SourceAlpha" operator="dilate" radius={olR} result="d" />
+                    <feGaussianBlur in="d" stdDeviation="0.6" result="db" />
+                    <feFlood floodColor={olColor} floodOpacity={olOp} />
+                    <feComposite in2="db" operator="in" result="ol" />
+                    <feMerge><feMergeNode in="ol" /><feMergeNode in="SourceGraphic" /></feMerge>
+                  </filter>
+                </svg>
+              ) : null}
               {sh ? (
                 <div style={{ position: 'absolute', left: x - (shW * s) / 2, top: y - Math.max(18, shW * 0.06) * s, width: shW * s, height: Math.max(36, shW * 0.12) * s, borderRadius: '50%', background: 'radial-gradient(closest-side, rgba(12,8,4,0.62), transparent)', opacity: o * out * (sh.o ?? 1) }} />
               ) : null}
               <Img
                 src={src}
-                style={{ position: 'absolute', left: x, top: y + dy, height: (l.h || 600) * s, opacity: o * out * hid.opacity, transformOrigin: '50% 100%', transform: `translate(-50%,-100%) ${idleFx(f, l.motion, i)}${wind} scale(${sc}) scaleX(${l.flip ? -1 : 1})`, filter: fx, clipPath: hid.clipPath }}
+                style={{ position: 'absolute', left: x, top: y + dy, height: (l.h || 600) * s, opacity: o * out * hid.opacity, transformOrigin: '50% 100%', transform: `translate(-50%,-100%) ${idleFx(f, l.motion, i, l.amp ?? 1)}${wind} scale(${sc}) scaleX(${l.flip ? -1 : 1})`, filter: fx, clipPath: hid.clipPath }}
               />
             </React.Fragment>
           );
@@ -210,6 +233,7 @@ export const Stage: React.FC<SceneProps> = ({ dur, asset, props, lead = 0 }) => 
       {g.dark > 0 ? <AbsoluteFill style={{ background: `rgba(6,5,4,${g.dark})` }} /> : null}
       {atm.filter((a) => !BEHIND(a)).map((a: any, i: number) => <Atmosphere key={i} a={a} t={t} />)}
       {props.label ? <Label text={props.label} sub={props.sub} from={8} to={dur - 10} /> : null}
+      {props.credit ? <div style={{ position: 'absolute', left: 72, bottom: 24, fontFamily: fontOf(th), fontSize: 20, color: '#fff', opacity: 0.85, textShadow: '0 1px 6px rgba(0,0,0,0.9)' }}>{props.credit}</div> : null}
     </AbsoluteFill>
   );
 };

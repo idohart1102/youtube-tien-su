@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 // Ghép thumbnail cho một tập: node core/scripts/thumb.mjs <episode_dir> [thumb_spec.json]
 // Mỗi mục trong spec là một phương án {name, bg, subject, lines, text}. Ra <episode>/thumb/<name>.jpg và bảng thu nhỏ 160x90 để tự kiểm.
 import fs from 'node:fs';
@@ -11,6 +12,9 @@ import { renderStill, selectComposition } from '@remotion/renderer';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const ep = path.resolve(process.argv[2] || '');
 const specPath = process.argv[3] ? path.resolve(process.argv[3]) : path.join(ep, 'thumb_spec.json');
+// Màu viền chủ thể, màu khung giấy ảnh thật theo nền (Sếp 2026-11-07)
+{ const py = fs.existsSync(path.join(ROOT, '.venv/bin/python')) ? path.join(ROOT, '.venv/bin/python') : 'python3';
+  execFileSync(py, [path.join(ROOT, 'core/scripts/stage_prep.py'), '--thumb', ep, specPath], { stdio: 'inherit' }); }
 const specs = JSON.parse(fs.readFileSync(specPath, 'utf8'));
 const channel = yaml.load(fs.readFileSync(path.join(ep, '../../channel.yaml'), 'utf8'));
 const theme = { ...JSON.parse(fs.readFileSync(path.join(ep, '../../theme.json'), 'utf8')), lang: channel.language, locale: channel.locale, labels: channel.lang.labels };

@@ -1,5 +1,5 @@
 """Tìm vùng trống trên mỗi ảnh nền / ảnh thật để đặt thẻ số liệu không đè chủ thể và chi tiết quan trọng.
-Dùng: python core/scripts/asset_zones.py <tập>. gen_assets.py tự gọi cho ảnh mới. Kết quả <tập>/qa/zones.json: {file: {"card": [cx, cy], "subject": [x, y, w, h]}} (0..1 theo ảnh).
+Dùng: python core/scripts/asset_zones.py <tập>. gen_assets.py tự gọi cho ảnh mới. Kết quả <tập>/qa/zones.json: {file: {"card": [cx, cy], "subject": [x, y, w, h], "ground": [x, y, w, h]}} (ground: mặt đất trống để đặt chân cutout, Sếp 2026-11-07) (0..1 theo ảnh).
 align_srt.py --apply đọc file này để đặt vị trí thẻ (không tốn token). Chấm 9 ảnh một lần cho rẻ."""
 import json, sys
 from pathlib import Path
@@ -8,8 +8,9 @@ import review
 
 PROMPT = """Each numbered cell is one image used in a documentary video. For each image find:
 - subject: bounding box of the main subject and important details (the thing a viewer must see), as [x, y, w, h] in 0..1 of that image.
+- ground: [x, y, w, h] (0..1) of the largest open walkable ground (dry earth, rock, sand, grass, shore) where a person or animal could stand, not water, not sky, not a wall. [0,0,0,0] if none.
 - card: center [cx, cy] (0..1) of the best calm empty area for a text card about 34% of the image wide and 12% high, that does not cover the subject or important details. Never in the bottom 22% (subtitles). Prefer the upper half.
-Reply ONLY JSON: {"cells":[{"n":1,"subject":[0,0,0,0],"card":[0.5,0.25]}]}"""
+Reply ONLY JSON: {"cells":[{"n":1,"subject":[0,0,0,0],"ground":[0,0.6,1,0.3],"card":[0.5,0.25]}]}"""
 
 
 def ensure(ep, files=None):
@@ -43,7 +44,8 @@ def ensure(ep, files=None):
             n = int(c.get("n", 0)) - 1
             if 0 <= n < len(part) and len(c.get("card") or []) == 2:
                 zones[part[n]] = {"card": [min(0.85, max(0.15, float(c["card"][0]))), min(0.7, max(0.1, float(c["card"][1])))],
-                                  "subject": [float(v) for v in (c.get("subject") or [0, 0, 0, 0])][:4]}
+                                  "subject": [float(v) for v in (c.get("subject") or [0, 0, 0, 0])][:4],
+                                  "ground": [float(v) for v in (c.get("ground") or [0, 0, 0, 0])][:4]}
         tmp.unlink(missing_ok=True)
         zp.write_text(json.dumps(zones, ensure_ascii=False, indent=1), encoding="utf-8")
     return zones

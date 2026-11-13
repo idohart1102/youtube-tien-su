@@ -8,7 +8,7 @@
    "id": "sauropod-vn",
    "tier": "chinh",
    "species": "sauropod-vn",
-   "plan": "quad",
+   "size_m": 6,
    "poses": [
     "đi",
     "uống nước",
@@ -19,7 +19,7 @@
    "id": "chim-chich-bong",
    "tier": "phu",
    "species": "",
-   "plan": "none",
+   "size_m": 0.15,
    "poses": [
     "đậu cành"
    ]

@@ -68,7 +68,7 @@ export const BigText: React.FC<{ text: string; from: number; to: number; y?: num
   );
 };
 
-// Bóng đổ cho ảnh cutout PNG trong suốt. Cutout trong video không có viền trắng (Sếp, 2026-10-30).
+// Bóng đổ cho ảnh cutout PNG trong suốt. Viền cutout: màu giấy ngả theo nền, không trắng tinh (Sếp, 2026-11-07), vẽ trong Stage.
 export const CUTOUT_SHADOW = 'drop-shadow(0 14px 18px rgba(0,0,0,0.45))';
 
 // Hiệu ứng xuất hiện của 1 lớp: pop (phóng nhẹ), rise (trồi lên), fade. Trả về [opacity, scale, dy]
@@ -83,12 +83,18 @@ export const enterFx = (f: number, at: number, kind = 'pop'): [number, number, n
 
 // Chuyển động lặp nhẹ cho cutout (không cần rig): breathe, sway, bob, walk. Gốc xoay/co giãn là chân lớp.
 // Trả về chuỗi transform ghép sau translate của lớp.
-export const idleFx = (f: number, kind?: string, seed = 0): string => {
+// amp: độ mạnh (0.5 nhẹ, 1 thường, 2 mạnh) chọn theo bối cảnh: con lớn, cảnh yên thì nhỏ; chạy, lao tới, hoảng loạn thì lớn.
+// walk/run nhún và lắc nhẹ theo bước; amp lớn thì bước nhanh hơn.
+export const idleFx = (f: number, kind?: string, seed = 0, amp = 1): string => {
   const w = (period_s: number) => (2 * Math.PI * f) / (30 * period_s) + seed * 1.7;
-  if (kind === 'breathe') return `scaleY(${1 + 0.015 * Math.sin(w(3.5))})`;
-  if (kind === 'sway') return `rotate(${1.5 * Math.sin(w(4))}deg)`;
-  if (kind === 'bob') return `translateY(${6 * Math.sin(w(2.5))}px)`;
-  if (kind === 'walk') return `translateY(${-3 * Math.abs(Math.sin(w(1.1)))}px)`;
+  if (kind === 'breathe') return `scaleY(${1 + 0.015 * amp * Math.sin(w(3.5 / Math.sqrt(amp)))})`;
+  if (kind === 'sway') return `rotate(${1.5 * amp * Math.sin(w(4 / Math.sqrt(amp)))}deg)`;
+  if (kind === 'bob') return `translateY(${6 * amp * Math.sin(w(2.5 / Math.sqrt(amp)))}px)`;
+  if (kind === 'walk' || kind === 'run') {
+    const run = kind === 'run' ? 1.8 : 1;
+    const p = 1.1 / Math.sqrt(amp * run);
+    return `translateY(${-3 * amp * run * Math.abs(Math.sin(w(p)))}px) rotate(${0.7 * amp * run * Math.sin(w(p * 2))}deg)`;
+  }
   return '';
 };
 

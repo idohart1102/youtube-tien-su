@@ -65,7 +65,7 @@ def photo_rect(ep, s, zones):
 
 def events(s):
     pr = s.get("props", {})
-    ts = [x.get("at_s") for k in ("cards", "badges", "annotate", "markers", "arrows", "layers", "items", "grade", "atmosphere") for x in pr.get(k, [])]
+    ts = [x.get("at_s") for k in ("cards", "badges", "annotate", "markers", "arrows", "zones", "layers", "items", "grade", "atmosphere") for x in pr.get(k, [])]
     ts += [x.get("unmask_s") for x in pr.get("layers", []) + pr.get("items", [])]
     ts += [k.get("at_s") for x in pr.get("layers", []) for k in x.get("path", [])]
     ts += [(pr.get(k) or {}).get("at_s") for k in ("spotlight", "shake", "quake")]
@@ -95,7 +95,7 @@ def moving(s):
     elif c in ("Stage", "Parallax"):
         rate = (0.06 if pr.get("cam", "in") in ("in", "out") else 80 / 1500) / d
     elif c == "GeoMap":
-        rate = 0.08 / d
+        rate = 0.1 / d  # camera tuyến tính từ 2026-11-07
     else:
         return True  # TitleCard, Collage, SizeCompare, GeoClock... có diễn biến riêng
     return rate >= 0.004  # hiệu chỉnh trên tập 1 bản cuối: chỉ còn 1:58 gần tĩnh, khớp render_check
@@ -130,8 +130,9 @@ def check(data, ep, plan=None, zones=None, asset_check=None):
                 # Stage phóng layer quanh focus theo độ sâu: chân ở y thật = (y - cy) * s + cy lúc cuối cảnh
                 cam = pr.get("cam", "in")
                 zoom = 0.06 if cam in ("in", "out") else 0.04 if cam in ("up", "down") else 0.02
-                k_s, cy = 1 + zoom * (1 + 2 * x.get("depth", 0.6)), (pr.get("focus") or [W / 2, H / 2])[1]
-                ys = [(yy - cy) * k_s + cy for yy in [x.get("y", H - 80)] + [k.get("y") for k in x.get("path", []) if k.get("y") is not None]]
+                dz = max(0, x.get("dz") or 0)  # đi lại gần: cuối cảnh to thêm dz, chân xuống thêm 160*dz
+                k_s, cy = (1 + zoom * (1 + 2 * x.get("depth", 0.6))) * (1 + dz), (pr.get("focus") or [W / 2, H / 2])[1]
+                ys = [(yy + 160 * dz - cy) * k_s + cy for yy in [x.get("y", H - 80)] + [k.get("y") for k in x.get("path", []) if k.get("y") is not None]]
                 asp = x.get("aspect") or ((lambda wh: wh[0] / wh[1] if wh else 1)(size(ep, x["asset"]) if x.get("asset") else None))
                 half = (x.get("h") or 600) * asp / 2
                 xs = [x.get("x", W / 2)] + [k.get("x") for k in x.get("path", []) if k.get("x") is not None]
